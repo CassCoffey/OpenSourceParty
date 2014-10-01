@@ -13,9 +13,6 @@ namespace OpenSourceParty
         // Fields
         private List<GamepadState> devices = new List<GamepadState>(4);   // List of devices that are connected.
 
-        public delegate void ADelegate(object sender, EventArgs e);
-        public ADelegate A;
-
         // the four default controllers
         private GamepadState gamepadOne = new GamepadState(UserIndex.One);
         private GamepadState gamepadTwo = new GamepadState(UserIndex.Two);
@@ -65,10 +62,6 @@ namespace OpenSourceParty
                 foreach (GamepadState wrapper in devices)
                 {
                     wrapper.Update();
-                    if (wrapper.A)
-                    {
-                        A(this, EventArgs.Empty);
-                    }
                     //Console.WriteLine(wrapper);
                 }
             }

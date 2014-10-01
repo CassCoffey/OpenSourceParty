@@ -24,8 +24,9 @@ namespace OpenSourceParty
             this.BackgroundImage = Image.FromFile(fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension));   // Set the background image.
             this.BackgroundImageLayout = ImageLayout.Stretch;
             InitializeComponent();
-            padMan.A = new GamepadManager.ADelegate(button1_Click);
             padMan.Init();
+            padMan[0].aDelagate = new GamepadState.GamepadDelegate(button1_Click);
+            padMan[0].bDelagate = new GamepadState.GamepadDelegate(button2_Click);
         }
 
         private void button1_Click(object sender, EventArgs e)

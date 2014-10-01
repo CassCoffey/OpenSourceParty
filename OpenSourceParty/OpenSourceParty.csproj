@@ -50,6 +50,8 @@
     <Compile Include="GamepadState.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="GamepadManager.cs" />
+    <Compile Include="DPadArgs.cs" />
+    <Compile Include="JoystickArgs.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
