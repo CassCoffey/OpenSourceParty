@@ -8,6 +8,10 @@ namespace OpenSourceParty
 {
     public class Runner
     {
-
+        public static void Main()
+        {
+            MainMenu menu = new MainMenu();
+            menu.ShowDialog();
+        }
     }
 }
