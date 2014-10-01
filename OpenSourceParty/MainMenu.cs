@@ -25,8 +25,16 @@ namespace OpenSourceParty
             this.BackgroundImageLayout = ImageLayout.Stretch;
             InitializeComponent();
             padMan.Init();
-            padMan[0].aDelagate = new GamepadState.GamepadDelegate(button1_Click);
+            padMan[0].lJoystickDelegate = new GamepadState.JoystickDelegate(thumbstickManage);
             padMan[0].bDelagate = new GamepadState.GamepadDelegate(button2_Click);
+        }
+
+        private void thumbstickManage(object sender, JoystickArgs j)
+        {
+            if (j.thumbstick.Position.Y > 06)
+            {
+                button1_Click(sender, EventArgs.Empty);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -15,9 +15,6 @@ namespace OpenSourceParty
     class GamepadState
     {
         // Fields
-        public delegate void GamepadDelegate(object sender, EventArgs e);
-        public delegate void JoystickDelegate(object sender, JoystickArgs jArgs);
-        public delegate void DPadDelegate(object sender, DPadArgs dArgs);
         public GamepadDelegate aDelagate;
         public GamepadDelegate bDelagate;
         public GamepadDelegate xDelagate;
@@ -33,6 +30,11 @@ namespace OpenSourceParty
         public DPadDelegate dPadDelegate;
         public JoystickDelegate rJoystickDelegate;
         public JoystickDelegate lJoystickDelegate;
+
+        // Public delegates for use with the GamepadState class.
+        public delegate void GamepadDelegate(object sender, EventArgs e);
+        public delegate void JoystickDelegate(object sender, JoystickArgs jArgs);
+        public delegate void DPadDelegate(object sender, DPadArgs dArgs);
 
         private Controller controller;
         private UserIndex userIndex;
@@ -175,7 +177,7 @@ namespace OpenSourceParty
             {
                 lJoyClickDelagate(this, EventArgs.Empty);
             }
-            if ((LeftStick.Position.X >= 1 || LeftStick.Position.Y >=1 || LeftStick.Position.X <= -1 || LeftStick.Position.Y <= -1) && lJoystickDelegate != null)
+            if ((LeftStick.Position.X > 0 || LeftStick.Position.Y > 0 || LeftStick.Position.X < 0 || LeftStick.Position.Y < 0) && lJoystickDelegate != null)
             {
                 JoystickArgs jArgs = new JoystickArgs(LeftStick);
                 lJoystickDelegate(this, jArgs);
@@ -188,7 +190,7 @@ namespace OpenSourceParty
             {
                 rJoyClickDelagate(this, EventArgs.Empty);
             }
-            if ((RightStick.Position.X >= 1 || RightStick.Position.Y >= 1 || RightStick.Position.X <= -1 || RightStick.Position.Y <= -1) && rJoystickDelegate != null)
+            if ((RightStick.Position.X > 0 || RightStick.Position.Y > 0 || RightStick.Position.X < 0 || RightStick.Position.Y < 0) && rJoystickDelegate != null)
             {
                 JoystickArgs jArgs = new JoystickArgs(RightStick);
                 rJoystickDelegate(this, jArgs);

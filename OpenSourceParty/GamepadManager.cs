@@ -57,12 +57,10 @@ namespace OpenSourceParty
             while (true)
             {
                 Thread.Sleep(10);
-                //Console.Clear();
                 UpdateDevices();
                 foreach (GamepadState wrapper in devices)
                 {
                     wrapper.Update();
-                    //Console.WriteLine(wrapper);
                 }
             }
         }
