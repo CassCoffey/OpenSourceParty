@@ -10,8 +10,8 @@ namespace OpenSourceParty
     {
         public static void Main()
         {
-            MainMenu menu = new MainMenu();
-            menu.ShowDialog();
+            MainMenu menu = new MainMenu();   // Creates a new menu object.
+            menu.ShowDialog();   // Initializes the menu object.
         }
     }
 }

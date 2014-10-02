@@ -82,6 +82,11 @@ namespace OpenSourceParty
             return filePaths[rand.Next(0, filePaths.Count)];   // Pick a random file from the files list.
         }
 
+        /// <summary>
+        /// Finds a random game file and runs it.
+        /// </summary>
+        /// <param name="dir">The directory to search for the game in.</param>
+        /// <param name="ext">The extension to search for.</param>
         public void RandomGame(String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
         {
             String randomGame = RandomFile(dir, ext);
