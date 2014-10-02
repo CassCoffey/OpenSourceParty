@@ -25,7 +25,11 @@ namespace OpenSourceParty
         {
             get
             {
-                return devices[index];
+                if (index >= 0 && index < devices.Count)
+                {
+                    return devices[index];
+                }
+                return null;
             }
             set
             {

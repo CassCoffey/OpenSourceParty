@@ -15,8 +15,6 @@ namespace OpenSourceParty
         FileManager fileMan;
         GamepadManager padMan;
 
-        
-
         public MainMenu()
         {
             fileMan = new FileManager();   // Instantiate a new file manager.
@@ -25,13 +23,21 @@ namespace OpenSourceParty
             this.BackgroundImageLayout = ImageLayout.Stretch;
             InitializeComponent();
             padMan.Init();
-            padMan[0].lJoystickDelegate = new GamepadState.JoystickDelegate(thumbstickManage);
-            padMan[0].bDelagate = new GamepadState.GamepadDelegate(button2_Click);
+            if (padMan[0] != null)
+            {
+                padMan[0].lJoystickDelegate = new GamepadState.JoystickDelegate(thumbstickManage);
+                padMan[0].bDelagate = new GamepadState.GamepadDelegate(button2_Click);
+            }   
         }
 
+        /// <summary>
+        /// Manages thumbstick input.
+        /// </summary>
+        /// <param name="sender">The gamepad that sent the delegate.</param>
+        /// <param name="j">The joystick arguments.</param>
         private void thumbstickManage(object sender, JoystickArgs j)
         {
-            if (j.thumbstick.Position.Y > 06)
+            if (j.thumbstick.Position.Y > 0)
             {
                 button1_Click(sender, EventArgs.Empty);
             }
