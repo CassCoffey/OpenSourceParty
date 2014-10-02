@@ -43,11 +43,21 @@ namespace OpenSourceParty
             }
         }
 
+        /// <summary>
+        /// Called when button1 is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             fileMan.RandomGame();
         }
 
+        /// <summary>
+        /// Called when button2 is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Games:");
