@@ -19,8 +19,12 @@ namespace OpenSourceParty
         {
             fileMan = new FileManager();   // Instantiate a new file manager.
             padMan = new GamepadManager();
-            this.BackgroundImage = Image.FromFile(fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension));   // Set the background image.
-            this.BackgroundImageLayout = ImageLayout.Stretch;
+            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
+            if (background != null)
+            {
+                this.BackgroundImage = Image.FromFile(background);   // Set the background image.
+                this.BackgroundImageLayout = ImageLayout.Stretch;
+            }
             InitializeComponent();
             padMan.Init();
             if (padMan[0] != null)

@@ -75,7 +75,7 @@ namespace OpenSourceParty
         {
             filePaths.Clear();
             directorySearch(dir, ext);
-            if (filePaths == null)
+            if (filePaths.Count == 0)
             {
                 return null;
             }
@@ -85,6 +85,12 @@ namespace OpenSourceParty
         public void RandomGame(String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
         {
             String randomGame = RandomFile(dir, ext);
+
+            if (filePaths.Count == 0)
+            {
+                return;
+            }
+
             var DLL = Assembly.LoadFile(Path.GetFullPath(randomGame));   // Load that file.
 
             foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
@@ -127,6 +133,10 @@ namespace OpenSourceParty
         {
             filePaths.Clear();
             directorySearch(dir, ext);
+            if (filePaths.Count == 0)
+            {
+                return;
+            }
             for (int i = 0; i < filePaths.Count; i++)
             {
                 Console.WriteLine(filePaths[i]);
