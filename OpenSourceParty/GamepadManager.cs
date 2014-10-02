@@ -11,7 +11,8 @@ namespace OpenSourceParty
     class GamepadManager
     {
         // Fields
-        private List<GamepadState> devices = new List<GamepadState>(4);   // List of devices that are connected.
+        private List<GamepadState> devices = new List<GamepadState>(4);   // List of devices that could be connected.
+        private List<GamepadState> activeDevices = new List<GamepadState>(4);   // List of devices that are connected.
 
         // the four default controllers
         private GamepadState gamepadOne = new GamepadState(UserIndex.One);
@@ -47,6 +48,10 @@ namespace OpenSourceParty
         /// </summary>
         public void Init()
         {
+            devices.Add(gamepadOne);
+            devices.Add(gamepadTwo);
+            devices.Add(gamepadThree);
+            devices.Add(gamepadFour);
             UpdateDevices();
             updateThread = new Thread(() => Update());
             updateThread.Start();
@@ -74,30 +79,30 @@ namespace OpenSourceParty
         /// </summary>
         private void UpdateDevices()
         {
-            if (gamepadOne.Connected && !devices.Contains(gamepadOne))
+            if (gamepadOne.Connected && !activeDevices.Contains(gamepadOne))
             {
-                devices.Add(gamepadOne);
+                activeDevices.Add(gamepadOne);
             }
-            if (gamepadTwo.Connected && !devices.Contains(gamepadTwo))
+            if (gamepadTwo.Connected && !activeDevices.Contains(gamepadTwo))
             {
-                devices.Add(gamepadTwo);
+                activeDevices.Add(gamepadTwo);
             }
-            if (gamepadThree.Connected && !devices.Contains(gamepadThree))
+            if (gamepadThree.Connected && !activeDevices.Contains(gamepadThree))
             {
-                devices.Add(gamepadThree);
+                activeDevices.Add(gamepadThree);
             }
-            if (gamepadFour.Connected && !devices.Contains(gamepadFour))
+            if (gamepadFour.Connected && !activeDevices.Contains(gamepadFour))
             {
-                devices.Add(gamepadFour);
+                activeDevices.Add(gamepadFour);
             }
 
-            if (devices != null)
+            if (activeDevices != null)
             {
-                for (int i = 0; i < devices.Count; i++)
+                for (int i = 0; i < activeDevices.Count; i++)
                 {
-                    if (!devices[i].Connected)
+                    if (!activeDevices[i].Connected)
                     {
-                        devices.RemoveAt(i);
+                        activeDevices.RemoveAt(i);
                         --i;
                     }
                 }
