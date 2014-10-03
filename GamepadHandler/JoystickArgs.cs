@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenSourceParty
+namespace GamepadHandler
 {
-    class JoystickArgs : EventArgs
+    public class JoystickArgs : EventArgs
     {
         public GamepadState.ThumbstickState thumbstick;
 

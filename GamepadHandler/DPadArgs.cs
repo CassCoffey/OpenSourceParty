@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenSourceParty
+namespace GamepadHandler
 {
-    class DPadArgs : EventArgs
+    public class DPadArgs : EventArgs
     {
         public GamepadState.DPadState dPad;
 

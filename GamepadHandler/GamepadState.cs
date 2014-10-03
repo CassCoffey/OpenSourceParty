@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using SlimDX;
 using SlimDX.XInput;
 
-namespace OpenSourceParty
+namespace GamepadHandler
 {
     /// <summary>
     /// Original Class By Renaud Bedard.
     /// Delegates added.
     /// </summary>
-    class GamepadState
+    public class GamepadState
     {
         // Fields
         public GamepadDelegate aDelagate;
@@ -288,7 +288,7 @@ namespace OpenSourceParty
         {
             public readonly bool Up, Down, Left, Right;
 
-            public DPadState(bool up, bool down, bool left, bool right )
+            public DPadState(bool up, bool down, bool left, bool right)
             {
                 Up = up; Down = down; Left = left; Right = right;
             }

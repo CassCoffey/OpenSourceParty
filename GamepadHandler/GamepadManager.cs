@@ -6,9 +6,9 @@ using System.Threading;
 using SlimDX;
 using SlimDX.XInput;
 
-namespace OpenSourceParty
+namespace GamepadHandler
 {
-    class GamepadManager
+    public class GamepadManager
     {
         // Fields
         private List<GamepadState> devices = new List<GamepadState>(4);   // List of devices that could be connected.
