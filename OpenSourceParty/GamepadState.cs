@@ -50,14 +50,33 @@ namespace OpenSourceParty
         public bool X { get; private set; }
         public bool Y { get; private set; }
 
-        public bool RightShoulder { get; private set; }
-        public bool LeftShoulder { get; private set; }
-
         public bool Start { get; private set; }
         public bool Select { get; private set; }
 
+        public bool RightShoulder { get; private set; }
+        public bool LeftShoulder { get; private set; }
+
         public float RightTrigger { get; private set; }
         public float LeftTrigger { get; private set; }
+
+        // Bools for checking if a button is held down.
+        private DPadState DPadPrev { get; set; }
+        private ThumbstickState LeftStickPrev { get; set; }
+        private ThumbstickState RightStickPrev { get; set; }
+
+        private bool APrev { get; set; }
+        private bool BPrev { get; set; }
+        private bool XPrev { get; set; }
+        private bool YPrev { get; set; }
+
+        private bool StartPrev { get; set; }
+        private bool SelectPrev { get; set; }
+
+        private bool RightShoulderPrev { get; set; }
+        private bool LeftShoulderPrev { get; set; }
+
+        private float RightTriggerPrev { get; set; }
+        private float LeftTriggerPrev { get; set; }
 
         public bool Connected
         {
@@ -103,59 +122,101 @@ namespace OpenSourceParty
 
             // Shoulders
             LeftShoulder = (gamepadState.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
-            if (LeftShoulder && lBumpDelagate != null)
+            if (LeftShoulder && lBumpDelagate != null && !LeftShoulderPrev)
             {
                 lBumpDelagate(this, EventArgs.Empty);
+                LeftShoulderPrev = true;
+            }
+            else if (!LeftShoulder)
+            {
+                LeftShoulderPrev = false;
             }
             RightShoulder = (gamepadState.Buttons & GamepadButtonFlags.RightShoulder) != 0;
-            if (RightShoulder && rBumpDelagate != null)
+            if (RightShoulder && rBumpDelagate != null && !RightShoulderPrev)
             {
                 rBumpDelagate(this, EventArgs.Empty);
+                RightShoulderPrev = true;
+            }
+            else if (!RightShoulder)
+            {
+                RightShoulderPrev = false;
             }
 
             // Triggers
             LeftTrigger = gamepadState.LeftTrigger / (float)byte.MaxValue;
-            if (LeftTrigger > 0 && lTriggerDelagate != null)
+            if (LeftTrigger > 0 && lTriggerDelagate != null && LeftTrigger != LeftTriggerPrev)
             {
                 lTriggerDelagate(this, EventArgs.Empty);
+                LeftTriggerPrev = LeftTrigger;
             }
             RightTrigger = gamepadState.RightTrigger / (float)byte.MaxValue;
-            if (RightTrigger > 0 && rTriggerDelagate != null)
+            if (RightTrigger > 0 && rTriggerDelagate != null && RightTrigger != RightTriggerPrev)
             {
                 rTriggerDelagate(this, EventArgs.Empty);
+                RightTriggerPrev = RightTrigger;
             }
 
             // Buttons
             Start = (gamepadState.Buttons & GamepadButtonFlags.Start) != 0;
-            if (Start && startDelagate != null)
+            if (Start && startDelagate != null && !StartPrev)
             {
                 startDelagate(this, EventArgs.Empty);
+                StartPrev = true;
+            }
+            else if (!Start)
+            {
+                StartPrev = false;
             }
             Select = (gamepadState.Buttons & GamepadButtonFlags.Back) != 0;
-            if (Select && selectDelagate != null)
+            if (Select && selectDelagate != null && !SelectPrev)
             {
                 selectDelagate(this, EventArgs.Empty);
+                SelectPrev = true;
+            }
+            else if (!Select)
+            {
+                SelectPrev = false;
             }
 
             A = (gamepadState.Buttons & GamepadButtonFlags.A) != 0;
-            if (A && aDelagate != null)
+            if (A && aDelagate != null && !APrev)
             {
                 aDelagate(this, EventArgs.Empty);
+                APrev = true;
+            }
+            else if (!A)
+            {
+                APrev = false;
             }
             B = (gamepadState.Buttons & GamepadButtonFlags.B) != 0;
-            if (B && bDelagate != null)
+            if (B && bDelagate != null && !BPrev)
             {
                 bDelagate(this, EventArgs.Empty);
+                BPrev = true;
+            }
+            else if (!B)
+            {
+                BPrev = false;
             }
             X = (gamepadState.Buttons & GamepadButtonFlags.X) != 0;
-            if (X && xDelagate != null)
+            if (X && xDelagate != null && !XPrev)
             {
                 xDelagate(this, EventArgs.Empty);
+                XPrev = true;
+            }
+            else if (!X)
+            {
+                XPrev = false;
             }
             Y = (gamepadState.Buttons & GamepadButtonFlags.Y) != 0;
-            if (Y && yDelagate != null)
+            if (Y && yDelagate != null && !YPrev)
             {
                 yDelagate(this, EventArgs.Empty);
+                YPrev = true;
+            }
+            else if (!Y)
+            {
+                YPrev = false;
             }
 
             // D-Pad
@@ -163,10 +224,11 @@ namespace OpenSourceParty
                                  (gamepadState.Buttons & GamepadButtonFlags.DPadDown) != 0,
                                  (gamepadState.Buttons & GamepadButtonFlags.DPadLeft) != 0,
                                  (gamepadState.Buttons & GamepadButtonFlags.DPadRight) != 0);
-            if ((DPad.Down || DPad.Left || DPad.Right || DPad.Up) && dPadDelegate != null)
+            if ((DPad.Down || DPad.Left || DPad.Right || DPad.Up) && dPadDelegate != null && !DPad.Equals(DPadPrev))
             {
                 DPadArgs dArgs = new DPadArgs(DPad);
                 dPadDelegate(this, dArgs);
+                DPadPrev = DPad;
             }
 
             // Thumbsticks
@@ -177,10 +239,11 @@ namespace OpenSourceParty
             {
                 lJoyClickDelagate(this, EventArgs.Empty);
             }
-            if ((LeftStick.Position.X > 0 || LeftStick.Position.Y > 0 || LeftStick.Position.X < 0 || LeftStick.Position.Y < 0) && lJoystickDelegate != null)
+            if ((LeftStick.Position.X > 0 || LeftStick.Position.Y > 0 || LeftStick.Position.X < 0 || LeftStick.Position.Y < 0) && lJoystickDelegate != null && !LeftStick.Equals(LeftStickPrev))
             {
                 JoystickArgs jArgs = new JoystickArgs(LeftStick);
                 lJoystickDelegate(this, jArgs);
+                LeftStickPrev = LeftStick;
             }
 
             RightStick = new ThumbstickState(
@@ -190,10 +253,11 @@ namespace OpenSourceParty
             {
                 rJoyClickDelagate(this, EventArgs.Empty);
             }
-            if ((RightStick.Position.X > 0 || RightStick.Position.Y > 0 || RightStick.Position.X < 0 || RightStick.Position.Y < 0) && rJoystickDelegate != null)
+            if ((RightStick.Position.X > 0 || RightStick.Position.Y > 0 || RightStick.Position.X < 0 || RightStick.Position.Y < 0) && rJoystickDelegate != null && !RightStick.Equals(RightStickPrev))
             {
                 JoystickArgs jArgs = new JoystickArgs(RightStick);
                 rJoystickDelegate(this, jArgs);
+                RightStickPrev = RightStick;
             }
         }
 
