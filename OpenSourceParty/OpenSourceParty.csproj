@@ -36,9 +36,6 @@
     <Reference Include="GamepadHandler">
       <HintPath>..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX">
-      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -63,7 +60,6 @@
   <ItemGroup>
     <None Include="MiniGames\MinigameTest1.mng" />
     <None Include="MiniGames\MinigameTest2.mng" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainMenu.resx">
@@ -72,6 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backgrounds\cat.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
