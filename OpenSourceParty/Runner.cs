@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MenuHandler;
+using SpriteHandler;
 
 namespace OpenSourceParty
 {
@@ -10,8 +12,8 @@ namespace OpenSourceParty
     {
         public static void Main()
         {
-            MainMenu menu = new MainMenu();   // Creates a new menu object.
-            menu.ShowDialog();   // Initializes the menu object.
+            MainMenu mainMenu = new MainMenu("Open Source Party");
+            
         }
     }
 }

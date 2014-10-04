@@ -81,6 +81,7 @@ namespace GamepadHandler
         {
             if (gamepadOne.Connected && !activeDevices.Contains(gamepadOne))
             {
+                Console.WriteLine("Gamepad 1");
                 activeDevices.Add(gamepadOne);
             }
             if (gamepadTwo.Connected && !activeDevices.Contains(gamepadTwo))

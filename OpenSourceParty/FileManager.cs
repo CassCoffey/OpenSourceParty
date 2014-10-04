@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace OpenSourceParty
@@ -16,6 +17,7 @@ namespace OpenSourceParty
         private const String IMAGEEXTENSION = "*.jpg";   // The default minigame extension.
         private const String MINIGAMEDIR = ".\\MiniGames";   // The default minigame directory.
         private const String BACKGROUNDDIR = ".\\Backgrounds";   // The default minigame directory.
+        private const String IMAGEDIR = ".\\Images";   // The default minigame directory.
         private static Random rand = new Random();
 
         // Properties
@@ -51,6 +53,14 @@ namespace OpenSourceParty
             }
         }
 
+        public String ImageDir
+        {
+            get
+            {
+                return IMAGEDIR;
+            }
+        }
+
         public String this[int index]
         {
             get
@@ -80,6 +90,24 @@ namespace OpenSourceParty
                 return null;
             }
             return filePaths[rand.Next(0, filePaths.Count)];   // Pick a random file from the files list.
+        }
+
+        public String NamedFile(String name, String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
+        {
+            filePaths.Clear();
+            directorySearch(dir, ext);
+            if (filePaths.Count == 0)
+            {
+                return null;
+            }
+            for (int i = 0; i < filePaths.Count; i++)
+            {
+                if (filePaths[i].Contains(name))
+                {
+                    return filePaths[i];
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -129,6 +157,28 @@ namespace OpenSourceParty
             }
         }
 
+        private void directorySearch(String name, String dir, String ext = "*")
+        {
+            try
+            {
+                foreach (String file in Directory.GetFiles(dir, ext))   // Check the current directory for files, and add them to the list.
+                {
+                    if (file.Contains(name))
+                    {
+                        filePaths.Add(file);
+                    }
+                }
+                foreach (String directory in Directory.GetDirectories(dir))   // Recursively do the same for all directories within the current directory.
+                {
+                    directorySearch(directory, ext);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
+        }
+
         /// <summary>
         /// Prints all of the files found in the specified directory.
         /// </summary>
@@ -146,6 +196,23 @@ namespace OpenSourceParty
             {
                 Console.WriteLine(filePaths[i]);
             }
+        }
+
+        public List<Image> GetNamedImageList(String name, String dir = IMAGEDIR, String ext = IMAGEEXTENSION)
+        {
+            List<Image> tempList = new List<Image>();
+            filePaths.Clear();
+            directorySearch(name, dir, ext);
+            if (filePaths.Count == 0)
+            {
+                return null;
+            }
+            for (int i = 0; i < filePaths.Count; i++)
+            {
+                Image newImage = Image.FromFile(filePaths[i]);
+                tempList.Add(newImage);
+            }
+            return tempList;
         }
     }
 }

@@ -306,11 +306,15 @@ namespace GamepadHandler
         {
             public readonly Vector2 Position;
             public readonly bool Clicked;
+            public readonly float x;
+            public readonly float y;
 
             public ThumbstickState(Vector2 position, bool clicked)
             {
                 Clicked = clicked;
                 Position = position;
+                x = position.X;
+                y = position.Y;
             }
             public override string ToString()
             {
