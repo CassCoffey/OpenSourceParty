@@ -122,7 +122,7 @@ namespace GamepadHandler
 
             // Shoulders
             LeftShoulder = (gamepadState.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
-            if (LeftShoulder && lBumpDelagate != null && !LeftShoulderPrev)
+            if (lBumpDelagate != null && !LeftShoulderPrev)
             {
                 lBumpDelagate(this, EventArgs.Empty);
                 LeftShoulderPrev = true;
@@ -132,7 +132,7 @@ namespace GamepadHandler
                 LeftShoulderPrev = false;
             }
             RightShoulder = (gamepadState.Buttons & GamepadButtonFlags.RightShoulder) != 0;
-            if (RightShoulder && rBumpDelagate != null && !RightShoulderPrev)
+            if (rBumpDelagate != null && !RightShoulderPrev)
             {
                 rBumpDelagate(this, EventArgs.Empty);
                 RightShoulderPrev = true;
@@ -144,13 +144,13 @@ namespace GamepadHandler
 
             // Triggers
             LeftTrigger = gamepadState.LeftTrigger / (float)byte.MaxValue;
-            if (LeftTrigger > 0 && lTriggerDelagate != null && LeftTrigger != LeftTriggerPrev)
+            if (lTriggerDelagate != null && LeftTrigger != LeftTriggerPrev)
             {
                 lTriggerDelagate(this, EventArgs.Empty);
                 LeftTriggerPrev = LeftTrigger;
             }
             RightTrigger = gamepadState.RightTrigger / (float)byte.MaxValue;
-            if (RightTrigger > 0 && rTriggerDelagate != null && RightTrigger != RightTriggerPrev)
+            if (rTriggerDelagate != null && RightTrigger != RightTriggerPrev)
             {
                 rTriggerDelagate(this, EventArgs.Empty);
                 RightTriggerPrev = RightTrigger;
@@ -158,7 +158,7 @@ namespace GamepadHandler
 
             // Buttons
             Start = (gamepadState.Buttons & GamepadButtonFlags.Start) != 0;
-            if (Start && startDelagate != null && !StartPrev)
+            if (startDelagate != null && !StartPrev)
             {
                 startDelagate(this, EventArgs.Empty);
                 StartPrev = true;
@@ -168,7 +168,7 @@ namespace GamepadHandler
                 StartPrev = false;
             }
             Select = (gamepadState.Buttons & GamepadButtonFlags.Back) != 0;
-            if (Select && selectDelagate != null && !SelectPrev)
+            if (selectDelagate != null && !SelectPrev)
             {
                 selectDelagate(this, EventArgs.Empty);
                 SelectPrev = true;
@@ -179,7 +179,7 @@ namespace GamepadHandler
             }
 
             A = (gamepadState.Buttons & GamepadButtonFlags.A) != 0;
-            if (A && aDelagate != null && !APrev)
+            if (aDelagate != null && !APrev)
             {
                 aDelagate(this, EventArgs.Empty);
                 APrev = true;
@@ -189,7 +189,7 @@ namespace GamepadHandler
                 APrev = false;
             }
             B = (gamepadState.Buttons & GamepadButtonFlags.B) != 0;
-            if (B && bDelagate != null && !BPrev)
+            if (bDelagate != null && !BPrev)
             {
                 bDelagate(this, EventArgs.Empty);
                 BPrev = true;
@@ -199,7 +199,7 @@ namespace GamepadHandler
                 BPrev = false;
             }
             X = (gamepadState.Buttons & GamepadButtonFlags.X) != 0;
-            if (X && xDelagate != null && !XPrev)
+            if (xDelagate != null && !XPrev)
             {
                 xDelagate(this, EventArgs.Empty);
                 XPrev = true;
@@ -209,7 +209,7 @@ namespace GamepadHandler
                 XPrev = false;
             }
             Y = (gamepadState.Buttons & GamepadButtonFlags.Y) != 0;
-            if (Y && yDelagate != null && !YPrev)
+            if (yDelagate != null && !YPrev)
             {
                 yDelagate(this, EventArgs.Empty);
                 YPrev = true;
@@ -224,7 +224,7 @@ namespace GamepadHandler
                                  (gamepadState.Buttons & GamepadButtonFlags.DPadDown) != 0,
                                  (gamepadState.Buttons & GamepadButtonFlags.DPadLeft) != 0,
                                  (gamepadState.Buttons & GamepadButtonFlags.DPadRight) != 0);
-            if ((DPad.Down || DPad.Left || DPad.Right || DPad.Up) && dPadDelegate != null && !DPad.Equals(DPadPrev))
+            if (dPadDelegate != null && !DPad.Equals(DPadPrev))
             {
                 DPadArgs dArgs = new DPadArgs(DPad);
                 dPadDelegate(this, dArgs);
@@ -235,11 +235,11 @@ namespace GamepadHandler
             LeftStick = new ThumbstickState(
                 Normalize(gamepadState.LeftThumbX, gamepadState.LeftThumbY, Gamepad.GamepadLeftThumbDeadZone),
                 (gamepadState.Buttons & GamepadButtonFlags.LeftThumb) != 0);
-            if (LeftStick.Clicked && lJoyClickDelagate != null)
+            if (lJoyClickDelagate != null)
             {
                 lJoyClickDelagate(this, EventArgs.Empty);
             }
-            if ((LeftStick.Position.X > 0 || LeftStick.Position.Y > 0 || LeftStick.Position.X < 0 || LeftStick.Position.Y < 0) && lJoystickDelegate != null && !LeftStick.Equals(LeftStickPrev))
+            if (lJoystickDelegate != null && !LeftStick.Equals(LeftStickPrev))
             {
                 JoystickArgs jArgs = new JoystickArgs(LeftStick);
                 lJoystickDelegate(this, jArgs);
@@ -249,11 +249,11 @@ namespace GamepadHandler
             RightStick = new ThumbstickState(
                 Normalize(gamepadState.RightThumbX, gamepadState.RightThumbY, Gamepad.GamepadRightThumbDeadZone),
                 (gamepadState.Buttons & GamepadButtonFlags.RightThumb) != 0);
-            if (RightStick.Clicked && rJoyClickDelagate != null)
+            if (rJoyClickDelagate != null)
             {
                 rJoyClickDelagate(this, EventArgs.Empty);
             }
-            if ((RightStick.Position.X > 0 || RightStick.Position.Y > 0 || RightStick.Position.X < 0 || RightStick.Position.Y < 0) && rJoystickDelegate != null && !RightStick.Equals(RightStickPrev))
+            if (rJoystickDelegate != null && !RightStick.Equals(RightStickPrev))
             {
                 JoystickArgs jArgs = new JoystickArgs(RightStick);
                 rJoystickDelegate(this, jArgs);

@@ -13,7 +13,6 @@ namespace OpenSourceParty
         public static void Main()
         {
             MainMenu mainMenu = new MainMenu("Open Source Party");
-            
         }
     }
 }

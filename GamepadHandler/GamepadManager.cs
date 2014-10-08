@@ -79,6 +79,7 @@ namespace GamepadHandler
         /// </summary>
         private void UpdateDevices()
         {
+            // Check all of the gamepads. If connected, add them to the active devices list.
             if (gamepadOne.Connected && !activeDevices.Contains(gamepadOne))
             {
                 Console.WriteLine("Gamepad 1");
@@ -97,6 +98,8 @@ namespace GamepadHandler
                 activeDevices.Add(gamepadFour);
             }
 
+
+            // Check to see if there are any inactive devices that can be removed from the list.
             if (activeDevices != null)
             {
                 for (int i = 0; i < activeDevices.Count; i++)

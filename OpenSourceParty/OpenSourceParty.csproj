@@ -33,6 +33,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FileHandler">
+      <HintPath>..\FileHandler\bin\Debug\FileHandler.dll</HintPath>
+    </Reference>
     <Reference Include="GamepadHandler">
       <HintPath>..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>
@@ -53,7 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileManager.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

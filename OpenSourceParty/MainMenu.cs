@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Timers;
 using MenuHandler;
 using GamepadHandler;
+using FileHandler;
 
 namespace OpenSourceParty
 {
@@ -15,62 +16,28 @@ namespace OpenSourceParty
     {
         // Fields
         private FileManager fileMan;
-        private GamepadManager padMan;
-
-        private int joystickIndex = 0;
-
-        private System.Timers.Timer joysticktimer = new System.Timers.Timer(2000);
-
-        // Properties
-        public int JoystickIndex
-        {
-            get
-            {
-                return joystickIndex;
-            }
-            set
-            {
-                if (value >= 0 && value < buttons.Count)
-                {
-                    joystickIndex = value;
-                }
-                else if (value < 0)
-                {
-                    joystickIndex = buttons.Count - 1;
-                }
-                else if (value > buttons.Count)
-                {
-                    joystickIndex = 0;
-                }
-            }
-        }
 
         // Constructors and Methods
         public MainMenu(String name) : base(name)
         {
             fileMan = new FileManager();   // Instantiate a new file manager.
-            padMan = new GamepadManager();
             String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
             if (background != null)
             {
                 form.BackgroundImage = Image.FromFile(background);   // Set the background image.
                 form.BackgroundImageLayout = ImageLayout.Stretch;
             }
-            padMan.Init();
-            if (padMan[0] != null)
-            {
-                padMan[0].lJoystickDelegate = new GamepadState.JoystickDelegate(ThumbstickManage);
-                padMan[0].aDelagate = new GamepadState.GamepadDelegate(GamepadClick);
-            }
-            joysticktimer.Elapsed += OnTimerEnd;
-            joysticktimer.Enabled = true;
             MakeButton(10, 10, "button1", "Random Game");
             MakeButton(10, 150, "button2", "List Games");
             MakeButton(10, 300, "button3", "Exit");
             form.Width = 640;
             form.Height = 480;
-            form.MouseMove += JoystickModeOff;
             Application.Idle += Draw;
+            if (padMan[0] != null)
+            {
+                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(Draw);
+                padMan[0].aDelagate += new GamepadState.GamepadDelegate(Draw);
+            }
             form.ShowDialog();
         }
 
@@ -111,50 +78,6 @@ namespace OpenSourceParty
         }
 
         /// <summary>
-        /// Manages thumbstick input.
-        /// </summary>
-        /// <param name="sender">The gamepad that sent the delegate.</param>
-        /// <param name="j">The joystick arguments.</param>
-        private void ThumbstickManage(object sender, JoystickArgs j)
-        {
-            if (joystick)
-            {
-                joysticktimer.Stop();
-                joysticktimer.Start();
-                if (j.thumbstick.y > 0)
-                {
-                    buttons[JoystickIndex].ChangeBaseState((int)MenuButton.ButtonStates.Neutral);
-                    ++JoystickIndex;
-                    buttons[JoystickIndex].ChangeBaseState((int)MenuButton.ButtonStates.Hover);
-                }
-                else if (j.thumbstick.y < 0)
-                {
-                    buttons[JoystickIndex].ChangeBaseState((int)MenuButton.ButtonStates.Neutral);
-                    --JoystickIndex;
-                    buttons[JoystickIndex].ChangeBaseState((int)MenuButton.ButtonStates.Hover);
-                }
-            }
-            JoystickMode();
-        }
-
-        /// <summary>
-        /// Handles joystick button presses.
-        /// </summary>
-        /// <param name="sender">The gamepad that sent the delegate.</param>
-        /// <param name="j"></param>
-        private void GamepadClick(object sender, EventArgs j)
-        {
-            if (joystick)
-            {
-                joysticktimer.Stop();
-                joysticktimer.Start();
-                buttons[joystickIndex].ChangeState((int)MenuButton.ButtonStates.Pressed);
-                ButtonClicked(buttons[joystickIndex]);
-            }
-            JoystickMode();
-        }
-
-        /// <summary>
         /// Code to run when buttons are clicked.
         /// </summary>
         /// <param name="button">The button that was clicked.</param>
@@ -178,37 +101,6 @@ namespace OpenSourceParty
                 default:
                     break;
             }
-        }
-
-        /// <summary>
-        /// Enables joystick mode and hides the mouse.
-        /// </summary>
-        private void JoystickMode()
-        {
-            Cursor.Hide();
-            joystick = true;
-            joysticktimer.Stop();
-            joysticktimer.Start();
-            buttons[joystickIndex].ChangeBaseState((int)MenuButton.ButtonStates.Hover);
-        }
-
-        private void JoystickModeOff(Object source, EventArgs e)
-        {
-            Cursor.Show();
-            joystick = false;
-            buttons[joystickIndex].ChangeBaseState((int)MenuButton.ButtonStates.Neutral);
-        }
-
-        /// <summary>
-        /// Shows the mouse and disables joystick mode.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
-        private void OnTimerEnd(Object source, ElapsedEventArgs e)
-        {
-            Cursor.Show();
-            joystick = false;
-            buttons[joystickIndex].ChangeBaseState((int)MenuButton.ButtonStates.Neutral);
         }
 
         /// <summary>

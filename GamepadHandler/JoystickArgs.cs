@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace GamepadHandler
 {
+    /// <summary>
+    /// Event Arguments that contain a thumbstick state.
+    /// </summary>
     public class JoystickArgs : EventArgs
     {
         public GamepadState.ThumbstickState thumbstick;

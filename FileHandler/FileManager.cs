@@ -7,9 +7,9 @@ using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
 
-namespace OpenSourceParty
+namespace FileHandler
 {
-    class FileManager
+    public class FileManager
     {
         // Fields
         private List<String> filePaths = new List<String>();   // List of files that were found using directorySearch.
