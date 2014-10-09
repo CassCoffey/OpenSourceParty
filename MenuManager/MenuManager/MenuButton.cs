@@ -16,7 +16,8 @@ namespace MenuHandler
     {
         // Fields
         public String Name { get; private set; }
-        public bool Clicked { get; set; }
+        public bool MouseClicked { get; set; }
+        public bool PadClicked { get; set; }
         public bool Focus { get; set; }
 
         // Buttons will normally only have 3 states, Neutral, Hovered over, and Pressed.
@@ -84,7 +85,7 @@ namespace MenuHandler
         /// <param name="m"></param>
         public void MouseDown(object sender, MouseEventArgs m)
         {
-            Clicked = true;
+            MouseClicked = true;
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace MenuHandler
         /// <param name="m"></param>
         public void MouseUp(object sender, MouseEventArgs m)
         {
-            Clicked = false;
+            MouseClicked = false;
         }
 
         /// <summary>
@@ -107,13 +108,12 @@ namespace MenuHandler
             if (Intersects() || Focus)
             {
                 // Check if the gamepad or mouse are clicked.
-                if (Clicked && menu.padMan[0].A)
+                if (MouseClicked || PadClicked && menu.padMan[0].A)
                 {
                     ChangeState((int)ButtonStates.Pressed);
                 }
                 else
                 {
-                    Clicked = false;
                     ChangeState((int)ButtonStates.Hover);
                 }
             }

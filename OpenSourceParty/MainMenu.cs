@@ -26,9 +26,20 @@ namespace OpenSourceParty
             MakeButton(10, 10, "button1", "Random Game");
             MakeButton(10, 150, "button2", "List Games");
             MakeButton(10, 300, "button3", "Exit");
+            MakeButton(300, 10, "button4", "Options");
             form.Width = 640;
             form.Height = 480;
+            form.FormBorderStyle = FormBorderStyle.FixedSingle;
+            form.MaximizeBox = false;
             form.ShowDialog();
+        }
+
+        public MainMenu(String name, Form iForm, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iForm, iPadMan, iFileMan, iGraphics)
+        {
+            MakeButton(10, 10, "button1", "Random Game");
+            MakeButton(10, 150, "button2", "List Games");
+            MakeButton(10, 300, "button3", "Exit");
+            MakeButton(300, 10, "button4", "Options");
         }
 
         /// <summary>
@@ -47,6 +58,10 @@ namespace OpenSourceParty
                     fileMan.printFileList(fileMan.MinigameDir, fileMan.GameExtension);
                     Console.WriteLine("Backgrounds:");
                     fileMan.printFileList(fileMan.BackgroundDir, fileMan.ImageExtension);
+                    break;
+                case "Options":
+                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", form, padMan, fileMan, graphics);
+                    Destroy();
                     break;
                 case "Exit":
                     Application.Exit();

@@ -19,7 +19,7 @@ namespace GamepadHandler
         private GamepadState gamepadTwo = new GamepadState(UserIndex.Two);
         private GamepadState gamepadThree = new GamepadState(UserIndex.Three);
         private GamepadState gamepadFour = new GamepadState(UserIndex.Four);
-        private Thread updateThread;   // The updateThread that handles controller updates.
+        public Thread updateThread;   // The updateThread that handles controller updates.
 
 
         // Properties
@@ -66,7 +66,7 @@ namespace GamepadHandler
         {
             while (true)
             {
-                Thread.Sleep(10);
+                //Thread.Sleep(10);
                 UpdateDevices();
                 foreach (GamepadState wrapper in devices)
                 {
