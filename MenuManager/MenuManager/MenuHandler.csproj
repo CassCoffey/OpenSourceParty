@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FileHandler">
+      <HintPath>..\..\FileHandler\bin\Debug\FileHandler.dll</HintPath>
+    </Reference>
     <Reference Include="GamepadHandler">
       <HintPath>..\..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>

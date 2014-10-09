@@ -20,6 +20,7 @@ namespace SpriteHandler
         public int width;
         protected Image image;
 
+
         // Constructors and Methods
         /// <summary>
         /// The sprite's default constructor.

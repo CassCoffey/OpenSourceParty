@@ -83,6 +83,7 @@ namespace GamepadHandler
             get { return controller.IsConnected; }
         }
 
+
         // Constructors and Methods
         public GamepadState(UserIndex index)
         {
@@ -297,6 +298,11 @@ namespace GamepadHandler
 
     public static class MathHelper
     {
+        /// <summary>
+        /// Constrains the value between 0 and 1.
+        /// </summary>
+        /// <param name="value">The value to constrain.</param>
+        /// <returns>A value between 0 and 1.</returns>
         public static float Saturate(float value)
         {
             return value < 0 ? 0 : value > 1 ? 1 : value;

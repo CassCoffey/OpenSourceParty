@@ -16,6 +16,7 @@ namespace SpriteHandler
         protected List<Image> states = new List<Image>();
         protected int stateIndex = 0;
 
+
         // Properties
         public Image Image
         {
@@ -28,6 +29,7 @@ namespace SpriteHandler
                 states[stateIndex] = value;
             }
         }
+
 
         // Constructors and Methods
         /// <summary>

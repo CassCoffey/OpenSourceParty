@@ -20,6 +20,7 @@ namespace FileHandler
         private const String IMAGEDIR = ".\\Images";   // The default minigame directory.
         private static Random rand = new Random();
 
+
         // Properties
         public String GameExtension
         {
@@ -28,7 +29,6 @@ namespace FileHandler
                 return GAMEEXTENSION;
             }
         }
-
         public String ImageExtension
         {
             get
@@ -36,7 +36,6 @@ namespace FileHandler
                 return IMAGEEXTENSION;
             }
         }
-
         public String MinigameDir
         {
             get
@@ -44,7 +43,6 @@ namespace FileHandler
                 return MINIGAMEDIR;
             }
         }
-
         public String BackgroundDir
         {
             get
@@ -52,7 +50,6 @@ namespace FileHandler
                 return BACKGROUNDDIR;
             }
         }
-
         public String ImageDir
         {
             get
@@ -60,7 +57,6 @@ namespace FileHandler
                 return IMAGEDIR;
             }
         }
-
         public String this[int index]
         {
             get
@@ -75,6 +71,7 @@ namespace FileHandler
                 }
             }
         }
+
 
         // Methods and Constructors
         /// <summary>
@@ -92,6 +89,13 @@ namespace FileHandler
             return filePaths[rand.Next(0, filePaths.Count)];   // Pick a random file from the files list.
         }
 
+        /// <summary>
+        /// Returns the path of a file whose name is specified.
+        /// </summary>
+        /// <param name="name">The name of the file to search for.</param>
+        /// <param name="dir">The directory to search in.</param>
+        /// <param name="ext">The extension of the file.</param>
+        /// <returns>The path of the file, if found.</returns>
         public String NamedFile(String name, String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
         {
             filePaths.Clear();
@@ -157,6 +161,12 @@ namespace FileHandler
             }
         }
 
+        /// <summary>
+        /// An overload of the directorySearch method that also takes a file name to search for.
+        /// </summary>
+        /// <param name="name">The name to search for.</param>
+        /// <param name="dir">The directory to begin searching in.</param>
+        /// <param name="ext">The extension of the file.</param>
         private void directorySearch(String name, String dir, String ext = "*")
         {
             try
@@ -198,6 +208,13 @@ namespace FileHandler
             }
         }
 
+        /// <summary>
+        /// Made specifically for the Sprite classes. Gets a list of images with the same string in their name.
+        /// </summary>
+        /// <param name="name">The string in common with all the images.</param>
+        /// <param name="dir">The directory to search in.</param>
+        /// <param name="ext">The extension, this will almost always be Image Extension.</param>
+        /// <returns>A list of images with the common string in their name.</returns>
         public List<Image> GetNamedImageList(String name, String dir = IMAGEDIR, String ext = IMAGEEXTENSION)
         {
             List<Image> tempList = new List<Image>();

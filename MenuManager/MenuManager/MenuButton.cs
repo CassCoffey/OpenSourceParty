@@ -21,12 +21,12 @@ namespace MenuHandler
 
         // Buttons will normally only have 3 states, Neutral, Hovered over, and Pressed.
         public enum ButtonStates { Neutral, Hover, Pressed };
-
         public int neutralState = 0;
 
         // The parent form and menu.
         private Form form;
         private MenuAbstract menu;
+
 
         // Constructors and Methods
         /// <summary>
@@ -106,6 +106,7 @@ namespace MenuHandler
             // Check if the mouse is over the button.
             if (Intersects() || Focus)
             {
+                // Check if the gamepad or mouse are clicked.
                 if (Clicked && menu.padMan[0].A)
                 {
                     ChangeState((int)ButtonStates.Pressed);

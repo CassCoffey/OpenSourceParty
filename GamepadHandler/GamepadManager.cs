@@ -21,6 +21,7 @@ namespace GamepadHandler
         private GamepadState gamepadFour = new GamepadState(UserIndex.Four);
         private Thread updateThread;   // The updateThread that handles controller updates.
 
+
         // Properties
         public GamepadState this[int index]
         {
@@ -41,8 +42,8 @@ namespace GamepadHandler
             }
         }
 
-        // Constructors and Methods
 
+        // Constructors and Methods
         /// <summary>
         /// Initializes the manager and starts the updateThread.
         /// </summary>
@@ -82,7 +83,6 @@ namespace GamepadHandler
             // Check all of the gamepads. If connected, add them to the active devices list.
             if (gamepadOne.Connected && !activeDevices.Contains(gamepadOne))
             {
-                Console.WriteLine("Gamepad 1");
                 activeDevices.Add(gamepadOne);
             }
             if (gamepadTwo.Connected && !activeDevices.Contains(gamepadTwo))
