@@ -23,7 +23,6 @@ namespace MenuHandler
         public GamepadManager padMan;
         private int joystickIndex = 0;
         private bool joystickMoved = false;
-        private System.Timers.Timer joystickTimer = new System.Timers.Timer(2000);
 
         // Properties
         public int JoystickIndex
@@ -93,11 +92,12 @@ namespace MenuHandler
             padMan.Init();
             if (padMan[0] != null)
             {
-                padMan[0].lJoystickDelegate = new GamepadState.JoystickDelegate(ThumbstickManage);
-                padMan[0].aDelagate = new GamepadState.GamepadDelegate(GamepadClick);
+                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
+                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(Draw);
+                padMan[0].aDelagate += new GamepadState.GamepadDelegate(GamepadClick);
+                padMan[0].aDelagate += new GamepadState.GamepadDelegate(Draw);
             }
-            joystickTimer.Elapsed += OnTimerEnd;
-            joystickTimer.Enabled = true;
+            Application.Idle += Draw;
             form.MouseMove += JoystickModeOff;
         }
 
@@ -110,18 +110,18 @@ namespace MenuHandler
         {
             if (joystick)
             {
-                joystickTimer.Stop();
-                joystickTimer.Start();
-                if (j.thumbstick.y > 0 && !joystickMoved)
+                if (j.thumbstick.y > 0 && j.thumbstick.y > j.thumbstick.x && j.thumbstick.y > -j.thumbstick.x && !joystickMoved)
                 {
                     buttons[JoystickIndex].Focus = false;
+                    buttons[JoystickIndex].Clicked = false;
                     --JoystickIndex;
                     buttons[JoystickIndex].Focus = true;
                     joystickMoved = true;
                 }
-                else if (j.thumbstick.y < 0 && !joystickMoved)
+                else if (j.thumbstick.y < 0 && j.thumbstick.y < j.thumbstick.x && j.thumbstick.y < -j.thumbstick.x && !joystickMoved)
                 {
                     buttons[JoystickIndex].Focus = false;
+                    buttons[JoystickIndex].Clicked = false;
                     ++JoystickIndex;
                     buttons[JoystickIndex].Focus = true;
                     joystickMoved = true;
@@ -141,12 +141,10 @@ namespace MenuHandler
         /// <param name="j"></param>
         private void GamepadClick(object sender, EventArgs j)
         {
-            Console.WriteLine("Joy A");
             if (joystick && padMan[0].A)
             {
-                joystickTimer.Stop();
-                joystickTimer.Start();
                 ButtonClicked(buttons[joystickIndex]);
+                buttons[joystickIndex].Clicked = true;
             }
             JoystickMode();
         }
@@ -158,8 +156,6 @@ namespace MenuHandler
         {
             Cursor.Hide();
             joystick = true;
-            joystickTimer.Stop();
-            joystickTimer.Start();
             buttons[joystickIndex].Focus = true;
         }
 
@@ -171,15 +167,17 @@ namespace MenuHandler
         }
 
         /// <summary>
-        /// Shows the mouse and disables joystick mode.
+        /// Draws all buttons.
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnTimerEnd(Object source, ElapsedEventArgs e)
+        protected void Draw(object sender, EventArgs e)
         {
-            Cursor.Show();
-            joystick = false;
-            buttons[joystickIndex].Focus = false;
+            Graphics temp = form.CreateGraphics();
+            foreach (MenuButton button in buttons)
+            {
+                button.Update(temp);
+            }
         }
 
         public abstract void CheckClick(Object sender, EventArgs e);

@@ -122,24 +122,16 @@ namespace GamepadHandler
 
             // Shoulders
             LeftShoulder = (gamepadState.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
-            if (lBumpDelagate != null && !LeftShoulderPrev)
+            if (lBumpDelagate != null && LeftShoulder != LeftShoulderPrev)
             {
                 lBumpDelagate(this, EventArgs.Empty);
-                LeftShoulderPrev = true;
-            }
-            else if (!LeftShoulder)
-            {
-                LeftShoulderPrev = false;
+                LeftShoulderPrev = LeftShoulder;
             }
             RightShoulder = (gamepadState.Buttons & GamepadButtonFlags.RightShoulder) != 0;
-            if (rBumpDelagate != null && !RightShoulderPrev)
+            if (rBumpDelagate != null && RightShoulder != RightShoulderPrev)
             {
                 rBumpDelagate(this, EventArgs.Empty);
                 RightShoulderPrev = true;
-            }
-            else if (!RightShoulder)
-            {
-                RightShoulderPrev = false;
             }
 
             // Triggers
@@ -158,65 +150,45 @@ namespace GamepadHandler
 
             // Buttons
             Start = (gamepadState.Buttons & GamepadButtonFlags.Start) != 0;
-            if (startDelagate != null && !StartPrev)
+            if (startDelagate != null && Start != StartPrev)
             {
                 startDelagate(this, EventArgs.Empty);
-                StartPrev = true;
+                StartPrev = Start;
             }
-            else if (!Start)
-            {
-                StartPrev = false;
-            }
+
             Select = (gamepadState.Buttons & GamepadButtonFlags.Back) != 0;
-            if (selectDelagate != null && !SelectPrev)
+            if (selectDelagate != null && Select != SelectPrev)
             {
                 selectDelagate(this, EventArgs.Empty);
-                SelectPrev = true;
-            }
-            else if (!Select)
-            {
-                SelectPrev = false;
+                SelectPrev = Select;
             }
 
             A = (gamepadState.Buttons & GamepadButtonFlags.A) != 0;
-            if (aDelagate != null && !APrev)
+            if (aDelagate != null && A != APrev)
             {
                 aDelagate(this, EventArgs.Empty);
-                APrev = true;
+                APrev = A;
             }
-            else if (!A)
-            {
-                APrev = false;
-            }
+
             B = (gamepadState.Buttons & GamepadButtonFlags.B) != 0;
-            if (bDelagate != null && !BPrev)
+            if (bDelagate != null && B != BPrev)
             {
                 bDelagate(this, EventArgs.Empty);
-                BPrev = true;
+                BPrev = B;
             }
-            else if (!B)
-            {
-                BPrev = false;
-            }
+
             X = (gamepadState.Buttons & GamepadButtonFlags.X) != 0;
-            if (xDelagate != null && !XPrev)
+            if (xDelagate != null && X != XPrev)
             {
                 xDelagate(this, EventArgs.Empty);
-                XPrev = true;
+                XPrev = X;
             }
-            else if (!X)
-            {
-                XPrev = false;
-            }
+
             Y = (gamepadState.Buttons & GamepadButtonFlags.Y) != 0;
-            if (yDelagate != null && !YPrev)
+            if (yDelagate != null && Y != YPrev)
             {
                 yDelagate(this, EventArgs.Empty);
-                YPrev = true;
-            }
-            else if (!Y)
-            {
-                YPrev = false;
+                YPrev = Y;
             }
 
             // D-Pad

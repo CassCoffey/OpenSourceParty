@@ -16,7 +16,7 @@ namespace MenuHandler
     {
         // Fields
         public String Name { get; private set; }
-        public bool Clicked { get; private set; }
+        public bool Clicked { get; set; }
         public bool Focus { get; set; }
 
         // Buttons will normally only have 3 states, Neutral, Hovered over, and Pressed.
@@ -77,11 +77,21 @@ namespace MenuHandler
             ChangeState(neutralState);
         }
 
+        /// <summary>
+        /// Called when the left mouse button is pressed down.
+        /// </summary>
+        /// <param name="sender">s</param>
+        /// <param name="m"></param>
         public void MouseDown(object sender, MouseEventArgs m)
         {
             Clicked = true;
         }
 
+        /// <summary>
+        /// Called when the left mouse button is released.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="m"></param>
         public void MouseUp(object sender, MouseEventArgs m)
         {
             Clicked = false;
@@ -96,12 +106,13 @@ namespace MenuHandler
             // Check if the mouse is over the button.
             if (Intersects() || Focus)
             {
-                if (Clicked || menu.padMan[0].A)
+                if (Clicked && menu.padMan[0].A)
                 {
                     ChangeState((int)ButtonStates.Pressed);
                 }
                 else
                 {
+                    Clicked = false;
                     ChangeState((int)ButtonStates.Hover);
                 }
             }

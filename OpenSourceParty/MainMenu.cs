@@ -32,12 +32,6 @@ namespace OpenSourceParty
             MakeButton(10, 300, "button3", "Exit");
             form.Width = 640;
             form.Height = 480;
-            Application.Idle += Draw;
-            if (padMan[0] != null)
-            {
-                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(Draw);
-                padMan[0].aDelagate += new GamepadState.GamepadDelegate(Draw);
-            }
             form.ShowDialog();
         }
 
@@ -100,20 +94,6 @@ namespace OpenSourceParty
                     break;
                 default:
                     break;
-            }
-        }
-
-        /// <summary>
-        /// Draws all buttons.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Draw(object sender, EventArgs e)
-        {
-            Graphics temp = form.CreateGraphics();
-            foreach (MenuButton button in buttons)
-            {
-                button.Update(temp);
             }
         }
     }
