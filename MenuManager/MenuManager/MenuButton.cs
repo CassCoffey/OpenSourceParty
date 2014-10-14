@@ -42,7 +42,7 @@ namespace MenuHandler
         {
             Name = startName;
             menu = parentMenu;
-            form = menu.Form;
+            form = menu.Manager;
             form.MouseDown += MouseDown;
             form.MouseUp += MouseUp;
         }

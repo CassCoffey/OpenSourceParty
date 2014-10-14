@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Timers;
+using SlimDX;
+using SlimDX.Windows;
 using SpriteHandler;
 using GamepadHandler;
 using FileHandler;
@@ -19,17 +21,15 @@ namespace MenuHandler
     {
         // Fields
         protected List<MenuButton> buttons;
-        protected Form form;
         protected Graphics graphics;
         protected FileManager fileMan;
+        public GameManager Manager { get; set; }
 
         // Joystick related fields
         protected bool joystick;
         public GamepadManager padMan;
         private int joystickIndex = 0;
         private bool joystickMoved = false;
-
-        protected delegate void asyncGamepad();
 
 
         // Properties
@@ -62,18 +62,15 @@ namespace MenuHandler
                 return buttons;
             }
         }
-        public Form Form
-        {
-            get
-            {
-                return form;
-            }
-        }
         public Graphics Graphics
         {
             get
             {
                 return graphics;
+            }
+            set
+            {
+                graphics = value;
             }
         }
         public bool Joystick
@@ -88,8 +85,8 @@ namespace MenuHandler
         // Constructors and Methods
         public MenuAbstract(String name)
         {
-            form = new Form();
-            form.Text = name;
+            Manager = new GameManager(this);
+            Manager.Text = name;
             buttons = new List<MenuButton>();
             padMan = new GamepadManager();
             padMan.Init();
@@ -101,43 +98,36 @@ namespace MenuHandler
         /// Used when switching to this menu from another pre-existing menu.
         /// </summary>
         /// <param name="name">The name of this menu.</param>
-        /// <param name="iForm">The form to use.</param>
+        /// <param name="iManager">The Game Manager to use.</param>
         /// <param name="iPadMan">The gamepad manager to use.</param>
         /// <param name="iFileMan">The file manager to use.</param>
-        public MenuAbstract(String name, Form iForm, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics)
+        /// <param name="iGraphics">The Graphics to use.</param>
+        public MenuAbstract(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics)
         {
-            form = iForm;
+            Manager = iManager;
+            Manager.CurMenu = this;
             graphics = iGraphics;
-            form.Text = name;
+            Manager.Text = name;
             buttons = new List<MenuButton>();
             padMan = iPadMan;
             fileMan = iFileMan;
             Init();
         }
 
+        /// <summary>
+        /// Initialization method so that common code between the constructors is in one place, and thread-safe.
+        /// </summary>
         public void Init()
         {
-            if (form.InvokeRequired)
+            buttons = new List<MenuButton>();
+            if (padMan[0] != null)
             {
-                asyncGamepad i = new asyncGamepad(() => Init());
-                Form.Invoke(i);
+                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
+                padMan[0].aDelagate += new GamepadState.GamepadDelegate(GamepadClick);
             }
-            else
-            {
-                buttons = new List<MenuButton>();
-                form.MouseUp += new MouseEventHandler(CheckClick);
-                if (padMan[0] != null)
-                {
-                    padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
-                    padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(Draw);
-                    padMan[0].aDelagate += new GamepadState.GamepadDelegate(GamepadClick);
-                    padMan[0].aDelagate += new GamepadState.GamepadDelegate(Draw);
-                }
-                Application.Idle += Draw;
-                form.MouseMove += JoystickModeOff;
-                form.Refresh();
-                form.Invalidate();
-            }
+            Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
+            Manager.MouseUp += new MouseEventHandler(CheckClick);
+            Manager.Invalidate();
         }
 
         /// <summary>
@@ -145,26 +135,13 @@ namespace MenuHandler
         /// </summary>
         public void Destroy()
         {
-            if (form.InvokeRequired)
+            if (padMan[0] != null)
             {
-                asyncGamepad d = new asyncGamepad(() => Destroy());
-                Form.Invoke(d);
+                padMan[0].lJoystickDelegate -= new GamepadState.JoystickDelegate(ThumbstickManage);
+                padMan[0].aDelagate -= new GamepadState.GamepadDelegate(GamepadClick);
             }
-            else
-            {
-                if (padMan[0] != null)
-                {
-                    padMan[0].lJoystickDelegate -= new GamepadState.JoystickDelegate(ThumbstickManage);
-                    padMan[0].lJoystickDelegate -= new GamepadState.JoystickDelegate(Draw);
-                    padMan[0].aDelagate -= new GamepadState.GamepadDelegate(GamepadClick);
-                    padMan[0].aDelagate -= new GamepadState.GamepadDelegate(Draw);
-                }
-                Application.Idle -= Draw;
-                form.MouseMove -= JoystickModeOff;
-                form.MouseUp -= CheckClick;
-                form.Refresh();
-                graphics.Dispose();
-            }
+            Manager.MouseMove -= JoystickModeOff;
+            Manager.MouseUp -= CheckClick;
         }
 
         /// <summary>
@@ -209,17 +186,8 @@ namespace MenuHandler
         {
             if (joystick && padMan[0].A)
             {
-                if (this.Form.InvokeRequired)
-                {
-                    buttons[joystickIndex].PadClicked = true;
-                    asyncGamepad a = new asyncGamepad(() => ButtonClicked(buttons[joystickIndex]));
-                    Form.Invoke(a);
-                }
-                else
-                {
-                    buttons[joystickIndex].PadClicked = true;
-                    ButtonClicked(buttons[joystickIndex]);
-                }
+                buttons[joystickIndex].PadClicked = true;
+                ButtonClicked(buttons[joystickIndex]);
             }
             JoystickMode();
         }
@@ -246,25 +214,21 @@ namespace MenuHandler
             buttons[joystickIndex].Focus = false;
         }
 
-        /// <summary>
-        /// Draws all buttons.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void Draw(object sender, EventArgs e)
+        public void Update()
         {
-            if (form.InvokeRequired)
+            padMan.Update();
+            Draw();
+        }
+
+        /// <summary>
+        /// Draws all menu controls.
+        /// </summary>
+        protected void Draw()
+        {
+            graphics = Manager.CreateGraphics();
+            foreach (MenuButton button in buttons)
             {
-                asyncGamepad r = new asyncGamepad(() => Draw(this, EventArgs.Empty));
-                Form.Invoke(r);
-            }
-            else
-            {
-                graphics = form.CreateGraphics();
-                foreach (MenuButton button in buttons)
-                {
-                    button.Update(graphics);
-                }
+                button.Update(graphics);
             }
         }
 

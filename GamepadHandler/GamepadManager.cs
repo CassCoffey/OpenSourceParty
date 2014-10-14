@@ -19,7 +19,6 @@ namespace GamepadHandler
         private GamepadState gamepadTwo = new GamepadState(UserIndex.Two);
         private GamepadState gamepadThree = new GamepadState(UserIndex.Three);
         private GamepadState gamepadFour = new GamepadState(UserIndex.Four);
-        public Thread updateThread;   // The updateThread that handles controller updates.
 
 
         // Properties
@@ -45,7 +44,7 @@ namespace GamepadHandler
 
         // Constructors and Methods
         /// <summary>
-        /// Initializes the manager and starts the updateThread.
+        /// Initializes the manager and runs the first device check.
         /// </summary>
         public void Init()
         {
@@ -54,24 +53,17 @@ namespace GamepadHandler
             devices.Add(gamepadThree);
             devices.Add(gamepadFour);
             UpdateDevices();
-            updateThread = new Thread(() => Update());
-            updateThread.Start();
         }
 
         /// <summary>
-        /// Should only be run in a seperate thread.
         /// Updates the controller list, and gets input from controllers.
         /// </summary>
-        private void Update()
+        public void Update()
         {
-            while (true)
+            UpdateDevices();
+            foreach (GamepadState wrapper in devices)
             {
-                //Thread.Sleep(10);
-                UpdateDevices();
-                foreach (GamepadState wrapper in devices)
-                {
-                    wrapper.Update();
-                }
+                wrapper.Update();
             }
         }
 

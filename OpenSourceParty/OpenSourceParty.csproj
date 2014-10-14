@@ -42,6 +42,10 @@
     <Reference Include="MenuManager">
       <HintPath>..\MenuManager\MenuManager\bin\Debug\MenuManager.dll</HintPath>
     </Reference>
+    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
+    </Reference>
     <Reference Include="SpriteHandler">
       <HintPath>..\SpriteHandler\SpriteHandler\bin\Debug\SpriteHandler.dll</HintPath>
     </Reference>
@@ -62,14 +66,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MiniGames\MinigameTest1.mng" />
-    <None Include="MiniGames\MinigameTest2.mng" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Backgrounds\cat.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

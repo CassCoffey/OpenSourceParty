@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Timers;
+using SlimDX;
+using SlimDX.Windows;
 using MenuHandler;
 using GamepadHandler;
 using FileHandler;
@@ -20,21 +22,20 @@ namespace OpenSourceParty
             String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
             if (background != null)
             {
-                form.BackgroundImage = Image.FromFile(background);   // Set the background image.
-                form.BackgroundImageLayout = ImageLayout.Stretch;
+                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
             }
             MakeButton(10, 10, "button1", "Random Game");
             MakeButton(10, 150, "button2", "List Games");
             MakeButton(10, 300, "button3", "Exit");
             MakeButton(300, 10, "button4", "Options");
-            form.Width = 640;
-            form.Height = 480;
-            form.FormBorderStyle = FormBorderStyle.FixedSingle;
-            form.MaximizeBox = false;
-            form.ShowDialog();
+            Manager.Width = 640;
+            Manager.Height = 480;
+            Manager.FormBorderStyle = FormBorderStyle.FixedSingle;
+            Manager.MaximizeBox = false;
+            MessagePump.Run(Manager, Manager.UpdateMenu);
         }
 
-        public MainMenu(String name, Form iForm, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iForm, iPadMan, iFileMan, iGraphics)
+        public MainMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iManager, iPadMan, iFileMan, iGraphics)
         {
             MakeButton(10, 10, "button1", "Random Game");
             MakeButton(10, 150, "button2", "List Games");
@@ -60,8 +61,8 @@ namespace OpenSourceParty
                     fileMan.printFileList(fileMan.BackgroundDir, fileMan.ImageExtension);
                     break;
                 case "Options":
-                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", form, padMan, fileMan, graphics);
                     Destroy();
+                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", Manager, padMan, fileMan, graphics);
                     break;
                 case "Exit":
                     Application.Exit();
