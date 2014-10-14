@@ -157,7 +157,7 @@ namespace MenuHandler
                 {
                     MenuButton focusButton = buttons[JoystickIndex];
                     Vector2 origin = new Vector2(focusButton.x + focusButton.width, focusButton.y + focusButton.height);
-                    Vector2 offset = new Vector2(j.thumbstick.x * 1000, -j.thumbstick.y * 1000);
+                    Vector2 offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
                     offset += origin;
 
                     MenuButton tempButton = null;
