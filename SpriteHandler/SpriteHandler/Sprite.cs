@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using SlimDX;
 
 namespace SpriteHandler
 {
@@ -88,6 +89,104 @@ namespace SpriteHandler
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Checks to see if the sprite intersects with specified ray.
+        /// </summary>
+        /// <param name="point">The point to check.</param>
+        /// <returns></returns>
+        public bool Intersects(Vector2 origin, Vector2 offset)
+        {
+            Vector2 topLeft = new Vector2(x,y);
+            Vector2 topRight = new Vector2(x + (width*2),y);
+            Vector2 bottomLeft = new Vector2(x,y + (height*2));
+            Vector2 bottomRight = new Vector2(x + (width*2),y + (height*2));
+            if (LineIntersects(origin, offset, topLeft, topRight) || LineIntersects(origin, offset, topLeft, bottomLeft) || LineIntersects(origin, offset, bottomLeft, bottomRight) || LineIntersects(origin, offset, topRight, bottomRight))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Nice Line intersection algorithm by Callum Rogers
+        /// (http://stackoverflow.com/questions/3746274/line-intersection-with-aabb-rectangle)
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <param name="intersection"></param>
+        /// <returns></returns>
+        public static bool LineIntersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, out Vector2 intersection)
+        {
+            intersection = Vector2.Zero;
+
+            Vector2 b = a2 - a1;
+            Vector2 d = b2 - b1;
+            float bDotDPerp = b.X * d.Y - b.Y * d.X;
+
+            // if b dot d == 0, it means the lines are parallel so have infinite intersection points
+            if (bDotDPerp == 0)
+                return false;
+
+            Vector2 c = b1 - a1;
+            float t = (c.X * d.Y - c.Y * d.X) / bDotDPerp;
+            if (t < 0 || t > 1)
+                return false;
+
+            float u = (c.X * b.Y - c.Y * b.X) / bDotDPerp;
+            if (u < 0 || u > 1)
+                return false;
+
+            intersection = a1 + t * b;
+
+            return true;
+        }
+
+        public double Distance(Point point2)
+        {
+            double xOne = x;
+            double xTwo = point2.X;
+            double yOne = y;
+            double yTwo = point2.Y;
+            return Math.Sqrt(Math.Pow((xTwo - xOne), 2) + Math.Pow((yTwo - yOne), 2));
+        }
+
+        /// <summary>
+        /// Nice Line intersection algorithm by Callum Rogers
+        /// (http://stackoverflow.com/questions/3746274/line-intersection-with-aabb-rectangle)
+        /// </summary>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <param name="intersection"></param>
+        /// <returns></returns>
+        static bool LineIntersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+        {
+            Vector2 b = a2 - a1;
+            Vector2 d = b2 - b1;
+            float bDotDPerp = b.X * d.Y - b.Y * d.X;
+
+            // if b dot d == 0, it means the lines are parallel so have infinite intersection points
+            if (bDotDPerp == 0)
+                return false;
+
+            Vector2 c = b1 - a1;
+            float t = (c.X * d.Y - c.Y * d.X) / bDotDPerp;
+            if (t < 0 || t > 1)
+                return false;
+
+            float u = (c.X * b.Y - c.Y * b.X) / bDotDPerp;
+            if (u < 0 || u > 1)
+                return false;
+
+            return true;
         }
 
         /// <summary>

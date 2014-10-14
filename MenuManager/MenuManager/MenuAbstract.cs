@@ -153,23 +153,40 @@ namespace MenuHandler
         {
             if (joystick)
             {
-                if (j.thumbstick.y > 0 && j.thumbstick.y > j.thumbstick.x && j.thumbstick.y > -j.thumbstick.x && !joystickMoved)
+                if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !joystickMoved)
                 {
+                    MenuButton focusButton = buttons[JoystickIndex];
+                    Vector2 origin = new Vector2(focusButton.x + focusButton.width, focusButton.y + focusButton.height);
+                    Vector2 offset = new Vector2(j.thumbstick.x * 1000, -j.thumbstick.y * 1000);
+                    offset += origin;
+
+                    MenuButton tempButton = null;
+                    int tempInt = JoystickIndex;
+                    
+                    for (int i = 0; i < buttons.Count; i++)
+                    {
+                        if (buttons[i].Intersects(origin, offset) && i != joystickIndex)
+                        {
+                            if (tempButton != null && buttons[JoystickIndex].Distance(tempButton.position) > buttons[JoystickIndex].Distance(buttons[i].position))
+                            {
+                                tempButton = buttons[i];
+                                tempInt = i;
+                            }
+                            else if (tempButton == null)
+                            {
+                                tempButton = buttons[i];
+                                tempInt = i;
+                            }
+                        }
+                    }
+
                     buttons[JoystickIndex].Focus = false;
                     buttons[JoystickIndex].PadClicked = false;
-                    --JoystickIndex;
+                    JoystickIndex = tempInt;
                     buttons[JoystickIndex].Focus = true;
                     joystickMoved = true;
                 }
-                else if (j.thumbstick.y < 0 && j.thumbstick.y < j.thumbstick.x && j.thumbstick.y < -j.thumbstick.x && !joystickMoved)
-                {
-                    buttons[JoystickIndex].Focus = false;
-                    buttons[JoystickIndex].PadClicked = false;
-                    ++JoystickIndex;
-                    buttons[JoystickIndex].Focus = true;
-                    joystickMoved = true;
-                }
-                else if (j.thumbstick.y == 0)
+                else if (j.thumbstick.y == 0 && j.thumbstick.x == 0)
                 {
                     joystickMoved = false;
                 }
