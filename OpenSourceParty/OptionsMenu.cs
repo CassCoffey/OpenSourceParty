@@ -17,22 +17,6 @@ namespace OpenSourceParty
     class OptionsMenu : MenuAbstract
     {
         // Constructors and Methods
-        public OptionsMenu(String name) : base(name)
-        {
-            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
-            if (background != null)
-            {
-                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
-            }
-            MakeButton(10, 10, "button6", "Cool Option");
-            MakeButton(10, 300, "button5", "Main Menu");
-            Manager.Width = 640;
-            Manager.Height = 480;
-            Manager.FormBorderStyle = FormBorderStyle.FixedSingle;
-            Manager.MaximizeBox = false;
-            MessagePump.Run(Manager, Manager.UpdateMenu);
-        }
-
         public OptionsMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iManager, iPadMan, iFileMan, iGraphics)
         {
             MakeButton(10, 10, "button6", "Cool Option");

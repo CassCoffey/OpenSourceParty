@@ -60,9 +60,9 @@ namespace SpriteHandler
         /// The StateSprite's default update method. Simply calls the Sprite's update method.
         /// </summary>
         /// <param name="graphics">The Graphics Object to use.</param>
-        public override void Update(Graphics graphics)
+        public override void Update(Graphics graphics, double time)
         {
-            base.Update(graphics);
+            base.Update(graphics, time);
         }
     }
 }

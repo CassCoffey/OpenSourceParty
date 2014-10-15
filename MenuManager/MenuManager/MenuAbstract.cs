@@ -11,17 +11,17 @@ using SlimDX.Windows;
 using SpriteHandler;
 using GamepadHandler;
 using FileHandler;
+using System.Diagnostics;
 
 namespace MenuHandler
 {
     /// <summary>
     /// A class that contains all of the essential methods for a menu class to be built off of.
     /// </summary>
-    public abstract class MenuAbstract
+    public abstract class MenuAbstract : GameState
     {
         // Fields
         protected List<MenuButton> buttons;
-        protected Graphics graphics;
         protected FileManager fileMan;
         public GameManager Manager { get; set; }
 
@@ -30,6 +30,8 @@ namespace MenuHandler
         public GamepadManager padMan;
         private int joystickIndex = 0;
         private bool joystickMoved = false;
+
+        public TimeSpan Elapsed { get; private set; }
 
 
         // Properties
@@ -60,17 +62,6 @@ namespace MenuHandler
             get
             {
                 return buttons;
-            }
-        }
-        public Graphics Graphics
-        {
-            get
-            {
-                return graphics;
-            }
-            set
-            {
-                graphics = value;
             }
         }
         public bool Joystick
@@ -105,7 +96,7 @@ namespace MenuHandler
         public MenuAbstract(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics)
         {
             Manager = iManager;
-            Manager.CurMenu = this;
+            Manager.CurState = this;
             graphics = iGraphics;
             Manager.Text = name;
             buttons = new List<MenuButton>();
@@ -231,21 +222,22 @@ namespace MenuHandler
             buttons[joystickIndex].Focus = false;
         }
 
-        public void Update()
+        public override void Update(TimeSpan elapsedTime)
         {
             padMan.Update();
+            Elapsed = elapsedTime;
             Manager.Invalidate();
         }
 
         /// <summary>
         /// Draws all menu controls.
         /// </summary>
-        public void Draw(Graphics dGraphics)
+        public override void Draw(Graphics dGraphics)
         {
-            graphics = dGraphics;
+            Graphics = dGraphics;
             foreach (MenuButton button in buttons)
             {
-                button.Update(dGraphics);
+                button.Update(dGraphics, Elapsed.TotalMilliseconds/16.67);
             }
         }
 
@@ -258,11 +250,8 @@ namespace MenuHandler
         /// <param name="name">The button's name.</param>
         public void MakeButton(int x, int y, String file, String name)
         {
-            List<Image> tempList = new List<Image>(3);
-            tempList.Add(Image.FromFile(fileMan.NamedFile(file + "_neutral", fileMan.ImageDir + "\\Buttons", fileMan.ImageExtension)));
-            tempList.Add(Image.FromFile(fileMan.NamedFile(file + "_hover", fileMan.ImageDir + "\\Buttons", fileMan.ImageExtension)));
-            tempList.Add(Image.FromFile(fileMan.NamedFile(file + "_clicked", fileMan.ImageDir + "\\Buttons", fileMan.ImageExtension)));
-            MenuButton button = new MenuButton(x, y, tempList, name, this);
+            Image image = Image.FromFile(fileMan.NamedFile(file, fileMan.ImageDir + "\\Buttons", fileMan.ImageExtension));
+            MenuButton button = new MenuButton(x, y, image, name, this);
             buttons.Add(button);
         }
 

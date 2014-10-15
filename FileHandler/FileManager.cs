@@ -207,29 +207,5 @@ namespace FileHandler
                 Console.WriteLine(filePaths[i]);
             }
         }
-
-        /// <summary>
-        /// Made specifically for the Sprite classes. Gets a list of images with the same string in their name.
-        /// </summary>
-        /// <param name="name">The string in common with all the images.</param>
-        /// <param name="dir">The directory to search in.</param>
-        /// <param name="ext">The extension, this will almost always be Image Extension.</param>
-        /// <returns>A list of images with the common string in their name.</returns>
-        public List<Image> GetNamedImageList(String name, String dir = IMAGEDIR, String ext = IMAGEEXTENSION)
-        {
-            List<Image> tempList = new List<Image>();
-            filePaths.Clear();
-            directorySearch(name, dir, ext);
-            if (filePaths.Count == 0)
-            {
-                return null;
-            }
-            for (int i = 0; i < filePaths.Count; i++)
-            {
-                Image newImage = Image.FromFile(filePaths[i]);
-                tempList.Add(newImage);
-            }
-            return tempList;
-        }
     }
 }

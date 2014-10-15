@@ -36,6 +36,7 @@
     <Reference Include="GamepadHandler">
       <HintPath>..\..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
@@ -52,13 +53,16 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameManager.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="GameState.cs" />
     <Compile Include="MenuButton.cs" />
     <Compile Include="MenuAbstract.cs" />
+    <Compile Include="MenuObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
