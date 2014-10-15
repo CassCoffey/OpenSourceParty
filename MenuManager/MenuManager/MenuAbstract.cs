@@ -234,18 +234,18 @@ namespace MenuHandler
         public void Update()
         {
             padMan.Update();
-            Draw();
+            Manager.Invalidate();
         }
 
         /// <summary>
         /// Draws all menu controls.
         /// </summary>
-        protected void Draw()
+        public void Draw(Graphics dGraphics)
         {
-            graphics = Manager.CreateGraphics();
+            graphics = dGraphics;
             foreach (MenuButton button in buttons)
             {
-                button.Update(graphics);
+                button.Update(dGraphics);
             }
         }
 

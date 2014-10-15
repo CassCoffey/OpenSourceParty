@@ -18,6 +18,7 @@ namespace MenuHandler
         public GameManager(MenuAbstract iMenu)
         {
             CurMenu = iMenu;
+            SetStyle(System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer | System.Windows.Forms.ControlStyles.UserPaint | System.Windows.Forms.ControlStyles.AllPaintingInWmPaint, true);
         }
 
         /// <summary>
@@ -39,6 +40,12 @@ namespace MenuHandler
                 CurMenu.Graphics = e.Graphics;
                 e.Graphics.DrawImage(BackgroundImage, DisplayRectangle);
             }
+        }
+
+        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            CurMenu.Draw(e.Graphics);
         }
     }
 }

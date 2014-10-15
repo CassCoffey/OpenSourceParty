@@ -15,6 +15,56 @@ namespace MenuHandler
     public class MenuButton : StateSprite
     {
         // Fields
+        private double z;
+        private double zVel;
+        public double Z 
+        {
+            get
+            {
+                return z;
+            }
+
+            set
+            {
+                if (value > 2)
+                {
+                    z = 2;
+                    ZVel = 0;
+                }
+                else if (value < 0.9)
+                {
+                    z = 0.9;
+                    ZVel = 0;
+                }
+                else
+                {
+                    z = value;
+                }
+            }
+        }
+        public double ZVel
+        {
+            get
+            {
+                return zVel;
+            }
+
+            set
+            {
+                if (value > 0.03)
+                {
+                    zVel = 0.03;
+                }
+                else if (value < -0.03)
+                {
+                    zVel = -0.03;
+                }
+                else
+                {
+                    zVel = value;
+                }
+            }
+        }
         public String Name { get; private set; }
         public bool MouseClicked { get; set; }
         public bool PadClicked { get; set; }
@@ -45,6 +95,8 @@ namespace MenuHandler
             form = menu.Manager;
             form.MouseDown += MouseDown;
             form.MouseUp += MouseUp;
+            Z = 1.00;
+            ZVel = 0.00;
         }
 
         /// <summary>
@@ -110,19 +162,50 @@ namespace MenuHandler
                 // Check if the gamepad or mouse are clicked.
                 if (MouseClicked || PadClicked && menu.padMan[0].A)
                 {
-                    ChangeState((int)ButtonStates.Pressed);
+                    ZVel -= 0.02;
                 }
                 else
                 {
                     ChangeState((int)ButtonStates.Hover);
+                    if ((Z < 1.06 && Z > 1.04) && (ZVel > -0.01 && ZVel < 0.01))
+                    {
+                        Z = 1.05;
+                        ZVel = 0;
+                    }
+                    else if (Z < 1.05)
+                    {
+                        ZVel += 0.01;
+                    }
+                    else if (Z > 1.05 && ZVel > -0.01)
+                    {
+                        ZVel -= 0.01;
+                    }
                 }
             }
             else
             {
                 ChangeState(neutralState);
+                if ((Z < 1.01 && Z > 0.99) && (ZVel > -0.02 && ZVel < 0.01))
+                {
+                    Z = 1.00;
+                    ZVel = 0;
+                }
+                else if (Z < 1.00)
+                {
+                    ZVel += 0.01;
+                }
+                else if (Z > 1.00 && ZVel > -0.01)
+                {
+                    ZVel -= 0.01;
+                }
             }
             position = new Point(x, y);
-            graphics.DrawImage(image, x, y, width*2, height*2);
+            Z += ZVel;
+            SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
+            int newX = x + (int)((width * 2) - ((width * 2) * Z));
+            int newY = y + (int)((height * 2) - ((height * 2) * Z));
+            graphics.FillRectangle(brush, newX + (int)(100 * (Z-.9)), newY + (int)(100 * (Z-.9)), (float)((width * 2) * Z), (float)((height * 2) * Z));
+            graphics.DrawImage(image, newX, newY, (int)((width * 2) * Z), (int)((height * 2) * Z));
         }
     }
 }
