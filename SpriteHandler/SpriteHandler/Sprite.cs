@@ -95,7 +95,7 @@ namespace SpriteHandler
         /// Checks to see if the sprite intersects with specified ray.
         /// </summary>
         /// <param name="point">The point to check.</param>
-        /// <returns></returns>
+        /// <returns>True if it intersects with the ray.</returns>
         public bool Intersects(Vector2 origin, Vector2 offset)
         {
             Vector2 topLeft = new Vector2(x,y);
@@ -148,6 +148,11 @@ namespace SpriteHandler
             return true;
         }
 
+        /// <summary>
+        /// Distance calculation between this sprite and another point.
+        /// </summary>
+        /// <param name="point2">The point to check distance to.</param>
+        /// <returns>The distance between this sprite and the specified point.</returns>
         public double Distance(Point point2)
         {
             double xOne = x;

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using System.IO;
 using SlimDX;
 using SlimDX.Windows;
 using System.Diagnostics;
@@ -15,8 +16,6 @@ namespace MenuHandler
     /// </summary>
     public class GameManager : RenderForm
     {
-
-        public MediaPlayer Player { get; set; }
         public GameState CurState { get; set; }   // Keeps track of the current game state.
         Stopwatch GameTime { get; set; }
         TimeSpan LastUpdate { get; set; }
@@ -28,7 +27,6 @@ namespace MenuHandler
             GameTime = new Stopwatch();
             GameTime.Start();
             LastUpdate = new TimeSpan(0);
-            Player = new MediaPlayer();
         }
 
         /// <summary>
@@ -55,25 +53,22 @@ namespace MenuHandler
             }
         }
 
+        /// <summary>
+        /// Plays a sound.
+        /// </summary>
+        /// <param name="location">The file path to the sound.</param>
+        /// <param name="loop">Whether or not to loop the sound. (NOT FUNCTIONAL YET)</param>
         public void PlaySound(String location, bool loop)
         {
-            Player.Open(new Uri(location));
-            if (loop)
-            {
-                Player.MediaEnded += LoopSound;
-            }
-            else
-            {
-                Player.Play();
-            }
+            MediaPlayer player = new MediaPlayer();
+            player.Open(new Uri(location));
+            player.Play();
         }
 
-        private void LoopSound(object sender, EventArgs e)
-        {
-            Player.Position = new TimeSpan(0);
-            Player.Play();
-        }
-
+        /// <summary>
+        /// Overrides the RenderForm's default OnPaint() function to also draw the current GameState.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
             base.OnPaint(e);

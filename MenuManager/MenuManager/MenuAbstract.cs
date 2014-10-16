@@ -12,6 +12,7 @@ using SpriteHandler;
 using GamepadHandler;
 using FileHandler;
 using System.Diagnostics;
+using System.IO;
 
 namespace MenuHandler
 {
@@ -24,6 +25,7 @@ namespace MenuHandler
         protected List<MenuButton> buttons;
         protected FileManager fileMan;
         public GameManager Manager { get; set; }
+        public TimeSpan Elapsed { get; private set; }
 
         // Joystick related fields
         protected bool joystick;
@@ -31,11 +33,9 @@ namespace MenuHandler
         private int joystickIndex = 0;
         private bool joystickMoved = false;
 
-        public TimeSpan Elapsed { get; private set; }
-
 
         // Properties
-        public int JoystickIndex
+        public int JoystickIndex   // Keeps track of which button the joystick has selected.
         {
             get
             {
@@ -144,6 +144,7 @@ namespace MenuHandler
         {
             if (joystick)
             {
+                // Check if the joystick is moved.
                 if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !joystickMoved)
                 {
                     MenuButton focusButton = buttons[JoystickIndex];
@@ -222,11 +223,15 @@ namespace MenuHandler
             buttons[joystickIndex].Focus = false;
         }
 
+        /// <summary>
+        /// Updates this menu and all of it's controls.
+        /// </summary>
+        /// <param name="elapsedTime">Milliseconds since last update.</param>
         public override void Update(TimeSpan elapsedTime)
         {
             padMan.Update();
             Elapsed = elapsedTime;
-            Manager.Invalidate();
+            Manager.Invalidate();   // Tell the GameManager to update graphics.
         }
 
         /// <summary>
@@ -251,15 +256,15 @@ namespace MenuHandler
         public void MakeButton(int x, int y, String file, String name)
         {
             Image image = Image.FromFile(fileMan.NamedFile(file, fileMan.ImageDir + "\\Buttons", fileMan.ImageExtension));
-            MenuButton button = new MenuButton(x, y, image, name, this);
+            MenuButton button = new MenuButton(x, y, image, name, this, Path.GetFullPath(fileMan.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(fileMan.NamedFile("button_release", ".\\Sounds", "*.wav")));
             buttons.Add(button);
         }
 
         /// <summary>
         /// Runs when the mouse is clicked, checks to see if it was clicked on a button.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The mouse sending the event.</param>
+        /// <param name="e">Mouse Event Args.</param>
         public void CheckClick(Object sender, EventArgs e)
         {
             if (!joystick)

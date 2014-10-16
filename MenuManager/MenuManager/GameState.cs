@@ -8,9 +8,16 @@ using System.Drawing;
 
 namespace MenuHandler
 {
+    /// <summary>
+    /// Describes a game state, like a menu or minigame.
+    /// </summary>
     public abstract class GameState
     {
-        protected Graphics graphics;
+        // Fields
+        protected Graphics graphics;   // All gamestates must store a local Graphics variable.
+
+
+        // Properties
         public Graphics Graphics
         {
             get
@@ -23,13 +30,18 @@ namespace MenuHandler
             }
         }
 
-        public virtual void Update(TimeSpan elapsedTime)
-        {
+        
+        // Constructors and Methods
+        /// <summary>
+        /// Called when the gamestate is updated by the GameManger.
+        /// </summary>
+        /// <param name="elapsedTime">Milliseconds since last update.</param>
+        public abstract void Update(TimeSpan elapsedTime);
+        /// <summary>
+        /// Called when the GameManager draws.
+        /// </summary>
+        /// <param name="graphics">The GameManager will pass this as a parameter when drawing.</param>
+        public abstract void Draw(Graphics graphics);
 
-        }
-        public virtual void Draw(Graphics graphics)
-        {
-
-        }
     }
 }

@@ -8,6 +8,9 @@ using System.Drawing;
 
 namespace MenuHandler
 {
+    /// <summary>
+    /// Describes an object that can be displayed on a menu.
+    /// </summary>
     public interface MenuObject
     {
         bool Intersects();
