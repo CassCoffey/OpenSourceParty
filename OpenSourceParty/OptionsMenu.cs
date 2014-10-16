@@ -19,15 +19,21 @@ namespace OpenSourceParty
         // Constructors and Methods
         public OptionsMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iManager, iPadMan, iFileMan, iGraphics)
         {
+            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
+            if (background != null)
+            {
+                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
+            }
             MakeButton(10, 10, "button6", "Cool Option");
             MakeButton(10, 300, "button5", "Main Menu");
+            MakeSlider(10, 150, 170, "slider1", "Slider");
         }
 
         /// <summary>
         /// Code to run when buttons are clicked.
         /// </summary>
         /// <param name="button">The button that was clicked.</param>
-        public override void ButtonClicked(MenuButton button)
+        public override void ButtonClicked(MenuObject button)
         {
             switch (button.Name)
             {

@@ -99,6 +99,7 @@
     <Compile Include="MenuButton.cs" />
     <Compile Include="MenuAbstract.cs" />
     <Compile Include="MenuObject.cs" />
+    <Compile Include="MenuSlider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

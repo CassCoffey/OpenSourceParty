@@ -12,79 +12,8 @@ namespace MenuHandler
     /// <summary>
     /// A special StateSprite made specifically to act as a button.
     /// </summary>
-    public class MenuButton : Sprite, MenuObject
+    public class MenuButton : MenuObject
     {
-        // Fields
-        // Management of button Z height.
-        private double z;
-        private double zVel;
-        public double Z 
-        {
-            get
-            {
-                return z;
-            }
-
-            set
-            {
-                if (value > 200)
-                {
-                    z = 200;
-                    ZVel = 0;
-                }
-                else if (value < 90)
-                {
-                    z = 90;
-                    ZVel = 0;
-                }
-                else
-                {
-                    z = value;
-                }
-            }
-        }
-        public double ZVel
-        {
-            get
-            {
-                return zVel;
-            }
-
-            set
-            {
-                if (value > 3)
-                {
-                    zVel = 3;
-                }
-                else if (value < -3)
-                {
-                    zVel = -3;
-                }
-                else
-                {
-                    zVel = value;
-                }
-            }
-        }
-
-        // Basic button fields.
-        public String Name { get; private set; }
-        public bool MouseClicked { get; set; }
-        public bool PadClicked { get; set; }
-        public bool Focus { get; set; }
-        public bool Hover { get; set; }
-
-        // The fields for managing sounds.
-        private bool pressSoundBool = false;
-        private bool releaseSoundBool = false;
-        public String PressSound { get; set; }
-        public String ReleaseSound { get; set; }
-
-        // The parent form and menu.
-        private GameManager manager;
-        private MenuAbstract menu;
-
-
         // Constructors and Methods
         /// <summary>
         /// The basic constructor for a button.
@@ -96,59 +25,7 @@ namespace MenuHandler
         /// <param name="parentMenu">The button's parent menu.</param>
         /// <param name="pressSoundLocation">The file path for this button's press sound.</param>
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
-        public MenuButton(int x, int y, Image startImage, String startName, MenuAbstract parentMenu, String pressSoundLocation, String releaseSoundLocation) : base( x, y, startImage)
-        {
-            Name = startName;
-            menu = parentMenu;
-            manager = menu.Manager;
-            manager.MouseDown += MouseDown;
-            manager.MouseUp += MouseUp;
-            Z = 100.00;
-            ZVel = 0.00;
-            PressSound = pressSoundLocation;
-            ReleaseSound = releaseSoundLocation;
-        }
-
-        /// <summary>
-        /// A special override of the Sprite's Intersects() method.
-        /// This Intersects() method takes no parameters and assumes you want to check if the mouse is over the button.
-        /// </summary>
-        /// <returns>Returns true if the mouse is over the button.</returns>
-        public bool Intersects()
-        {
-            if (!menu.Joystick)
-            {
-                if (Intersects(manager.PointToClient(Cursor.Position)))
-                {
-                    return true;
-                }
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Called when the left mouse button is pressed down.
-        /// </summary>
-        /// <param name="sender">s</param>
-        /// <param name="m"></param>
-        public void MouseDown(object sender, MouseEventArgs m)
-        {
-            MouseClicked = true;
-        }
-
-        /// <summary>
-        /// Called when the left mouse button is released.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="m"></param>
-        public void MouseUp(object sender, MouseEventArgs m)
-        {
-            MouseClicked = false;
-        }
+        public MenuButton(int x, int y, Image startImage, String startName, MenuAbstract parentMenu, String pressSoundLocation, String releaseSoundLocation) : base( x, y, startImage, startName, parentMenu, pressSoundLocation, releaseSoundLocation) {        }
 
         /// <summary>
         /// The update method for Buttons. Does standard button based checks.

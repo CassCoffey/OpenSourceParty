@@ -37,6 +37,11 @@ namespace OpenSourceParty
 
         public MainMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iManager, iPadMan, iFileMan, iGraphics)
         {
+            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
+            if (background != null)
+            {
+                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
+            }
             MakeButton(10, 10, "button1", "Random Game");
             MakeButton(10, 150, "button2", "List Games");
             MakeButton(10, 300, "button3", "Exit");
@@ -47,7 +52,7 @@ namespace OpenSourceParty
         /// Code to run when buttons are clicked.
         /// </summary>
         /// <param name="button">The button that was clicked.</param>
-        public override void ButtonClicked(MenuButton button)
+        public override void ButtonClicked(MenuObject button)
         {
             switch (button.Name)
             {
