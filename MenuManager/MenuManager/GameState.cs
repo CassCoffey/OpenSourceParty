@@ -48,7 +48,7 @@ namespace MenuHandler
         /// Called when the GameManager draws.
         /// </summary>
         /// <param name="graphics">The GameManager will pass this as a parameter when drawing.</param>
-        public abstract void Draw(Graphics graphics);
+        public abstract void Draw(Graphics graphics, Rectangle clipRectangle);
 
     }
 }

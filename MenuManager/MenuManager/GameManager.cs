@@ -88,7 +88,7 @@ namespace MenuHandler
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
             base.OnPaint(e);
-            CurState.Draw(e.Graphics);
+            CurState.Draw(e.Graphics, e.ClipRectangle);
         }
     }
 }

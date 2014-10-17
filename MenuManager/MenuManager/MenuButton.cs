@@ -81,7 +81,7 @@ namespace MenuHandler
         /// </summary>
         /// <param name="graphics">The Graphics Object to use.</param>
         /// <param name="time">The time elapsed since last update.</param>
-        public override void Update(Graphics graphics, double time)
+        public override void Update(double time)
         {
             // Check if the mouse is over the button.
             if (Intersects() || Focus)
@@ -141,21 +141,36 @@ namespace MenuHandler
                     ZVel -= 0.1 * time;
                 }
             }
+            Invalidate();
             position = new Point((int)x, (int)y);
             // Lots of code for calculating Z position. May need some future optimization.
             Z += ZVel;
-            SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
             double newX = x + ((width * 2) - ((width * 2) * (Z / 100)));
             double newY = y + ((height * 2) - ((height * 2) * (Z / 100)));
             height = (int)(image.Height * (Z / 100));
             width = (int)(image.Width * (Z / 100));
             ButtonRect = new Rectangle((int)newX, (int)newY, (width * 2), (height * 2));
             ShadowRect = new Rectangle((int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (width * 2), (height * 2));
+            if (ButtonRect == ButtonPrev && ShadowRect == ShadowPrev)
+            {
+                needsUpdate = false;
+            }
+            else
+            {
+                needsUpdate = true;
+            }
+            ButtonPrev = ButtonRect;
+            ShadowPrev = ShadowRect;
+        }
+
+        public override void Draw(Graphics graphics)
+        {
+            SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
             graphics.FillRectangle(brush, ShadowRect);
             graphics.DrawImage(image, ButtonRect);
             if (Hover)   // Dynamically darkens button, no need for more than one button image!
             {
-                graphics.FillRectangle(brush, (int)newX, (int)newY, (width * 2), (height * 2));
+                graphics.FillRectangle(brush, ButtonRect);
             }
         }
     }

@@ -28,6 +28,9 @@ namespace MenuHandler
         private double zVel;
         public Rectangle ShadowRect { get; set; }
         public Rectangle ButtonRect { get; set; }
+        protected Rectangle ShadowPrev;
+        protected Rectangle ButtonPrev;
+        protected bool needsUpdate = true;
         public double Z
         {
             get
@@ -129,10 +132,17 @@ namespace MenuHandler
             }
         }
 
+        /// <summary>
+        /// Used to tell the Manager what parts of the screen need to be updated.
+        /// </summary>
         public virtual void Invalidate()
         {
-            menu.Manager.Invalidate(ButtonRect);   // Tell the GameManager to update graphics.
-            menu.Manager.Invalidate(ShadowRect);
+            // Tell the GameManager to update graphics.
+            if (needsUpdate)
+            {
+                menu.Manager.Invalidate(new Rectangle(ButtonRect.X - 5, ButtonRect.Y - 5, ButtonRect.Width + 10, ButtonRect.Height + 10));
+                menu.Manager.Invalidate(new Rectangle(ShadowRect.X - 5, ShadowRect.Y - 5, ShadowRect.Width + 10, ShadowRect.Height + 10));
+            }
         }
 
         /// <summary>
@@ -157,6 +167,8 @@ namespace MenuHandler
             MouseClicked = false;
         }
 
-        public abstract override void Update(Graphics graphics, double time);
+        public abstract override void Update(double time);
+
+        public abstract override void Draw(Graphics graphics);
     }
 }

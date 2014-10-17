@@ -216,19 +216,22 @@ namespace MenuHandler
             Elapsed = elapsedTime;
             foreach (MenuObject menuObject in menuObjects)
             {
-                menuObject.Invalidate();
+                menuObject.Update(Elapsed.TotalMilliseconds);
             }
         }
 
         /// <summary>
         /// Draws all menu controls.
         /// </summary>
-        public override void Draw(Graphics graphics)
+        public override void Draw(Graphics graphics, Rectangle clipRectangle)
         {
             Graphics = graphics;
             foreach (MenuObject menuObject in menuObjects)
             {
-                menuObject.Update(graphics, Elapsed.TotalMilliseconds);
+                if (clipRectangle.IntersectsWith(menuObject.ButtonRect) || clipRectangle.IntersectsWith(menuObject.ShadowRect))
+                {
+                    menuObject.Draw(Graphics);
+                }
             }
         }
 

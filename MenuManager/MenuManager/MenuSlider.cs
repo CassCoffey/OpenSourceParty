@@ -23,6 +23,7 @@ namespace MenuHandler
         private int length;
         private bool mouseLock = false;
         private double slideCool = 0.00;
+        private Rectangle slideRect;
 
         public Point BasePos
         {
@@ -132,7 +133,7 @@ namespace MenuHandler
             }
         }
 
-        public override void Update(Graphics graphics, double time)
+        public override void Update(double time)
         {
             // Check if it is being slid.
             if (MouseClicked && mouseLock)
@@ -220,28 +221,44 @@ namespace MenuHandler
                     ZVel -= 0.1 * time;
                 }
             }
+            Invalidate();
             position = new Point((int)x, (int)y);
-            Pen pen = new Pen(Color.Black, 8);
-            Pen smallPen = new Pen(Color.Black, 4);
-            graphics.DrawLine(pen, basePos.X, basePos.Y + image.Height, basePos.X + length, basePos.Y + image.Height);
-            graphics.DrawLine(smallPen, basePos.X, basePos.Y, basePos.X, basePos.Y + (image.Height * 2));
-            graphics.DrawLine(smallPen, basePos.X + length, basePos.Y, basePos.X + length, basePos.Y + (image.Height * 2));
             // Lots of code for calculating Z position. May need some future optimization.
             Z += ZVel;
-            SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
             double newX = x + ((image.Width * 2) - ((image.Width * 2) * (Z / 100)));
             double newY = y + ((image.Height * 2) - ((image.Height * 2) * (Z / 100)));
             height = (int)(image.Height * (Z / 100));
             width = (int)(image.Width * (Z / 100));
             ButtonRect = new Rectangle((int)basePos.X - (image.Width + width), (int)newY, length + ((image.Width + width)*2), (height * 2));
             ShadowRect = new Rectangle((int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (width * 2), (height * 2));
+            slideRect = new Rectangle((int)newX, (int)newY, (width * 2), (height * 2));
+            if (ButtonRect == ButtonPrev && ShadowRect == ShadowPrev)
+            {
+                needsUpdate = false;
+            }
+            else
+            {
+                needsUpdate = true;
+            }
+            ButtonPrev = ButtonRect;
+            ShadowPrev = ShadowRect;
+            slideCool += time;
+        }
+
+        public override void Draw(Graphics graphics)
+        {
+            Pen pen = new Pen(Color.Black, 8);
+            Pen smallPen = new Pen(Color.Black, 4);
+            graphics.DrawLine(pen, basePos.X, basePos.Y + image.Height, basePos.X + length, basePos.Y + image.Height);
+            graphics.DrawLine(smallPen, basePos.X, basePos.Y, basePos.X, basePos.Y + (image.Height * 2));
+            graphics.DrawLine(smallPen, basePos.X + length, basePos.Y, basePos.X + length, basePos.Y + (image.Height * 2));
+            SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
             graphics.FillRectangle(brush, ShadowRect);
-            graphics.DrawImage(image, (int)newX, (int)newY, (width * 2), (height * 2));
+            graphics.DrawImage(image, slideRect);
             if (Hover)   // Dynamically darkens slider, no need for more than one button image!
             {
-                graphics.FillRectangle(brush, (int)newX, (int)newY, (width * 2), (height * 2));
+                graphics.FillRectangle(brush, slideRect);
             }
-            slideCool += time;
         }
     }
 }

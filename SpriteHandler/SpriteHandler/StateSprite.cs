@@ -61,9 +61,14 @@ namespace SpriteHandler
         /// </summary>
         /// <param name="graphics">The Graphics Object to use.</param>
         /// <param name="time">Milliseconds since last update.</param>
-        public override void Update(Graphics graphics, double time)
+        public override void Update(double time)
         {
-            base.Update(graphics, time);
+            base.Update(time);
+        }
+
+        public override void Draw(Graphics graphics)
+        {
+            base.Draw(graphics);
         }
     }
 }
