@@ -51,13 +51,13 @@ namespace MenuHandler
         /// <param name="offset">The X position to slide to.</param>
         public void Slide(double offset)
         {
-            if (offset < basePos.X - width)
+            if (offset < basePos.X - image.Width)
             {
-                x = basePos.X - width;
+                x = basePos.X - image.Width;
             }
-            else if (offset > basePos.X + length - width)
+            else if (offset > basePos.X + length - image.Width)
             {
-                x = basePos.X + length - width;
+                x = basePos.X + length - image.Width;
             }
             else
             {
@@ -164,15 +164,13 @@ namespace MenuHandler
                     }
                     if (slideCool >= 0.50 && !MouseClicked)
                     {
-                        if (menu.padMan[0].LeftStick.x >= 0.2 && menu.padMan[0].LeftStick.x > menu.padMan[0].LeftStick.y && menu.padMan[0].LeftStick.x > -menu.padMan[0].LeftStick.y)
+                        if (menu.padMan[0].LeftStick.x >= 0.1 && menu.padMan[0].LeftStick.x > menu.padMan[0].LeftStick.y && menu.padMan[0].LeftStick.x > -menu.padMan[0].LeftStick.y)
                         {
-                            Console.WriteLine("Moved Right");
-                            Slide(x + (0.5 * time));
+                            Slide(x + ((menu.padMan[0].LeftStick.x/2) * time));
                         }
-                        else if (menu.padMan[0].LeftStick.x <= -0.2 && menu.padMan[0].LeftStick.x < menu.padMan[0].LeftStick.y && menu.padMan[0].LeftStick.x < -menu.padMan[0].LeftStick.y)
+                        else if (menu.padMan[0].LeftStick.x <= -0.1 && menu.padMan[0].LeftStick.x < menu.padMan[0].LeftStick.y && menu.padMan[0].LeftStick.x < -menu.padMan[0].LeftStick.y)
                         {
-                            Console.WriteLine("Moved Left");
-                            Slide(x + (-0.5 * time));
+                            Slide(x + ((menu.padMan[0].LeftStick.x/2) * time));
                         }
                         slideCool = 0;
                     }
@@ -225,19 +223,23 @@ namespace MenuHandler
             position = new Point((int)x, (int)y);
             Pen pen = new Pen(Color.Black, 8);
             Pen smallPen = new Pen(Color.Black, 4);
-            graphics.DrawLine(pen, basePos.X, basePos.Y + height, basePos.X + length, basePos.Y + height);
-            graphics.DrawLine(smallPen, basePos.X, basePos.Y, basePos.X, basePos.Y + (height*2));
-            graphics.DrawLine(smallPen, basePos.X + length, basePos.Y, basePos.X + length, basePos.Y + (height*2));
+            graphics.DrawLine(pen, basePos.X, basePos.Y + image.Height, basePos.X + length, basePos.Y + image.Height);
+            graphics.DrawLine(smallPen, basePos.X, basePos.Y, basePos.X, basePos.Y + (image.Height * 2));
+            graphics.DrawLine(smallPen, basePos.X + length, basePos.Y, basePos.X + length, basePos.Y + (image.Height * 2));
             // Lots of code for calculating Z position. May need some future optimization.
             Z += ZVel;
             SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
-            double newX = x + (((width * 2) - ((width * 2)) * (Z / 100)));
-            double newY = y + (((height * 2) - ((height * 2)) * (Z / 100)));
-            graphics.FillRectangle(brush, (int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (float)((width * 2) * (Z / 100)), (float)((height * 2) * (Z / 100)));
-            graphics.DrawImage(image, (int)newX, (int)newY, (int)((width * 2) * (Z / 100)), (int)((height * 2) * (Z / 100)));
+            double newX = x + ((image.Width * 2) - ((image.Width * 2) * (Z / 100)));
+            double newY = y + ((image.Height * 2) - ((image.Height * 2) * (Z / 100)));
+            height = (int)(image.Height * (Z / 100));
+            width = (int)(image.Width * (Z / 100));
+            ButtonRect = new Rectangle((int)basePos.X - (image.Width + width), (int)newY, length + ((image.Width + width)*2), (height * 2));
+            ShadowRect = new Rectangle((int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (width * 2), (height * 2));
+            graphics.FillRectangle(brush, ShadowRect);
+            graphics.DrawImage(image, (int)newX, (int)newY, (width * 2), (height * 2));
             if (Hover)   // Dynamically darkens slider, no need for more than one button image!
             {
-                graphics.FillRectangle(brush, (int)newX, (int)newY, (int)((width * 2) * (Z / 100)), (int)((height * 2) * (Z / 100)));
+                graphics.FillRectangle(brush, (int)newX, (int)newY, (width * 2), (height * 2));
             }
             slideCool += time;
         }

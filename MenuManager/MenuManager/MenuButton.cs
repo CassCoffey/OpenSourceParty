@@ -145,13 +145,17 @@ namespace MenuHandler
             // Lots of code for calculating Z position. May need some future optimization.
             Z += ZVel;
             SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
-            double newX = x + (((width * 2) - ((width * 2)) * (Z/100)));
-            double newY = y + (((height * 2) - ((height * 2)) * (Z/100)));
-            graphics.FillRectangle(brush, (int)newX + (int)((Z-90)), (int)newY + (int)((Z-90)), (float)((width * 2) * (Z/100)), (float)((height * 2) * (Z/100)));
-            graphics.DrawImage(image, (int)newX, (int)newY, (int)((width * 2) * (Z/100)), (int)((height * 2) * (Z/100)));
+            double newX = x + ((width * 2) - ((width * 2) * (Z / 100)));
+            double newY = y + ((height * 2) - ((height * 2) * (Z / 100)));
+            height = (int)(image.Height * (Z / 100));
+            width = (int)(image.Width * (Z / 100));
+            ButtonRect = new Rectangle((int)newX, (int)newY, (width * 2), (height * 2));
+            ShadowRect = new Rectangle((int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (width * 2), (height * 2));
+            graphics.FillRectangle(brush, ShadowRect);
+            graphics.DrawImage(image, ButtonRect);
             if (Hover)   // Dynamically darkens button, no need for more than one button image!
             {
-                graphics.FillRectangle(brush, (int)newX, (int)newY, (int)((width * 2) * (Z / 100)), (int)((height * 2) * (Z / 100)));
+                graphics.FillRectangle(brush, (int)newX, (int)newY, (width * 2), (height * 2));
             }
         }
     }

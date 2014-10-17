@@ -173,10 +173,13 @@ namespace MenuHandler
         /// <param name="j"></param>
         private void GamepadClick(object sender, EventArgs j)
         {
-            if (joystick && padMan[0].A)
+            if (joystick)
             {
+                if (menuObjects[joystickIndex].PadClicked == true && !padMan[0].A)
+                {
+                    ButtonClicked(menuObjects[joystickIndex]);
+                }
                 menuObjects[joystickIndex].PadClicked = true;
-                ButtonClicked(menuObjects[joystickIndex]);
             }
             JoystickMode();
         }
@@ -211,7 +214,10 @@ namespace MenuHandler
         {
             padMan.Update();
             Elapsed = elapsedTime;
-            Manager.Invalidate();   // Tell the GameManager to update graphics.
+            foreach (MenuObject menuObject in menuObjects)
+            {
+                menuObject.Invalidate();
+            }
         }
 
         /// <summary>
@@ -219,7 +225,6 @@ namespace MenuHandler
         /// </summary>
         public override void Draw(Graphics graphics)
         {
-            Console.WriteLine("Milliseconds - " + Elapsed.TotalMilliseconds);
             Graphics = graphics;
             foreach (MenuObject menuObject in menuObjects)
             {

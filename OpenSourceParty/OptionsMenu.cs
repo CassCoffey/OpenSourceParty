@@ -27,6 +27,7 @@ namespace OpenSourceParty
             MakeButton(10, 10, "button6", "Cool Option");
             MakeButton(10, 300, "button5", "Main Menu");
             MakeSlider(10, 150, 170, "slider1", "Slider");
+            MakeSlider(10, 225, 170, "slider1", "Slider");
         }
 
         /// <summary>

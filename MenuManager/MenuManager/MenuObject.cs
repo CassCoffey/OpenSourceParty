@@ -26,6 +26,8 @@ namespace MenuHandler
         // Management of button Z height.
         private double z;
         private double zVel;
+        public Rectangle ShadowRect { get; set; }
+        public Rectangle ButtonRect { get; set; }
         public double Z
         {
             get
@@ -125,6 +127,12 @@ namespace MenuHandler
             {
                 return false;
             }
+        }
+
+        public virtual void Invalidate()
+        {
+            menu.Manager.Invalidate(ButtonRect);   // Tell the GameManager to update graphics.
+            menu.Manager.Invalidate(ShadowRect);
         }
 
         /// <summary>
