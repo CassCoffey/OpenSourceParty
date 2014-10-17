@@ -116,10 +116,13 @@ namespace GamepadHandler
 
             // If same packet, nothing to update
             State state = controller.GetState();
-            if (lastPacket == state.PacketNumber) return;
-            lastPacket = state.PacketNumber;
 
             var gamepadState = state.Gamepad;
+            if (state.PacketNumber == lastPacket)
+            {
+                return;
+            }
+            lastPacket = state.PacketNumber;
 
             // Shoulders
             LeftShoulder = (gamepadState.Buttons & GamepadButtonFlags.LeftShoulder) != 0;

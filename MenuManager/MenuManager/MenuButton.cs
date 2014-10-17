@@ -5,6 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
+using SlimDX;
+using SlimDX.Direct3D11;
+using SlimDX.D3DCompiler;
+using SlimDX.DXGI;
+using SlimDX.Direct2D;
+using SlimDX.Windows;
+using Device = SlimDX.Direct3D11.Device;
+using Resource = SlimDX.Direct3D11.Resource;
 using SpriteHandler;
 
 namespace MenuHandler
@@ -27,6 +35,47 @@ namespace MenuHandler
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
         public MenuButton(int x, int y, Image startImage, String startName, MenuAbstract parentMenu, String pressSoundLocation, String releaseSoundLocation) : base( x, y, startImage, startName, parentMenu, pressSoundLocation, releaseSoundLocation) {        }
 
+        public override void GamepadInput(GamepadHandler.JoystickArgs j)
+        {
+                // Check if the joystick is moved.
+                if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !menu.JoystickMoved)
+                {
+                    SlimDX.Vector2 origin = new SlimDX.Vector2((float)x + width, (float)y + height);
+                    SlimDX.Vector2 offset = new SlimDX.Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
+                    offset += origin;
+
+                    MenuObject tempButton = null;
+                    int tempInt = menu.JoystickIndex;
+                    
+                    for (int i = 0; i < menu.MenuObjects.Count; i++)
+                    {
+                        if (menu.MenuObjects[i].Intersects(origin, offset) && i != menu.JoystickIndex)
+                        {
+                            if (tempButton != null && menu.MenuObjects[menu.JoystickIndex].Distance(tempButton.position) > menu.MenuObjects[menu.JoystickIndex].Distance(menu.MenuObjects[i].position))
+                            {
+                                tempButton = menu.MenuObjects[i];
+                                tempInt = i;
+                            }
+                            else if (tempButton == null)
+                            {
+                                tempButton = menu.MenuObjects[i];
+                                tempInt = i;
+                            }
+                        }
+                    }
+
+                    menu.MenuObjects[menu.JoystickIndex].Focus = false;
+                    menu.MenuObjects[menu.JoystickIndex].PadClicked = false;
+                    menu.JoystickIndex = tempInt;
+                    menu.MenuObjects[menu.JoystickIndex].Focus = true;
+                    menu.JoystickMoved = true;
+                }
+                else if (j.thumbstick.y == 0 && j.thumbstick.x == 0)
+                {
+                    menu.JoystickMoved = false;
+                }
+        }
+
         /// <summary>
         /// The update method for Buttons. Does standard button based checks.
         /// </summary>
@@ -42,10 +91,10 @@ namespace MenuHandler
                 {
                     Hover = true;
                     releaseSoundBool = false;
-                    ZVel -= 2 * time;
+                    ZVel -= 0.2 * time;
                     if (!pressSoundBool)   // Prevent Sound Spam
                     {
-                        manager.PlaySound(PressSound, false);
+                        manager.PlaySound(PressSound);
                         pressSoundBool = true;
                     }
                 }
@@ -53,22 +102,22 @@ namespace MenuHandler
                 {
                     Hover = true;
                     pressSoundBool = false;
-                    if ((Z < 106 && Z > 104) && (ZVel > -1 && ZVel < 1))
+                    if ((Z % 105 < 2) && (ZVel > -2 && ZVel < 2))
                     {
                         Z = 105;
                         ZVel = 0;
                     }
-                    else if (Z < 105)
+                    else if (Z < 105 && ZVel < 3)
                     {
-                        ZVel += 1 * time;
+                        ZVel += 0.1 * time;
                     }
                     else if (Z > 105 && ZVel > -1)
                     {
-                        ZVel -= 1 * time;
+                        ZVel -= 0.1 * time;
                     }
                     if (!releaseSoundBool)   // Prevent Sound Spam
                     {
-                        manager.PlaySound(ReleaseSound, false);
+                        manager.PlaySound(ReleaseSound);
                         releaseSoundBool = true;
                     }
                 }
@@ -78,31 +127,31 @@ namespace MenuHandler
                 Hover = false;
                 pressSoundBool = false;
                 releaseSoundBool = false;
-                if ((Z < 101 && Z > 99) && (ZVel > -2 && ZVel < 1))
+                if ((Z % 100 < 2) && (ZVel > -2 && ZVel < 2))
                 {
                     Z = 100;
                     ZVel = 0;
                 }
-                else if (Z < 100)
+                else if (Z < 100 && ZVel < 3)
                 {
-                    ZVel += 1 * time;
+                    ZVel += 0.1 * time;
                 }
                 else if (Z > 100 && ZVel > -1)
                 {
-                    ZVel -= 1 * time;
+                    ZVel -= 0.1 * time;
                 }
             }
-            position = new Point(x, y);
+            position = new Point((int)x, (int)y);
             // Lots of code for calculating Z position. May need some future optimization.
             Z += ZVel;
             SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
-            int newX = x + ((int)((width * 2) - ((width * 2)) * (Z/100)));
-            int newY = y + ((int)((height * 2) - ((height * 2)) * (Z/100)));
-            graphics.FillRectangle(brush, newX + (int)((Z-90)), newY + (int)((Z-90)), (float)((width * 2) * (Z/100)), (float)((height * 2) * (Z/100)));
-            graphics.DrawImage(image, newX, newY, (int)((width * 2) * (Z/100)), (int)((height * 2) * (Z/100)));
+            double newX = x + (((width * 2) - ((width * 2)) * (Z/100)));
+            double newY = y + (((height * 2) - ((height * 2)) * (Z/100)));
+            graphics.FillRectangle(brush, (int)newX + (int)((Z-90)), (int)newY + (int)((Z-90)), (float)((width * 2) * (Z/100)), (float)((height * 2) * (Z/100)));
+            graphics.DrawImage(image, (int)newX, (int)newY, (int)((width * 2) * (Z/100)), (int)((height * 2) * (Z/100)));
             if (Hover)   // Dynamically darkens button, no need for more than one button image!
             {
-                graphics.FillRectangle(brush, newX, newY, (int)((width * 2) * (Z / 100)), (int)((height * 2) * (Z / 100)));
+                graphics.FillRectangle(brush, (int)newX, (int)newY, (int)((width * 2) * (Z / 100)), (int)((height * 2) * (Z / 100)));
             }
         }
     }

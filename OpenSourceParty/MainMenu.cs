@@ -35,7 +35,7 @@ namespace OpenSourceParty
             MessagePump.Run(Manager, Manager.UpdateMenu);
         }
 
-        public MainMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iManager, iPadMan, iFileMan, iGraphics)
+        public MainMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan) : base(name, iManager, iPadMan, iFileMan)
         {
             String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
             if (background != null)
@@ -67,11 +67,10 @@ namespace OpenSourceParty
                     break;
                 case "Options":
                     Destroy();
-                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", Manager, padMan, fileMan, graphics);
+                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", Manager, padMan, fileMan);
                     break;
                 case "Exit":
                     Application.Exit();
-                    System.Environment.Exit(1);
                     break;
                 default:
                     break;

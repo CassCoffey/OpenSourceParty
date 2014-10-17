@@ -7,7 +7,12 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Timers;
 using SlimDX;
+using SlimDX.Direct3D11;
+using SlimDX.D3DCompiler;
+using SlimDX.DXGI;
 using SlimDX.Windows;
+using Device = SlimDX.Direct3D11.Device;
+using Resource = SlimDX.Direct3D11.Resource;
 using SpriteHandler;
 using GamepadHandler;
 using FileHandler;
@@ -31,7 +36,7 @@ namespace MenuHandler
         protected bool joystick;
         public GamepadManager padMan;
         private int joystickIndex = 0;
-        private bool joystickMoved = false;
+        public bool JoystickMoved { get; set; }
 
 
         // Properties
@@ -71,6 +76,17 @@ namespace MenuHandler
                 return joystick;
             }
         }
+        public FileManager FileMan
+        {
+            get
+            {
+                return fileMan;
+            }
+            protected set
+            {
+                fileMan = value;
+            }
+        }
         
 
         // Constructors and Methods
@@ -93,11 +109,10 @@ namespace MenuHandler
         /// <param name="iPadMan">The gamepad manager to use.</param>
         /// <param name="iFileMan">The file manager to use.</param>
         /// <param name="iGraphics">The Graphics to use.</param>
-        public MenuAbstract(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics)
+        public MenuAbstract(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan)
         {
             Manager = iManager;
             Manager.CurState = this;
-            graphics = iGraphics;
             Manager.Text = name;
             menuObjects = new List<MenuObject>();
             padMan = iPadMan;
@@ -110,6 +125,7 @@ namespace MenuHandler
         /// </summary>
         public void Init()
         {
+            JoystickMoved = false;
             menuObjects = new List<MenuObject>();
             if (padMan[0] != null)
             {
@@ -144,44 +160,8 @@ namespace MenuHandler
         {
             if (joystick)
             {
-                // Check if the joystick is moved.
-                if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !joystickMoved)
-                {
-                    MenuObject focusObject = menuObjects[JoystickIndex];
-                    Vector2 origin = new Vector2(focusObject.x + focusObject.width, focusObject.y + focusObject.height);
-                    Vector2 offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
-                    offset += origin;
-
-                    MenuObject tempButton = null;
-                    int tempInt = JoystickIndex;
-                    
-                    for (int i = 0; i < menuObjects.Count; i++)
-                    {
-                        if (menuObjects[i].Intersects(origin, offset) && i != joystickIndex)
-                        {
-                            if (tempButton != null && menuObjects[JoystickIndex].Distance(tempButton.position) > menuObjects[JoystickIndex].Distance(menuObjects[i].position))
-                            {
-                                tempButton = menuObjects[i];
-                                tempInt = i;
-                            }
-                            else if (tempButton == null)
-                            {
-                                tempButton = menuObjects[i];
-                                tempInt = i;
-                            }
-                        }
-                    }
-
-                    menuObjects[JoystickIndex].Focus = false;
-                    menuObjects[JoystickIndex].PadClicked = false;
-                    JoystickIndex = tempInt;
-                    menuObjects[JoystickIndex].Focus = true;
-                    joystickMoved = true;
-                }
-                else if (j.thumbstick.y == 0 && j.thumbstick.x == 0)
-                {
-                    joystickMoved = false;
-                }
+                MenuObject focusObject = menuObjects[JoystickIndex];
+                focusObject.GamepadInput(j);
             }
             JoystickMode();
         }
@@ -237,12 +217,13 @@ namespace MenuHandler
         /// <summary>
         /// Draws all menu controls.
         /// </summary>
-        public override void Draw(Graphics dGraphics)
+        public override void Draw(Graphics graphics)
         {
-            Graphics = dGraphics;
+            Console.WriteLine("Milliseconds - " + Elapsed.TotalMilliseconds);
+            Graphics = graphics;
             foreach (MenuObject menuObject in menuObjects)
             {
-                menuObject.Update(dGraphics, Elapsed.TotalMilliseconds/16.67);
+                menuObject.Update(graphics, Elapsed.TotalMilliseconds);
             }
         }
 

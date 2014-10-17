@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO;
 using SlimDX;
+using SlimDX.Direct3D11;
+using SlimDX.D3DCompiler;
+using SlimDX.DXGI;
 using SlimDX.Windows;
+using Device = SlimDX.Direct3D11.Device;
+using Resource = SlimDX.Direct3D11.Resource;
 using System.Diagnostics;
-using System.Windows.Media;
+using System.Windows.Forms;
 
 namespace MenuHandler
 {
@@ -19,6 +22,9 @@ namespace MenuHandler
         public GameState CurState { get; set; }   // Keeps track of the current game state.
         Stopwatch GameTime { get; set; }
         TimeSpan LastUpdate { get; set; }
+
+        double fpsSeconds = 0;
+        int fpsLoops = 0;
 
         public GameManager(MenuAbstract iMenu)
         {
@@ -38,6 +44,14 @@ namespace MenuHandler
             TimeSpan elapsed = total - LastUpdate;
             CurState.Update(elapsed);
             LastUpdate = total;
+            fpsSeconds += elapsed.TotalSeconds;
+            fpsLoops++;
+            if (fpsSeconds >= 1.00)
+            {
+                Text = "FPS - " + fpsLoops;
+                fpsLoops = 0;
+                fpsSeconds = 0;
+            }
         }
 
         /// <summary>
@@ -57,12 +71,14 @@ namespace MenuHandler
         /// Plays a sound.
         /// </summary>
         /// <param name="location">The file path to the sound.</param>
-        /// <param name="loop">Whether or not to loop the sound. (NOT FUNCTIONAL YET)</param>
-        public void PlaySound(String location, bool loop)
+        public void PlaySound(String location)
         {
-            MediaPlayer player = new MediaPlayer();
-            player.Open(new Uri(location));
-            player.Play();
+
+        }
+
+        public void OnSoundEnd(object sender, EventArgs e)
+        {
+
         }
 
         /// <summary>

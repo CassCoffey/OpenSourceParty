@@ -17,7 +17,7 @@ namespace OpenSourceParty
     class OptionsMenu : MenuAbstract
     {
         // Constructors and Methods
-        public OptionsMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, Graphics iGraphics) : base(name, iManager, iPadMan, iFileMan, iGraphics)
+        public OptionsMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan) : base(name, iManager, iPadMan, iFileMan)
         {
             String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
             if (background != null)
@@ -51,7 +51,7 @@ namespace OpenSourceParty
                     break;
                 case "Main Menu":
                     Destroy();
-                    MainMenu mainMenu = new MainMenu("Open Source Party", Manager, padMan, fileMan, graphics);
+                    MainMenu mainMenu = new MainMenu("Open Source Party", Manager, padMan, fileMan);
                     break;
                 default:
                     break;

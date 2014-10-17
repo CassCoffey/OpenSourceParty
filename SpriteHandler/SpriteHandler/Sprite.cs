@@ -14,8 +14,8 @@ namespace SpriteHandler
     public class Sprite
     {
         // Fields
-        public int x;
-        public int y;
+        public double x;
+        public double y;
         public Point position;
         public int height;
         public int width;
@@ -33,7 +33,7 @@ namespace SpriteHandler
         {
             x = startX;
             y = startY;
-            position = new Point(x, y);
+            position = new Point((int)x, (int)y);
             image = startImage;
             height = image.Height;
             width = image.Width;
@@ -44,7 +44,7 @@ namespace SpriteHandler
         /// </summary>
         /// <param name="sprite">The other sprite to check.</param>
         /// <returns></returns>
-        public bool Intersects(Sprite sprite)
+        public virtual bool Intersects(Sprite sprite)
         {
             if (x + (width*2) > sprite.x && x < sprite.x + (sprite.width*2) && y + (height*2) > sprite.y && y < sprite.y + (sprite.height*2))   // This is wrong. It does not work yet. It will work soon.
             {
@@ -62,7 +62,7 @@ namespace SpriteHandler
         /// <param name="otherX">The X coordinate to check.</param>
         /// <param name="otherY">The Y coordinate to check.</param>
         /// <returns></returns>
-        public bool Intersects(int otherX, int otherY)
+        public virtual bool Intersects(int otherX, int otherY)
         {
             if (x + (width*2) > otherX && x < otherX && y + (height*2) > otherY && y < otherY)
             {
@@ -79,7 +79,7 @@ namespace SpriteHandler
         /// </summary>
         /// <param name="point">The point to check.</param>
         /// <returns></returns>
-        public bool Intersects(Point point)
+        public virtual bool Intersects(Point point)
         {
             if (x + (width*2) > point.X && x < point.X && y + (height*2) > point.Y && y < point.Y)
             {
@@ -96,12 +96,12 @@ namespace SpriteHandler
         /// </summary>
         /// <param name="point">The point to check.</param>
         /// <returns>True if it intersects with the ray.</returns>
-        public bool Intersects(Vector2 origin, Vector2 offset)
+        public virtual bool Intersects(Vector2 origin, Vector2 offset)
         {
-            Vector2 topLeft = new Vector2(x,y);
-            Vector2 topRight = new Vector2(x + (width*2),y);
-            Vector2 bottomLeft = new Vector2(x,y + (height*2));
-            Vector2 bottomRight = new Vector2(x + (width*2),y + (height*2));
+            Vector2 topLeft = new Vector2((float)x, (float)y);
+            Vector2 topRight = new Vector2((float)x + (width * 2), (float)y);
+            Vector2 bottomLeft = new Vector2((float)x, (float)y + (height * 2));
+            Vector2 bottomRight = new Vector2((float)x + (width * 2), (float)y + (height * 2));
             if (LineIntersects(origin, offset, topLeft, topRight) || LineIntersects(origin, offset, topLeft, bottomLeft) || LineIntersects(origin, offset, bottomLeft, bottomRight) || LineIntersects(origin, offset, topRight, bottomRight))
             {
                 return true;
@@ -172,7 +172,7 @@ namespace SpriteHandler
         /// <param name="b2"></param>
         /// <param name="intersection"></param>
         /// <returns></returns>
-        static bool LineIntersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+        public static bool LineIntersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
         {
             Vector2 b = a2 - a1;
             Vector2 d = b2 - b1;
@@ -200,8 +200,8 @@ namespace SpriteHandler
         /// <param name="graphics">The Graphics Object to use.</param>
         public virtual void Update(Graphics graphics, double time)
         {
-            position = new Point(x, y);
-            graphics.DrawImage(image, x, y, width*2, height*2);
+            position = new Point((int)x, (int)y);
+            graphics.DrawImage(image, (int)x, (int)y, width*2, height*2);
         }
     }
 }

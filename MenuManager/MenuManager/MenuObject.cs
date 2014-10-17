@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using SpriteHandler;
+using GamepadHandler;
+using SlimDX;
+using SlimDX.Direct3D11;
+using SlimDX.D3DCompiler;
+using SlimDX.DXGI;
+using SlimDX.Windows;
+using Device = SlimDX.Direct3D11.Device;
+using Resource = SlimDX.Direct3D11.Resource;
 
 namespace MenuHandler
 {
@@ -27,9 +35,9 @@ namespace MenuHandler
 
             set
             {
-                if (value > 200)
+                if (value > 120)
                 {
-                    z = 200;
+                    z = 120;
                     ZVel = 0;
                 }
                 else if (value < 90)
@@ -52,18 +60,7 @@ namespace MenuHandler
 
             set
             {
-                if (value > 3)
-                {
-                    zVel = 3;
-                }
-                else if (value < -3)
-                {
-                    zVel = -3;
-                }
-                else
-                {
-                    zVel = value;
-                }
+                zVel = value;
             }
         }
 
@@ -139,6 +136,8 @@ namespace MenuHandler
         {
             MouseClicked = true;
         }
+
+        public abstract void GamepadInput(JoystickArgs j);
 
         /// <summary>
         /// Called when the left mouse button is released.
