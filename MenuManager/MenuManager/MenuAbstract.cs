@@ -123,6 +123,8 @@ namespace MenuHandler
         public void Init()
         {
             JoystickMoved = false;
+            joystickIndex = 0;
+            InitButtons();
             menuObjects = new List<MenuObject>();
             if (padMan[0] != null)
             {
@@ -145,6 +147,7 @@ namespace MenuHandler
             Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
             Manager.MouseUp += new MouseEventHandler(CheckClick);
             Manager.Invalidate();
+            DrawAll();
         }
 
         /// <summary>
@@ -152,6 +155,7 @@ namespace MenuHandler
         /// </summary>
         public void Destroy()
         {
+            menuObjects.Clear();
             if (padMan[0] != null)
             {
                 padMan[0].lJoystickDelegate -= new GamepadState.JoystickDelegate(ThumbstickManage);
@@ -305,6 +309,8 @@ namespace MenuHandler
                 }
             }
         }
+
+        public abstract void InitButtons();
 
         /// <summary>
         /// This should be overrided with a switch statement that runs off of the button's name.

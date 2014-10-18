@@ -54,25 +54,7 @@ namespace GameAbstracts
         }
 
         // Constructors and Methods
-        /// <summary>
-        /// Used when loading this game in from a dll.
-        /// </summary>
-        /// <param name="name">The name of this menu.</param>
-        /// <param name="iManager">The Game Manager to use.</param>
-        /// <param name="iPadMan">The gamepad manager to use.</param>
-        /// <param name="iFileMan">The file manager to use.</param>
-        /// <param name="iReturnState">The gameState to return to when done.</param>
-        public abstract void Run(GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, GameState iReturnState);
-
-        /// <summary>
-        /// Used when switching to this game from another pre-existing menu.
-        /// </summary>
-        /// <param name="name">The name of this menu.</param>
-        /// <param name="iManager">The Game Manager to use.</param>
-        /// <param name="iPadMan">The gamepad manager to use.</param>
-        /// <param name="iFileMan">The file manager to use.</param>
-        /// <param name="iReturnState">The gameState to return to when done.</param>
-        public GameAbstract(GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, GameState iReturnState)
+        public void Run(GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, GameState iReturnState)
         {
             Manager = iManager;
             Manager.CurState = this;
@@ -81,6 +63,8 @@ namespace GameAbstracts
             returnState = iReturnState;
             Init();
         }
+
+        public GameAbstract() { }   
 
         /// <summary>
         /// Initialization method so that common code between the constructors is in one place, and thread-safe.

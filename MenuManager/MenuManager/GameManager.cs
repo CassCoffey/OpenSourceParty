@@ -91,7 +91,6 @@ namespace MenuHandler
         protected override void OnClientSizeChanged(EventArgs e)
         {
             base.OnClientSizeChanged(e);
-            Console.WriteLine("Size Changed");
             if (CurState != null)
             {
                 CurState.DrawAll();

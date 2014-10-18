@@ -42,6 +42,11 @@ namespace OpenSourceParty
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
             }
+            InitButtons();
+        }
+
+        public override void InitButtons()
+        {
             MakeButton(10, 10, "button1", "Random Game");
             MakeButton(10, 150, "button2", "List Games");
             MakeButton(10, 300, "button3", "Exit");
