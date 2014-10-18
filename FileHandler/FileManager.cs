@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
+using GameAbstracts;
+using MenuHandler;
+using GamepadHandler;
 
 namespace FileHandler
 {
@@ -119,7 +122,7 @@ namespace FileHandler
         /// </summary>
         /// <param name="dir">The directory to search for the game in.</param>
         /// <param name="ext">The extension to search for.</param>
-        public void RandomGame(String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
+        public void RandomGame(GameManager manager, GameState state, GamepadManager padMan, String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
         {
             String randomGame = RandomFile(dir, ext);
 
@@ -133,7 +136,7 @@ namespace FileHandler
             foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
             {
                 dynamic c = Activator.CreateInstance(type);   // Create an instance of that type...
-                c.TestMessage();   // Attempt to run a TestMessage()
+                (c as GameAbstract).Run(manager, padMan, this, state);
             }
         }
 

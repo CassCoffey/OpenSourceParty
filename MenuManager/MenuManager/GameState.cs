@@ -39,6 +39,7 @@ namespace MenuHandler
 
         
         // Constructors and Methods
+        public abstract void Restart();
         /// <summary>
         /// Called when the gamestate is updated by the GameManger.
         /// </summary>

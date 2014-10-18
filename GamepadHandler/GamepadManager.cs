@@ -41,6 +41,14 @@ namespace GamepadHandler
             }
         }
 
+        public List<GamepadState> Devices
+        {
+            get
+            {
+                return devices;
+            }
+        }
+
 
         // Constructors and Methods
         /// <summary>

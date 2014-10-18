@@ -7,12 +7,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Timers;
 using SlimDX;
-using SlimDX.Direct3D11;
 using SlimDX.D3DCompiler;
 using SlimDX.DXGI;
 using SlimDX.Windows;
-using Device = SlimDX.Direct3D11.Device;
-using Resource = SlimDX.Direct3D11.Resource;
 using SpriteHandler;
 using GamepadHandler;
 using FileHandler;
@@ -127,6 +124,19 @@ namespace MenuHandler
         {
             JoystickMoved = false;
             menuObjects = new List<MenuObject>();
+            if (padMan[0] != null)
+            {
+                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
+                padMan[0].aDelagate += new GamepadState.GamepadDelegate(GamepadClick);
+            }
+            Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
+            Manager.MouseUp += new MouseEventHandler(CheckClick);
+            Manager.Invalidate();
+        }
+
+        public override void Restart()
+        {
+            JoystickMoved = false;
             if (padMan[0] != null)
             {
                 padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
