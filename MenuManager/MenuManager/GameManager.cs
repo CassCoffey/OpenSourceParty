@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.IO;
+using System.Collections.Generic;
 using SlimDX;
 using SlimDX.Direct3D11;
 using SlimDX.D3DCompiler;
@@ -22,6 +23,7 @@ namespace MenuHandler
         public GameState CurState { get; set; }   // Keeps track of the current game state.
         Stopwatch GameTime { get; set; }
         TimeSpan LastUpdate { get; set; }
+        public List<System.Drawing.Rectangle> InvalidateRectangles { get; set; }
 
         double fpsSeconds = 0;
         int fpsLoops = 0;
@@ -29,6 +31,7 @@ namespace MenuHandler
         public GameManager(MenuAbstract iMenu)
         {
             CurState = iMenu;
+            InvalidateRectangles = new List<System.Drawing.Rectangle>(2);
             SetStyle(System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer | System.Windows.Forms.ControlStyles.UserPaint | System.Windows.Forms.ControlStyles.AllPaintingInWmPaint, true);
             GameTime = new Stopwatch();
             GameTime.Start();
@@ -81,6 +84,16 @@ namespace MenuHandler
 
         }
 
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            Console.WriteLine("Size Changed");
+            if (CurState != null)
+            {
+                CurState.DrawAll();
+            }
+        }
+
         /// <summary>
         /// Overrides the RenderForm's default OnPaint() function to also draw the current GameState.
         /// </summary>
@@ -88,7 +101,8 @@ namespace MenuHandler
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
             base.OnPaint(e);
-            CurState.Draw(e.Graphics, e.ClipRectangle);
+            CurState.Draw(e.Graphics, InvalidateRectangles);
+            InvalidateRectangles.Clear();
         }
     }
 }

@@ -223,15 +223,26 @@ namespace MenuHandler
         /// <summary>
         /// Draws all menu controls.
         /// </summary>
-        public override void Draw(Graphics graphics, Rectangle clipRectangle)
+        public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
             Graphics = graphics;
             foreach (MenuObject menuObject in menuObjects)
             {
-                if (clipRectangle.IntersectsWith(menuObject.ButtonRect) || clipRectangle.IntersectsWith(menuObject.ShadowRect))
+                foreach (Rectangle rect in clipRectangles)
                 {
-                    menuObject.Draw(Graphics);
+                    if (rect.IntersectsWith(menuObject.ButtonRect) || rect.IntersectsWith(menuObject.ShadowRect))
+                    {
+                        menuObject.Draw(Graphics);
+                    }
                 }
+            }
+        }
+
+        public override void DrawAll()
+        {
+            foreach (MenuObject menuObject in menuObjects)
+            {
+                menuObject.AutoInvalidate();
             }
         }
 

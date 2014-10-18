@@ -28,8 +28,8 @@ namespace MenuHandler
         private double zVel;
         public Rectangle ShadowRect { get; set; }
         public Rectangle ButtonRect { get; set; }
-        protected Rectangle ShadowPrev;
-        protected Rectangle ButtonPrev;
+        public Rectangle InvalidateRect { get; set; }
+        protected Rectangle invalidateRectPrev;
         protected bool needsUpdate = true;
         public double Z
         {
@@ -140,9 +140,18 @@ namespace MenuHandler
             // Tell the GameManager to update graphics.
             if (needsUpdate)
             {
-                menu.Manager.Invalidate(new Rectangle(ButtonRect.X - 5, ButtonRect.Y - 5, ButtonRect.Width + 10, ButtonRect.Height + 10));
-                menu.Manager.Invalidate(new Rectangle(ShadowRect.X - 5, ShadowRect.Y - 5, ShadowRect.Width + 10, ShadowRect.Height + 10));
+                InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
+                manager.InvalidateRectangles.Add(InvalidateRect);
+                menu.Manager.Invalidate(InvalidateRect);
             }
+        }
+
+        public virtual void AutoInvalidate()
+        {
+            // Tell the GameManager to update graphics.
+                InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
+                manager.InvalidateRectangles.Add(InvalidateRect);
+                menu.Manager.Invalidate(InvalidateRect);
         }
 
         /// <summary>

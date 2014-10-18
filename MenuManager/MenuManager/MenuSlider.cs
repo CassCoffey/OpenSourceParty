@@ -232,7 +232,8 @@ namespace MenuHandler
             ButtonRect = new Rectangle((int)basePos.X - (image.Width + width), (int)newY, length + ((image.Width + width)*2), (height * 2));
             ShadowRect = new Rectangle((int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (width * 2), (height * 2));
             slideRect = new Rectangle((int)newX, (int)newY, (width * 2), (height * 2));
-            if (ButtonRect == ButtonPrev && ShadowRect == ShadowPrev)
+            InvalidateRect = new Rectangle((int)basePos.X - (image.Width + width), (int)newY, length + ((image.Width + width) * 2) + (int)((Z - 90)), (height * 2) + (int)((Z - 90)));
+            if (InvalidateRect == invalidateRectPrev && !mouseLock)
             {
                 needsUpdate = false;
             }
@@ -240,8 +241,7 @@ namespace MenuHandler
             {
                 needsUpdate = true;
             }
-            ButtonPrev = ButtonRect;
-            ShadowPrev = ShadowRect;
+            invalidateRectPrev = InvalidateRect;
             slideCool += time;
         }
 

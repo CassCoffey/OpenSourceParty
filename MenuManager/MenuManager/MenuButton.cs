@@ -151,7 +151,8 @@ namespace MenuHandler
             width = (int)(image.Width * (Z / 100));
             ButtonRect = new Rectangle((int)newX, (int)newY, (width * 2), (height * 2));
             ShadowRect = new Rectangle((int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (width * 2), (height * 2));
-            if (ButtonRect == ButtonPrev && ShadowRect == ShadowPrev)
+            InvalidateRect = new Rectangle((int)newX, (int)newY, (width * 2) + (int)((Z - 90)), (height * 2) + (int)((Z - 90)));
+            if (InvalidateRect == invalidateRectPrev)
             {
                 needsUpdate = false;
             }
@@ -159,8 +160,7 @@ namespace MenuHandler
             {
                 needsUpdate = true;
             }
-            ButtonPrev = ButtonRect;
-            ShadowPrev = ShadowRect;
+            invalidateRectPrev = InvalidateRect;
         }
 
         public override void Draw(Graphics graphics)
