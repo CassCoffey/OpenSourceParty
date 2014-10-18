@@ -238,6 +238,9 @@ namespace MenuHandler
             }
         }
 
+        /// <summary>
+        /// Draws all of the menu objects.
+        /// </summary>
         public override void DrawAll()
         {
             foreach (MenuObject menuObject in menuObjects)

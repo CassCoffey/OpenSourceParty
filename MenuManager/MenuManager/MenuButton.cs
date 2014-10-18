@@ -35,6 +35,10 @@ namespace MenuHandler
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
         public MenuButton(int x, int y, Image startImage, String startName, MenuAbstract parentMenu, String pressSoundLocation, String releaseSoundLocation) : base( x, y, startImage, startName, parentMenu, pressSoundLocation, releaseSoundLocation) {        }
 
+        /// <summary>
+        /// Handles gamepad input.
+        /// </summary>
+        /// <param name="j"></param>
         public override void GamepadInput(GamepadHandler.JoystickArgs j)
         {
                 // Check if the joystick is moved.
@@ -163,6 +167,10 @@ namespace MenuHandler
             invalidateRectPrev = InvalidateRect;
         }
 
+        /// <summary>
+        /// Draws the button.
+        /// </summary>
+        /// <param name="graphics">The graphics object to draw with.</param>
         public override void Draw(Graphics graphics)
         {
             SolidBrush brush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));

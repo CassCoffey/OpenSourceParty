@@ -25,6 +25,8 @@ namespace MenuHandler
         private double slideCool = 0.00;
         private Rectangle slideRect;
 
+
+        // Properties
         public Point BasePos
         {
             get
@@ -66,6 +68,10 @@ namespace MenuHandler
             }
         }
 
+        /// <summary>
+        /// Handles gamepad input.
+        /// </summary>
+        /// <param name="j"></param>
         public override void GamepadInput(GamepadHandler.JoystickArgs j)
         {
             if (PadClicked && menu.padMan[0].A)
@@ -133,6 +139,10 @@ namespace MenuHandler
             }
         }
 
+        /// <summary>
+        /// Updates the slider's position and state.
+        /// </summary>
+        /// <param name="time">The number of milliseconds since the last update.</param>
         public override void Update(double time)
         {
             // Check if it is being slid.
@@ -245,6 +255,10 @@ namespace MenuHandler
             slideCool += time;
         }
 
+        /// <summary>
+        /// Draws the slider.
+        /// </summary>
+        /// <param name="graphics">The graphics object to draw with.</param>
         public override void Draw(Graphics graphics)
         {
             Pen pen = new Pen(Color.Black, 8);

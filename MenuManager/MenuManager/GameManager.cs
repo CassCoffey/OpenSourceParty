@@ -71,7 +71,7 @@ namespace MenuHandler
         }
 
         /// <summary>
-        /// Plays a sound.
+        /// Plays a sound. MediaPlayer sucks and I am currently looking for an alternative.
         /// </summary>
         /// <param name="location">The file path to the sound.</param>
         public void PlaySound(String location)
@@ -84,6 +84,10 @@ namespace MenuHandler
 
         }
 
+        /// <summary>
+        /// Refreshes all menuObjects when the form size is changed.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClientSizeChanged(EventArgs e)
         {
             base.OnClientSizeChanged(e);

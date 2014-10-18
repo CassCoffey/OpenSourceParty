@@ -195,14 +195,18 @@ namespace SpriteHandler
         }
 
         /// <summary>
-        /// The default update method for sprites. Updates position and draws the image.
+        /// The default update method for sprites. Updates position.
         /// </summary>
-        /// <param name="graphics">The Graphics Object to use.</param>
+        /// <param name="time">The milliseconds since the last update.</param>
         public virtual void Update(double time)
         {
             position = new Point((int)x, (int)y);
         }
 
+        /// <summary>
+        /// The default draw method for sprites. Draws the sprite.
+        /// </summary>
+        /// <param name="graphics">The graphics object to use.</param>
         public virtual void Draw(Graphics graphics)
         {
             graphics.DrawImage(image, (int)x, (int)y, width * 2, height * 2);

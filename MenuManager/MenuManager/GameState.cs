@@ -50,6 +50,9 @@ namespace MenuHandler
         /// <param name="graphics">The GameManager will pass this as a parameter when drawing.</param>
         public abstract void Draw(Graphics graphics, List<Rectangle> clipRectangles);
 
+        /// <summary>
+        /// Draws all the controls.
+        /// </summary>
         public abstract void DrawAll();
     }
 }

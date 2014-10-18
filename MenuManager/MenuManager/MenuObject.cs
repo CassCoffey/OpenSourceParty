@@ -86,6 +86,7 @@ namespace MenuHandler
         protected GameManager manager;
         protected MenuAbstract menu;
 
+
         //Constructors and Methods
         // Constructors and Methods
         /// <summary>
@@ -146,6 +147,9 @@ namespace MenuHandler
             }
         }
 
+        /// <summary>
+        /// Used to Invalidate a menuObject, even if it does not need an update.
+        /// </summary>
         public virtual void AutoInvalidate()
         {
             // Tell the GameManager to update graphics.
@@ -157,7 +161,7 @@ namespace MenuHandler
         /// <summary>
         /// Called when the left mouse button is pressed down.
         /// </summary>
-        /// <param name="sender">s</param>
+        /// <param name="sender"></param>
         /// <param name="m"></param>
         public virtual void MouseDown(object sender, MouseEventArgs m)
         {
@@ -176,8 +180,16 @@ namespace MenuHandler
             MouseClicked = false;
         }
 
+        /// <summary>
+        /// Called when the object is updated.
+        /// </summary>
+        /// <param name="time">The time since last update.</param>
         public abstract override void Update(double time);
 
+        /// <summary>
+        /// Called when the object is drawn.
+        /// </summary>
+        /// <param name="graphics">The graphics object to draw with.</param>
         public abstract override void Draw(Graphics graphics);
     }
 }
