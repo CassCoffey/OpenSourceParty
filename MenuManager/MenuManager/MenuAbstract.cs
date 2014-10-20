@@ -255,14 +255,26 @@ namespace MenuHandler
         public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
             Graphics = graphics;
+            List<MenuObject> drawObjects = new List<MenuObject>();
             foreach (MenuObject menuObject in menuObjects)
             {
                 foreach (Rectangle rect in clipRectangles)
                 {
                     if (rect.IntersectsWith(menuObject.ButtonRect) || rect.IntersectsWith(menuObject.ShadowRect))
                     {
-                        menuObject.Draw(Graphics);
+                        if (!drawObjects.Contains(menuObject))
+                        {
+                            drawObjects.Add(menuObject);
+                            continue;
+                        }
                     }
+                }
+            }
+            if (drawObjects.Count > 0)
+            {
+                foreach (MenuObject drawObject in drawObjects)
+                {
+                    drawObject.Draw(Graphics);
                 }
             }
         }
