@@ -206,16 +206,16 @@ namespace MenuHandler
                     mouseLock = false;
                     Hover = true;
                     pressSoundBool = false;
-                    if ((Z % 105 < 2) && (ZVel > -2 && ZVel < 2))
+                    if ((Z % 1050 < 2) && (ZVel > -2 && ZVel < 2))
                     {
-                        Z = 105;
+                        Z = 1050;
                         ZVel = 0;
                     }
-                    else if (Z < 105 && ZVel < 3)
+                    else if (Z < 1050 && ZVel < 3)
                     {
                         ZVel += 0.1 * time;
                     }
-                    else if (Z > 105 && ZVel > -1)
+                    else if (Z > 1050 && ZVel > -1)
                     {
                         ZVel -= 0.1 * time;
                     }
@@ -232,16 +232,16 @@ namespace MenuHandler
                 Hover = false;
                 pressSoundBool = false;
                 releaseSoundBool = false;
-                if ((Z % 100 < 2) && (ZVel > -2 && ZVel < 2))
+                if ((Z % 1000 < 2) && (ZVel > -2 && ZVel < 2))
                 {
-                    Z = 100;
+                    Z = 1000;
                     ZVel = 0;
                 }
-                else if (Z < 100 && ZVel < 3)
+                else if (Z < 1000 && ZVel < 3)
                 {
                     ZVel += 0.1 * time;
                 }
-                else if (Z > 100 && ZVel > -1)
+                else if (Z > 1000 && ZVel > -1)
                 {
                     ZVel -= 0.1 * time;
                 }
@@ -250,14 +250,14 @@ namespace MenuHandler
             position = new Point((int)x, (int)y);
             // Lots of code for calculating Z position. May need some future optimization.
             Z += ZVel;
-            double newX = x + ((image.Width * 2) - ((image.Width * 2) * (Z / 100)));
-            double newY = y + ((image.Height * 2) - ((image.Height * 2) * (Z / 100)));
-            height = (int)(image.Height * (Z / 100));
-            width = (int)(image.Width * (Z / 100));
+            double newX = x + ((image.Width * 2) - ((image.Width * 2) * (Z / 1000)));
+            double newY = y + ((image.Height * 2) - ((image.Height * 2) * (Z / 1000)));
+            height = (int)(image.Height * (Z / 1000));
+            width = (int)(image.Width * (Z / 1000));
             ButtonRect = new Rectangle((int)basePos.X - (image.Width + width), (int)newY, length + ((image.Width + width)*2), (height * 2));
-            ShadowRect = new Rectangle((int)newX + (int)((Z - 90)), (int)newY + (int)((Z - 90)), (width * 2), (height * 2));
+            ShadowRect = new Rectangle((int)newX + (int)((Z/10) - 90), (int)newY + (int)((Z/10) - 90), (width * 2), (height * 2));
             slideRect = new Rectangle((int)newX, (int)newY, (width * 2), (height * 2));
-            InvalidateRect = new Rectangle((int)basePos.X - (image.Width + width), (int)newY, length + ((image.Width + width) * 2) + (int)((Z - 90)), (height * 2) + (int)((Z - 90)));
+            InvalidateRect = new Rectangle((int)basePos.X - (image.Width + width), (int)newY, length + ((image.Width + width) * 2) + (int)((Z/10) - 90), (height * 2) + (int)((Z/10) - 90));
             if (InvalidateRect == invalidateRectPrev && !mouseLock)
             {
                 needsUpdate = false;

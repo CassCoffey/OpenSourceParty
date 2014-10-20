@@ -39,10 +39,7 @@ namespace OpenSourceParty
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
             }
-            MakeButton(10, 10, "button1", "Random Game");
-            MakeButton(10, 150, "button2", "List Games");
-            MakeButton(10, 300, "button3", "Exit");
-            MakeButton(300, 10, "button4", "Options");
+            InitButtons();
             Manager.Width = 640;
             Manager.Height = 480;
             Manager.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -52,12 +49,12 @@ namespace OpenSourceParty
 
         public MainMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan) : base(name, iManager, iPadMan, iFileMan)
         {
+            InitButtons();
             String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
             if (background != null)
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
             }
-            InitButtons();
         }
 
         public override void InitButtons()

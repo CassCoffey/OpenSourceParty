@@ -315,11 +315,14 @@ namespace MenuHandler
         {
             if (!joystick)
             {
-                foreach (MenuObject button in menuObjects)
+                if (menuObjects.Count > 0)
                 {
-                    if (button.Intersects())
+                    for (int i = 0; i < menuObjects.Count; i++ )
                     {
-                        ButtonClicked(button);
+                        if (menuObjects[i].Intersects())
+                        {
+                            ButtonClicked(menuObjects[i]);
+                        }
                     }
                 }
             }

@@ -34,12 +34,12 @@ namespace OpenSourceParty
         // Constructors and Methods
         public OptionsMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan) : base(name, iManager, iPadMan, iFileMan)
         {
+            InitButtons();
             String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
             if (background != null)
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
             }
-            InitButtons();
         }
 
         public override void InitButtons()

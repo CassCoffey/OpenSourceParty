@@ -55,14 +55,14 @@ namespace MenuHandler
 
             set
             {
-                if (value > 120)
+                if (value > 1200)
                 {
-                    z = 120;
+                    z = 1200;
                     ZVel = 0;
                 }
-                else if (value < 90)
+                else if (value < 900)
                 {
-                    z = 90;
+                    z = 900;
                     ZVel = 0;
                 }
                 else
@@ -121,7 +121,7 @@ namespace MenuHandler
             manager = menu.Manager;
             manager.MouseDown += MouseDown;
             manager.MouseUp += MouseUp;
-            Z = 100.00;
+            Z = 1000.00;
             ZVel = 0.00;
             PressSound = pressSoundLocation;
             ReleaseSound = releaseSoundLocation;
