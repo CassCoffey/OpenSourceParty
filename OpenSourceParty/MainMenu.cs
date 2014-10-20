@@ -57,6 +57,9 @@ namespace OpenSourceParty
             }
         }
 
+        /// <summary>
+        /// Creates all of the buttons for the menu.
+        /// </summary>
         public override void InitButtons()
         {
             MakeButton(10, 10, "button1", "Random Game");

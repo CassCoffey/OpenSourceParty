@@ -183,6 +183,10 @@ namespace MenuHandler
             MouseClicked = true;
         }
 
+        /// <summary>
+        /// Code that determines how the object handles Gamepad Input
+        /// </summary>
+        /// <param name="j"></param>
         public abstract void GamepadInput(JoystickArgs j);
 
         /// <summary>

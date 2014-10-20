@@ -151,6 +151,10 @@ namespace MenuHandler
             Manager.Invalidate();
         }
 
+        /// <summary>
+        /// Called when restarting the menu. Usually after a game finishes.
+        /// Should be very similar to init.
+        /// </summary>
         public override void Restart()
         {
             JoystickMoved = false;
@@ -340,6 +344,9 @@ namespace MenuHandler
             }
         }
 
+        /// <summary>
+        /// Creates all of the buttons for the menu.
+        /// </summary>
         public abstract void InitButtons();
 
         /// <summary>
