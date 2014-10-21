@@ -21,8 +21,6 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Timers;
-using SlimDX;
-using SlimDX.Windows;
 using MenuHandler;
 using GamepadHandler;
 using FileHandler;
@@ -39,6 +37,7 @@ namespace OpenSourceParty
             if (background != null)
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
+                Manager.BackgroundImageLayout = ImageLayout.Stretch;
             }
         }
 

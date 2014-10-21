@@ -21,8 +21,6 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Timers;
-using SlimDX;
-using SlimDX.Windows;
 using MenuHandler;
 using GamepadHandler;
 using FileHandler;
@@ -38,13 +36,14 @@ namespace OpenSourceParty
             if (background != null)
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
+                Manager.BackgroundImageLayout = ImageLayout.Stretch;
             }
             InitButtons();
             Manager.Width = 640;
             Manager.Height = 480;
             Manager.FormBorderStyle = FormBorderStyle.FixedSingle;
             Manager.MaximizeBox = false;
-            MessagePump.Run(Manager, Manager.UpdateMenu);
+            Application.Idle += new EventHandler(Manager.UpdateMenu);
         }
 
         public MainMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan) : base(name, iManager, iPadMan, iFileMan)
@@ -54,6 +53,7 @@ namespace OpenSourceParty
             if (background != null)
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
+                Manager.BackgroundImageLayout = ImageLayout.Stretch;
             }
         }
 

@@ -20,14 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.D3DCompiler;
-using SlimDX.DXGI;
-using SlimDX.Windows;
-using SlimDX.Direct2D;
-using Device = SlimDX.Direct3D11.Device;
-using Resource = SlimDX.Direct3D11.Resource;
+using OpenTK;
 
 namespace MenuHandler
 {
@@ -96,8 +89,8 @@ namespace MenuHandler
             // Check if the joystick is moved.
             else if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !menu.JoystickMoved)
             {
-                SlimDX.Vector2 origin = new SlimDX.Vector2(BasePos.X + width + (length/2), BasePos.Y + height);
-                SlimDX.Vector2 offset = new SlimDX.Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
+                Vector2 origin = new Vector2(BasePos.X + width + (length/2), BasePos.Y + height);
+                Vector2 offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
                 offset += origin;
 
                 MenuObject tempButton = null;
@@ -138,12 +131,12 @@ namespace MenuHandler
         /// <param name="origin">Beginning of ray.</param>
         /// <param name="offset">End of ray.</param>
         /// <returns>Whether or not the ray intersects the slider.</returns>
-        public override bool Intersects(SlimDX.Vector2 origin, SlimDX.Vector2 offset)
+        public override bool Intersects(Vector2 origin, Vector2 offset)
         {
-            SlimDX.Vector2 topLeft = new SlimDX.Vector2(basePos.X - width, basePos.Y);
-            SlimDX.Vector2 topRight = new SlimDX.Vector2(basePos.X + (width * 2) + length, basePos.Y);
-            SlimDX.Vector2 bottomLeft = new SlimDX.Vector2(basePos.X - width, basePos.Y + (height * 2));
-            SlimDX.Vector2 bottomRight = new SlimDX.Vector2(basePos.X + (width * 2) + length, basePos.Y + (height * 2));
+            Vector2 topLeft = new Vector2(basePos.X - width, basePos.Y);
+            Vector2 topRight = new Vector2(basePos.X + (width * 2) + length, basePos.Y);
+            Vector2 bottomLeft = new Vector2(basePos.X - width, basePos.Y + (height * 2));
+            Vector2 bottomRight = new Vector2(basePos.X + (width * 2) + length, basePos.Y + (height * 2));
             if (LineIntersects(origin, offset, topLeft, topRight) || LineIntersects(origin, offset, topLeft, bottomLeft) || LineIntersects(origin, offset, bottomLeft, bottomRight) || LineIntersects(origin, offset, topRight, bottomRight))
             {
                 return true;

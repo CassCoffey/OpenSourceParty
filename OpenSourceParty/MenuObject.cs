@@ -22,13 +22,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using SpriteHandler;
 using GamepadHandler;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.D3DCompiler;
-using SlimDX.DXGI;
-using SlimDX.Windows;
-using Device = SlimDX.Direct3D11.Device;
-using Resource = SlimDX.Direct3D11.Resource;
 
 namespace MenuHandler
 {

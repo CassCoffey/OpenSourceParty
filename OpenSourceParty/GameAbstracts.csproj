@@ -39,9 +39,7 @@
     <Reference Include="MenuManager">
       <HintPath>..\..\MenuManager\MenuManager\bin\Debug\MenuManager.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX">
-      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
-    </Reference>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
     <Reference Include="SpriteHandler">
       <HintPath>..\..\SpriteHandler\SpriteHandler\bin\Debug\SpriteHandler.dll</HintPath>
     </Reference>

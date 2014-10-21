@@ -20,14 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.D3DCompiler;
-using SlimDX.DXGI;
-using SlimDX.Direct2D;
-using SlimDX.Windows;
-using Device = SlimDX.Direct3D11.Device;
-using Resource = SlimDX.Direct3D11.Resource;
+using OpenTK;
 using SpriteHandler;
 
 namespace MenuHandler
@@ -59,8 +52,8 @@ namespace MenuHandler
                 // Check if the joystick is moved.
                 if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !menu.JoystickMoved)
                 {
-                    SlimDX.Vector2 origin = new SlimDX.Vector2((float)x + width, (float)y + height);
-                    SlimDX.Vector2 offset = new SlimDX.Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
+                    Vector2 origin = new Vector2((float)x + width, (float)y + height);
+                    Vector2 offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
                     offset += origin;
 
                     MenuObject tempButton = null;

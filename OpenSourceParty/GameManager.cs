@@ -18,23 +18,38 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using System.Collections.Generic;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.D3DCompiler;
-using SlimDX.DXGI;
-using SlimDX.Windows;
-using Device = SlimDX.Direct3D11.Device;
-using Resource = SlimDX.Direct3D11.Resource;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace MenuHandler
 {
     /// <summary>
     /// A class for managing the various menus and gamestates.
     /// </summary>
-    public class GameManager : RenderForm
+    public class GameManager : Form
     {
+        [StructLayout(LayoutKind.Sequential)]
+        public struct NativeMessage
+        {
+            public IntPtr Handle;
+            public uint Message;
+            public IntPtr WParameter;
+            public IntPtr LParameter;
+            public uint Time;
+            public Point Location;
+        }
+
+        [DllImport("user32.dll")]
+        public static extern int PeekMessage(out NativeMessage message, IntPtr window, uint filterMin, uint filterMax, uint remove);
+
+        bool IsApplicationIdle()
+        {
+            NativeMessage result;
+            return PeekMessage(out result, IntPtr.Zero, (uint)0, (uint)0, (uint)0) == 0;
+        }
+
         public GameState CurState { get; set; }   // Keeps track of the current game state.
         Stopwatch GameTime { get; set; }
         TimeSpan LastUpdate { get; set; }
@@ -56,19 +71,22 @@ namespace MenuHandler
         /// <summary>
         /// Handles any updates necessary. Will run constantly.
         /// </summary>
-        public void UpdateMenu()
+        public void UpdateMenu(object sender, EventArgs e)
         {
-            TimeSpan total = GameTime.Elapsed;
-            TimeSpan elapsed = total - LastUpdate;
-            CurState.Update(elapsed);
-            LastUpdate = total;
-            fpsSeconds += elapsed.TotalSeconds;
-            fpsLoops++;
-            if (fpsSeconds >= 1.00)
+            while (IsApplicationIdle())
             {
-                Text = "FPS - " + fpsLoops;
-                fpsLoops = 0;
-                fpsSeconds = 0;
+                TimeSpan total = GameTime.Elapsed;
+                TimeSpan elapsed = total - LastUpdate;
+                CurState.Update(elapsed);
+                LastUpdate = total;
+                fpsSeconds += elapsed.TotalSeconds;
+                fpsLoops++;
+                if (fpsSeconds >= 1.00)
+                {
+                    Text = "FPS - " + fpsLoops;
+                    fpsLoops = 0;
+                    fpsSeconds = 0;
+                }
             }
         }
 
@@ -78,11 +96,12 @@ namespace MenuHandler
         /// <param name="e">Paint Args</param>
         protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
         {
-            if (BackgroundImage != null)
-            {
-                CurState.Graphics = e.Graphics;
-                e.Graphics.DrawImage(BackgroundImage, DisplayRectangle);
-            }
+            base.OnPaintBackground(e);
+            //if (BackgroundImage != null)
+            //{
+            //    CurState.Graphics = e.Graphics;
+            //    e.Graphics.DrawImage(BackgroundImage, DisplayRectangle);
+            //}
         }
 
         /// <summary>
