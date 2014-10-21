@@ -77,6 +77,7 @@ namespace OpenSourceParty
             switch (button.Name)
             {
                 case "Random Game":
+                    Destroy();
                     fileMan.RandomGame(Manager, this, padMan);
                     break;
                 case "List Games":

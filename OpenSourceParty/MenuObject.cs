@@ -127,6 +127,14 @@ namespace MenuHandler
             ReleaseSound = releaseSoundLocation;
         }
 
+        public void Dispose()
+        {
+            manager.MouseDown -= MouseDown;
+            manager.MouseUp -= MouseUp;
+            Z = 1000.00;
+            ZVel = 0.00;
+        }
+
         /// <summary>
         /// A special override of the Sprite's Intersects() method.
         /// This Intersects() method takes no parameters and assumes you want to check if the mouse is over the button.
@@ -180,7 +188,10 @@ namespace MenuHandler
         /// <param name="m"></param>
         public virtual void MouseDown(object sender, MouseEventArgs m)
         {
-            MouseClicked = true;
+            if (!menu.Joystick)
+            {
+                MouseClicked = true;
+            }
         }
 
         /// <summary>
@@ -196,7 +207,10 @@ namespace MenuHandler
         /// <param name="m"></param>
         public virtual void MouseUp(object sender, MouseEventArgs m)
         {
-            MouseClicked = false;
+            if (!menu.Joystick)
+            {
+                MouseClicked = false;
+            }
         }
 
         /// <summary>

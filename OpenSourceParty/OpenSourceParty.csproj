@@ -73,8 +73,13 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FileHandler">
-      <HintPath>..\FileHandler\bin\Debug\FileHandler.dll</HintPath>
+    <Reference Include="FileHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\FileHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="GameAbstracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\GameAbstracts.dll</HintPath>
     </Reference>
     <Reference Include="GamepadHandler">
       <HintPath>..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>

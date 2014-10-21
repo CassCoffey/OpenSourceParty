@@ -79,14 +79,15 @@ namespace GameAbstracts
             Init();
         }
 
-        public GameAbstract() { }   
+        public GameAbstract() {  }   
 
         /// <summary>
-        /// Initialization method so that common code between the constructors is in one place, and thread-safe.
+        /// Initialization method so that common code between the constructors is in one place.
         /// </summary>
         public virtual void Init()
         {
             gameObjects = new List<GameObject>();
+            AssignMouseDelegates();
             for (int i = 0; i < padMan.Devices.Count; i++)
             {
                 if (padMan.Devices[i] != null)
@@ -99,6 +100,7 @@ namespace GameAbstracts
 
         public override void Restart()
         {
+            AssignMouseDelegates();
             for (int i = 0; i < padMan.Devices.Count; i++)
             {
                 if (padMan.Devices[i] != null)
@@ -113,11 +115,16 @@ namespace GameAbstracts
 
         public abstract void DestroyGamepadDelegates(GamepadState gamepad, int index);
 
+        public abstract void AssignMouseDelegates();
+
+        public abstract void DestroyMouseDelegates();
+
         /// <summary>
         /// Remove any outstanding menu pieces. Used when switching menus.
         /// </summary>
         public virtual void Destroy()
         {
+            DestroyMouseDelegates();
             for (int i = 0; i < padMan.Devices.Count; i++)
             {
                 if (padMan.Devices[i] != null)
@@ -126,6 +133,7 @@ namespace GameAbstracts
                 }
             }
             Manager.CurState = returnState;
+            gameObjects.Clear();
             returnState.Restart();
         }
 

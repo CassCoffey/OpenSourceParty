@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
+using System.Drawing;
 using GameAbstracts;
 
 namespace TestGame1
@@ -27,8 +29,11 @@ namespace TestGame1
         public override void Init()
         {
             base.Init();
-            Manager.Invalidate();
-            Console.WriteLine("Is Gam");
+            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
+            if (background != null)
+            {
+                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
+            }
         }
 
         public override void AssignGamepadDelegates(GamepadHandler.GamepadState gamepad, int index)
@@ -39,6 +44,21 @@ namespace TestGame1
         public override void DestroyGamepadDelegates(GamepadHandler.GamepadState gamepad, int index)
         {
             gamepad.aDelagate -= EndGame;
+        }
+
+        public override void AssignMouseDelegates()
+        {
+            Manager.MouseUp += new MouseEventHandler(MouseUp);
+        }
+
+        public override void DestroyMouseDelegates()
+        {
+            Manager.MouseUp -= MouseUp;
+        }
+
+        public void MouseUp(Object sender, EventArgs e)
+        {
+            EndGame(sender, e);
         }
 
         private void EndGame(Object sender, EventArgs e)

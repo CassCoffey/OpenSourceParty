@@ -157,7 +157,9 @@ namespace MenuHandler
         /// </summary>
         public override void Restart()
         {
+            InitButtons();
             JoystickMoved = false;
+            joystick = false;
             if (padMan[0] != null)
             {
                 padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
@@ -174,7 +176,9 @@ namespace MenuHandler
         /// </summary>
         public void Destroy()
         {
+            JoystickModeOff(this, EventArgs.Empty);
             menuObjects.Clear();
+            joystickIndex = 0;
             if (padMan[0] != null)
             {
                 padMan[0].lJoystickDelegate -= new GamepadState.JoystickDelegate(ThumbstickManage);
@@ -182,6 +186,10 @@ namespace MenuHandler
             }
             Manager.MouseMove -= JoystickModeOff;
             Manager.MouseUp -= CheckClick;
+            foreach (MenuObject menuObject in menuObjects)
+            {
+                menuObject.Dispose();
+            }
         }
 
         /// <summary>
@@ -208,11 +216,11 @@ namespace MenuHandler
         {
             if (joystick)
             {
+                menuObjects[joystickIndex].PadClicked = true;
                 if (menuObjects[joystickIndex].PadClicked == true && !padMan[0].A)
                 {
                     ButtonClicked(menuObjects[joystickIndex]);
                 }
-                menuObjects[joystickIndex].PadClicked = true;
             }
             JoystickMode();
         }
@@ -224,7 +232,10 @@ namespace MenuHandler
         {
             Cursor.Hide();
             joystick = true;
-            menuObjects[joystickIndex].Focus = true;
+            if (menuObjects.Count > 0 && menuObjects.Count >= joystickIndex)
+            {
+                menuObjects[joystickIndex].Focus = true;
+            }
         }
 
         /// <summary>
