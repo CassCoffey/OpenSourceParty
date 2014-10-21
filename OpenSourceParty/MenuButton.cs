@@ -30,6 +30,8 @@ namespace MenuHandler
     /// </summary>
     public class MenuButton : MenuObject
     {
+        Vector2 origin;
+        Vector2 offset;
         // Constructors and Methods
         /// <summary>
         /// The basic constructor for a button.
@@ -49,43 +51,43 @@ namespace MenuHandler
         /// <param name="j"></param>
         public override void GamepadInput(GamepadHandler.JoystickArgs j)
         {
-                // Check if the joystick is moved.
-                if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !menu.JoystickMoved)
-                {
-                    Vector2 origin = new Vector2((float)x + width, (float)y + height);
-                    Vector2 offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
-                    offset += origin;
+            // Check if the joystick is moved.
+            if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !menu.JoystickMoved)
+            {
+                origin = new Vector2((float)x + width, (float)y + height);
+                offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
+                offset += origin;
 
-                    MenuObject tempButton = null;
-                    int tempInt = menu.JoystickIndex;
-                    
-                    for (int i = 0; i < menu.MenuObjects.Count; i++)
+                MenuObject tempButton = null;
+                int tempInt = menu.JoystickIndex;
+
+                for (int i = 0; i < menu.MenuObjects.Count; i++)
+                {
+                    if (menu.MenuObjects[i].Intersects(origin, offset) && i != menu.JoystickIndex)
                     {
-                        if (menu.MenuObjects[i].Intersects(origin, offset) && i != menu.JoystickIndex)
+                        if (tempButton != null && menu.MenuObjects[menu.JoystickIndex].Distance(tempButton.position) > menu.MenuObjects[menu.JoystickIndex].Distance(menu.MenuObjects[i].position))
                         {
-                            if (tempButton != null && menu.MenuObjects[menu.JoystickIndex].Distance(tempButton.position) > menu.MenuObjects[menu.JoystickIndex].Distance(menu.MenuObjects[i].position))
-                            {
-                                tempButton = menu.MenuObjects[i];
-                                tempInt = i;
-                            }
-                            else if (tempButton == null)
-                            {
-                                tempButton = menu.MenuObjects[i];
-                                tempInt = i;
-                            }
+                            tempButton = menu.MenuObjects[i];
+                            tempInt = i;
+                        }
+                        else if (tempButton == null)
+                        {
+                            tempButton = menu.MenuObjects[i];
+                            tempInt = i;
                         }
                     }
+                }
 
-                    menu.MenuObjects[menu.JoystickIndex].Focus = false;
-                    menu.MenuObjects[menu.JoystickIndex].PadClicked = false;
-                    menu.JoystickIndex = tempInt;
-                    menu.MenuObjects[menu.JoystickIndex].Focus = true;
-                    menu.JoystickMoved = true;
-                }
-                else if (j.thumbstick.y == 0 && j.thumbstick.x == 0)
-                {
-                    menu.JoystickMoved = false;
-                }
+                menu.MenuObjects[menu.JoystickIndex].Focus = false;
+                menu.MenuObjects[menu.JoystickIndex].PadClicked = false;
+                menu.JoystickIndex = tempInt;
+                menu.MenuObjects[menu.JoystickIndex].Focus = true;
+                menu.JoystickMoved = true;
+            }
+            else if (j.thumbstick.y <= 0.1 && j.thumbstick.y >= -0.1 && j.thumbstick.x <= 0.1 && j.thumbstick.x >= -0.1)
+            {
+                menu.JoystickMoved = false;
+            }
         }
 
         /// <summary>

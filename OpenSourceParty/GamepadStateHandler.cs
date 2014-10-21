@@ -18,8 +18,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SlimDX;
-using SlimDX.XInput;
+using OpenTK;
+using OpenTK.Input;
 
 namespace GamepadHandler
 {
@@ -27,9 +27,10 @@ namespace GamepadHandler
     /// Based on the GamepadState Class By Renaud Bedard.
     /// Modifications by Sean Coffey
     /// </summary>
-    public class GamepadState
+    public class GamepadStateHandler
     {
         // Fields
+        // Public delegates for use with the GamepadState class.
         public GamepadDelegate aDelagate;
         public GamepadDelegate bDelagate;
         public GamepadDelegate xDelagate;
@@ -46,15 +47,15 @@ namespace GamepadHandler
         public JoystickDelegate rJoystickDelegate;
         public JoystickDelegate lJoystickDelegate;
 
-        // Public delegates for use with the GamepadState class.
+        // Delegates
         public delegate void GamepadDelegate(object sender, EventArgs e);
         public delegate void JoystickDelegate(object sender, JoystickArgs jArgs);
         public delegate void DPadDelegate(object sender, DPadArgs dArgs);
 
-        private Controller controller;
-        private UserIndex userIndex;
-
-        uint lastPacket;
+        // Management of states
+        private int gamepadNum;
+        private GamePadState state;
+        private GamePadState lastState;
 
         public DPadState DPad { get; private set; }
         public ThumbstickState LeftStick { get; private set; }
@@ -95,16 +96,14 @@ namespace GamepadHandler
 
         public bool Connected
         {
-            get { return controller.IsConnected; }
+            get { return GamePad.GetState(gamepadNum).IsConnected; }
         }
 
 
         // Constructors and Methods
-        public GamepadState(UserIndex index)
+        public GamepadStateHandler(int iGamepadNum)
         {
-
-            userIndex = index;
-            controller = new Controller(userIndex);
+            gamepadNum = iGamepadNum;
         }
 
         /// <summary>
@@ -114,11 +113,7 @@ namespace GamepadHandler
         /// <param name="rightMotor">Right motor strength.</param>
         public void Vibrate(float leftMotor, float rightMotor)
         {
-            controller.SetVibration(new Vibration
-            {
-                LeftMotorSpeed = (ushort)(MathHelper.Saturate(leftMotor) * ushort.MaxValue),
-                RightMotorSpeed = (ushort)(MathHelper.Saturate(rightMotor) * ushort.MaxValue)
-            });
+            GamePad.SetVibration(gamepadNum, leftMotor, rightMotor);
         }
 
         /// <summary>
@@ -130,23 +125,22 @@ namespace GamepadHandler
             if (!Connected) return;
 
             // If same packet, nothing to update
-            State state = controller.GetState();
+            state = GamePad.GetState(gamepadNum);
 
-            var gamepadState = state.Gamepad;
-            if (state.PacketNumber == lastPacket)
+            if (state.Equals(lastState))
             {
                 return;
             }
-            lastPacket = state.PacketNumber;
+            lastState = state;
 
             // Shoulders
-            LeftShoulder = (gamepadState.Buttons & GamepadButtonFlags.LeftShoulder) != 0;
+            LeftShoulder = (state.Buttons.LeftShoulder == ButtonState.Pressed);
             if (lBumpDelagate != null && LeftShoulder != LeftShoulderPrev)
             {
                 lBumpDelagate(this, EventArgs.Empty);
                 LeftShoulderPrev = LeftShoulder;
             }
-            RightShoulder = (gamepadState.Buttons & GamepadButtonFlags.RightShoulder) != 0;
+            RightShoulder = (state.Buttons.RightShoulder == ButtonState.Pressed);
             if (rBumpDelagate != null && RightShoulder != RightShoulderPrev)
             {
                 rBumpDelagate(this, EventArgs.Empty);
@@ -154,13 +148,13 @@ namespace GamepadHandler
             }
 
             // Triggers
-            LeftTrigger = gamepadState.LeftTrigger / (float)byte.MaxValue;
+            LeftTrigger = state.Triggers.Left / (float)byte.MaxValue;
             if (lTriggerDelagate != null && LeftTrigger != LeftTriggerPrev)
             {
                 lTriggerDelagate(this, EventArgs.Empty);
                 LeftTriggerPrev = LeftTrigger;
             }
-            RightTrigger = gamepadState.RightTrigger / (float)byte.MaxValue;
+            RightTrigger = state.Triggers.Right / (float)byte.MaxValue;
             if (rTriggerDelagate != null && RightTrigger != RightTriggerPrev)
             {
                 rTriggerDelagate(this, EventArgs.Empty);
@@ -168,42 +162,42 @@ namespace GamepadHandler
             }
 
             // Buttons
-            Start = (gamepadState.Buttons & GamepadButtonFlags.Start) != 0;
+            Start = state.Buttons.Start == ButtonState.Pressed;
             if (startDelagate != null && Start != StartPrev)
             {
                 startDelagate(this, EventArgs.Empty);
                 StartPrev = Start;
             }
 
-            Select = (gamepadState.Buttons & GamepadButtonFlags.Back) != 0;
+            Select = state.Buttons.Back == ButtonState.Pressed;
             if (selectDelagate != null && Select != SelectPrev)
             {
                 selectDelagate(this, EventArgs.Empty);
                 SelectPrev = Select;
             }
 
-            A = (gamepadState.Buttons & GamepadButtonFlags.A) != 0;
+            A = state.Buttons.A == ButtonState.Pressed;
             if (aDelagate != null && A != APrev)
             {
                 aDelagate(this, EventArgs.Empty);
                 APrev = A;
             }
 
-            B = (gamepadState.Buttons & GamepadButtonFlags.B) != 0;
+            B = state.Buttons.B == ButtonState.Pressed;
             if (bDelagate != null && B != BPrev)
             {
                 bDelagate(this, EventArgs.Empty);
                 BPrev = B;
             }
 
-            X = (gamepadState.Buttons & GamepadButtonFlags.X) != 0;
+            X = state.Buttons.X == ButtonState.Pressed;
             if (xDelagate != null && X != XPrev)
             {
                 xDelagate(this, EventArgs.Empty);
                 XPrev = X;
             }
 
-            Y = (gamepadState.Buttons & GamepadButtonFlags.Y) != 0;
+            Y = state.Buttons.Y == ButtonState.Pressed;
             if (yDelagate != null && Y != YPrev)
             {
                 yDelagate(this, EventArgs.Empty);
@@ -211,10 +205,7 @@ namespace GamepadHandler
             }
 
             // D-Pad
-            DPad = new DPadState((gamepadState.Buttons & GamepadButtonFlags.DPadUp) != 0,
-                                 (gamepadState.Buttons & GamepadButtonFlags.DPadDown) != 0,
-                                 (gamepadState.Buttons & GamepadButtonFlags.DPadLeft) != 0,
-                                 (gamepadState.Buttons & GamepadButtonFlags.DPadRight) != 0);
+            DPad = new DPadState(state.DPad.IsUp, state.DPad.IsDown, state.DPad.IsLeft, state.DPad.IsRight);
             if (dPadDelegate != null && !DPad.Equals(DPadPrev))
             {
                 DPadArgs dArgs = new DPadArgs(DPad);
@@ -223,9 +214,7 @@ namespace GamepadHandler
             }
 
             // Thumbsticks
-            LeftStick = new ThumbstickState(
-                Normalize(gamepadState.LeftThumbX, gamepadState.LeftThumbY, Gamepad.GamepadLeftThumbDeadZone),
-                (gamepadState.Buttons & GamepadButtonFlags.LeftThumb) != 0);
+            LeftStick = new ThumbstickState(state.ThumbSticks.Left.Yx, state.Buttons.LeftStick == ButtonState.Pressed);
             if (lJoyClickDelagate != null)
             {
                 lJoyClickDelagate(this, EventArgs.Empty);
@@ -237,9 +226,7 @@ namespace GamepadHandler
                 LeftStickPrev = LeftStick;
             }
 
-            RightStick = new ThumbstickState(
-                Normalize(gamepadState.RightThumbX, gamepadState.RightThumbY, Gamepad.GamepadRightThumbDeadZone),
-                (gamepadState.Buttons & GamepadButtonFlags.RightThumb) != 0);
+            RightStick = new ThumbstickState(state.ThumbSticks.Right.Yx, state.Buttons.RightStick == ButtonState.Pressed);
             if (rJoyClickDelagate != null)
             {
                 rJoyClickDelagate(this, EventArgs.Empty);
@@ -262,7 +249,7 @@ namespace GamepadHandler
         static Vector2 Normalize(short rawX, short rawY, short threshold)
         {
             var value = new Vector2(rawX, rawY);
-            var magnitude = value.Length();
+            var magnitude = value.Length;
             var direction = value / (magnitude == 0 ? 1 : magnitude);
 
             var normalizedMagnitude = 0.0f;
@@ -304,8 +291,8 @@ namespace GamepadHandler
             {
                 Clicked = clicked;
                 Position = position;
-                x = position.X;
-                y = position.Y;
+                x = position.Y;
+                y = position.X;
             }
             public override string ToString()
             {

@@ -36,12 +36,12 @@ namespace TestGame1
             }
         }
 
-        public override void AssignGamepadDelegates(GamepadHandler.GamepadState gamepad, int index)
+        public override void AssignGamepadDelegates(GamepadHandler.GamepadStateHandler gamepad, int index)
         {
             gamepad.aDelagate += EndGame;
         }
 
-        public override void DestroyGamepadDelegates(GamepadHandler.GamepadState gamepad, int index)
+        public override void DestroyGamepadDelegates(GamepadHandler.GamepadStateHandler gamepad, int index)
         {
             gamepad.aDelagate -= EndGame;
         }

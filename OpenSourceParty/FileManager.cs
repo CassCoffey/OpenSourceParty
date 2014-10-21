@@ -154,8 +154,11 @@ namespace FileHandler
 
             foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
             {
-                dynamic c = Activator.CreateInstance(type);   // Create an instance of that type...
-                (c as GameAbstract).Run(manager, padMan, this, state);
+                if (type.IsClass)
+                {
+                    dynamic c = Activator.CreateInstance(type);   // Create an instance of that type...
+                    (c as GameAbstract).Run(manager, padMan, this, state);
+                }
             }
         }
 

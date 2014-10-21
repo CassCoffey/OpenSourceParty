@@ -139,8 +139,8 @@ namespace MenuHandler
             menuObjects = new List<MenuObject>();
             if (padMan[0] != null)
             {
-                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
-                padMan[0].aDelagate += new GamepadState.GamepadDelegate(GamepadClick);
+                padMan[0].lJoystickDelegate += new GamepadStateHandler.JoystickDelegate(ThumbstickManage);
+                padMan[0].aDelagate += new GamepadStateHandler.GamepadDelegate(GamepadClick);
             }
             Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
             Manager.MouseUp += new MouseEventHandler(CheckClick);
@@ -158,8 +158,8 @@ namespace MenuHandler
             joystick = false;
             if (padMan[0] != null)
             {
-                padMan[0].lJoystickDelegate += new GamepadState.JoystickDelegate(ThumbstickManage);
-                padMan[0].aDelagate += new GamepadState.GamepadDelegate(GamepadClick);
+                padMan[0].lJoystickDelegate += new GamepadStateHandler.JoystickDelegate(ThumbstickManage);
+                padMan[0].aDelagate += new GamepadStateHandler.GamepadDelegate(GamepadClick);
             }
             Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
             Manager.MouseUp += new MouseEventHandler(CheckClick);
@@ -177,8 +177,8 @@ namespace MenuHandler
             joystickIndex = 0;
             if (padMan[0] != null)
             {
-                padMan[0].lJoystickDelegate -= new GamepadState.JoystickDelegate(ThumbstickManage);
-                padMan[0].aDelagate -= new GamepadState.GamepadDelegate(GamepadClick);
+                padMan[0].lJoystickDelegate -= new GamepadStateHandler.JoystickDelegate(ThumbstickManage);
+                padMan[0].aDelagate -= new GamepadStateHandler.GamepadDelegate(GamepadClick);
             }
             Manager.MouseMove -= JoystickModeOff;
             Manager.MouseUp -= CheckClick;
@@ -226,7 +226,7 @@ namespace MenuHandler
         /// </summary>
         private void JoystickMode()
         {
-            Cursor.Hide();
+            //Cursor.Hide();
             joystick = true;
             if (menuObjects.Count > 0 && menuObjects.Count >= joystickIndex)
             {

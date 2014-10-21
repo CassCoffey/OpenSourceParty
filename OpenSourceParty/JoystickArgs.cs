@@ -26,9 +26,9 @@ namespace GamepadHandler
     /// </summary>
     public class JoystickArgs : EventArgs
     {
-        public GamepadState.ThumbstickState thumbstick;
+        public GamepadStateHandler.ThumbstickState thumbstick;
 
-        public JoystickArgs(GamepadState.ThumbstickState state)
+        public JoystickArgs(GamepadStateHandler.ThumbstickState state)
         {
             thumbstick = state;
         }

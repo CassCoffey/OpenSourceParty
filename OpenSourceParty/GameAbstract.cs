@@ -107,9 +107,9 @@ namespace GameAbstracts
             Manager.Invalidate();
         }
 
-        public abstract void AssignGamepadDelegates(GamepadState gamepad, int index);
+        public abstract void AssignGamepadDelegates(GamepadStateHandler gamepad, int index);
 
-        public abstract void DestroyGamepadDelegates(GamepadState gamepad, int index);
+        public abstract void DestroyGamepadDelegates(GamepadStateHandler gamepad, int index);
 
         public abstract void AssignMouseDelegates();
 

@@ -18,26 +18,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using SlimDX;
-using SlimDX.XInput;
+using OpenTK;
+using OpenTK.Input;
 
 namespace GamepadHandler
 {
     public class GamepadManager
     {
         // Fields
-        private List<GamepadState> devices = new List<GamepadState>(4);   // List of devices that could be connected.
-        private List<GamepadState> activeDevices = new List<GamepadState>(4);   // List of devices that are connected.
+        private List<GamepadStateHandler> devices = new List<GamepadStateHandler>(4);   // List of devices that could be connected.
+        private List<GamepadStateHandler> activeDevices = new List<GamepadStateHandler>(4);   // List of devices that are connected.
 
         // the four default controllers
-        private GamepadState gamepadOne = new GamepadState(UserIndex.One);
-        private GamepadState gamepadTwo = new GamepadState(UserIndex.Two);
-        private GamepadState gamepadThree = new GamepadState(UserIndex.Three);
-        private GamepadState gamepadFour = new GamepadState(UserIndex.Four);
+        private GamepadStateHandler gamepadOne = new GamepadStateHandler(0);
+        private GamepadStateHandler gamepadTwo = new GamepadStateHandler(1);
+        private GamepadStateHandler gamepadThree = new GamepadStateHandler(2);
+        private GamepadStateHandler gamepadFour = new GamepadStateHandler(3);
 
 
         // Properties
-        public GamepadState this[int index]
+        public GamepadStateHandler this[int index]
         {
             get
             {
@@ -56,7 +56,7 @@ namespace GamepadHandler
             }
         }
 
-        public List<GamepadState> Devices
+        public List<GamepadStateHandler> Devices
         {
             get
             {
@@ -84,7 +84,7 @@ namespace GamepadHandler
         public void Update()
         {
             UpdateDevices();
-            foreach (GamepadState wrapper in devices)
+            foreach (GamepadStateHandler wrapper in devices)
             {
                 wrapper.Update();
             }

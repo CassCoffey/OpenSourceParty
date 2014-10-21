@@ -26,9 +26,9 @@ namespace GamepadHandler
         /// <summary>
         /// Event Arguments that contain a thumbstick state.
         /// </summary>
-        public GamepadState.DPadState dPad;
+        public GamepadStateHandler.DPadState dPad;
 
-        public DPadArgs(GamepadState.DPadState state)
+        public DPadArgs(GamepadStateHandler.DPadState state)
         {
             dPad = state;
         }

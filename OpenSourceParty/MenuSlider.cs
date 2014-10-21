@@ -119,7 +119,7 @@ namespace MenuHandler
                 menu.MenuObjects[menu.JoystickIndex].Focus = true;
                 menu.JoystickMoved = true;
             }
-            else if (j.thumbstick.y == 0 && j.thumbstick.x == 0)
+            else if (j.thumbstick.y <= 0.1 && j.thumbstick.y >= -0.1 && j.thumbstick.x <= 0.1 && j.thumbstick.x >= -0.1)
             {
                 menu.JoystickMoved = false;
             }

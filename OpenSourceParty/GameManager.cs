@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using OpenTK.Audio;
 
 namespace MenuHandler
 {
@@ -30,6 +31,7 @@ namespace MenuHandler
     /// </summary>
     public class GameManager : Form
     {
+        // Handles checking if the application is still idle.
         [StructLayout(LayoutKind.Sequential)]
         public struct NativeMessage
         {
@@ -50,6 +52,7 @@ namespace MenuHandler
             return PeekMessage(out result, IntPtr.Zero, (uint)0, (uint)0, (uint)0) == 0;
         }
 
+        // Properties
         public GameState CurState { get; set; }   // Keeps track of the current game state.
         Stopwatch GameTime { get; set; }
         TimeSpan LastUpdate { get; set; }
@@ -58,6 +61,7 @@ namespace MenuHandler
         double fpsSeconds = 0;
         int fpsLoops = 0;
 
+        // Constructors and Methods
         public GameManager(MenuAbstract iMenu)
         {
             CurState = iMenu;
@@ -70,6 +74,7 @@ namespace MenuHandler
 
         /// <summary>
         /// Handles any updates necessary. Will run constantly.
+        /// This should be hooked on to Application.Idle.
         /// </summary>
         public void UpdateMenu(object sender, EventArgs e)
         {
@@ -91,26 +96,12 @@ namespace MenuHandler
         }
 
         /// <summary>
-        /// Overrides the OnPaintBackground method, to support backgrounds.
-        /// </summary>
-        /// <param name="e">Paint Args</param>
-        protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
-        {
-            base.OnPaintBackground(e);
-            //if (BackgroundImage != null)
-            //{
-            //    CurState.Graphics = e.Graphics;
-            //    e.Graphics.DrawImage(BackgroundImage, DisplayRectangle);
-            //}
-        }
-
-        /// <summary>
         /// Plays a sound. MediaPlayer sucks and I am currently looking for an alternative.
         /// </summary>
         /// <param name="location">The file path to the sound.</param>
         public void PlaySound(String location)
         {
-
+            
         }
 
         public void OnSoundEnd(object sender, EventArgs e)
