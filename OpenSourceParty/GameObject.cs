@@ -20,7 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SpriteHandler;
 using System.Drawing;
-using MenuHandler;
+using System.Windows.Forms;
 
 namespace GameAbstracts
 {
@@ -36,8 +36,8 @@ namespace GameAbstracts
         public String Name { get; protected set; }
 
         // The parent form and menu.
-        protected GameManager manager;
-        protected MenuAbstract menu;
+        protected Form form;
+        protected GameAbstract game;
 
 
         //Constructors and Methods
@@ -49,14 +49,14 @@ namespace GameAbstracts
         /// <param name="y">The Y position.</param>
         /// <param name="startImage">The image to use for this button.</param>
         /// <param name="startName">The button's name, which will determine its function in the parent menu.</param>
-        /// <param name="parentMenu">The button's parent menu.</param>
+        /// <param name="parentGame">The button's parent menu.</param>
         /// <param name="pressSoundLocation">The file path for this button's press sound.</param>
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
-        public GameObject(int x, int y, Image startImage, String startName, MenuAbstract parentMenu) : base( x, y, startImage)
+        public GameObject(int x, int y, Image startImage, String startName, GameAbstract parentGame) : base( x, y, startImage)
         {
             Name = startName;
-            menu = parentMenu;
-            manager = menu.Manager;
+            game = parentGame;
+            form = game.Form;
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace GameAbstracts
             if (needsUpdate)
             {
                 InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
-                manager.InvalidateRectangles.Add(InvalidateRect);
-                menu.Manager.Invalidate(InvalidateRect);
+                //form.InvalidateRectangles.Add(InvalidateRect);
+                form.Invalidate(InvalidateRect);
             }
         }
 
@@ -80,8 +80,8 @@ namespace GameAbstracts
         {
             // Tell the GameManager to update graphics.
                 InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
-                manager.InvalidateRectangles.Add(InvalidateRect);
-                menu.Manager.Invalidate(InvalidateRect);
+                //form.InvalidateRectangles.Add(InvalidateRect);
+                form.Invalidate(InvalidateRect);
         }
 
         /// <summary>

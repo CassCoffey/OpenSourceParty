@@ -17,12 +17,19 @@ using System;
 using System.Text;
 using System.Threading;
 using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using OpenTK;
 using OpenTK.Audio;
+using OpenTK.Audio.OpenAL;
+using FileHandler;
+using GameAbstracts;
+using GamepadHandler;
+using GameStateClass;
 
 namespace MenuHandler
 {
@@ -57,6 +64,8 @@ namespace MenuHandler
         Stopwatch GameTime { get; set; }
         TimeSpan LastUpdate { get; set; }
         public List<System.Drawing.Rectangle> InvalidateRectangles { get; set; }
+
+        public GamepadManager padMan;
 
         double fpsSeconds = 0;
         int fpsLoops = 0;
@@ -95,13 +104,27 @@ namespace MenuHandler
             }
         }
 
+        public void LoadGame()
+        {
+            var DLL = Assembly.LoadFile(Path.GetFullPath(FileManager.RandomFile()));   // Load that file.
+
+            foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
+            {
+                if (type.IsClass)
+                {
+                    dynamic c = Activator.CreateInstance(type);   // Create an instance of that type...
+                    (c as GameAbstract).Run(this, padMan, CurState);
+                    this.CurState = (c as GameAbstract);
+                }
+            }
+        }
+
         /// <summary>
         /// Plays a sound. MediaPlayer sucks and I am currently looking for an alternative.
         /// </summary>
         /// <param name="location">The file path to the sound.</param>
         public void PlaySound(String location)
         {
-            
         }
 
         public void OnSoundEnd(object sender, EventArgs e)

@@ -22,9 +22,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Timers;
 using SpriteHandler;
-using MenuHandler;
 using GamepadHandler;
 using FileHandler;
+using GameStateClass;
 using System.Diagnostics;
 using System.IO;
 
@@ -36,41 +36,20 @@ namespace GameAbstracts
     public abstract class GameAbstract : GameState
     {
         // Fields
-        protected List<GameObject> gameObjects;
-        protected FileManager fileMan;
         protected GameState returnState;
         public GamepadManager padMan;
-        public GameManager Manager { get; set; }
-        public TimeSpan Elapsed { get; private set; }
 
 
         // Properties
-        public List<GameObject> GameObjects
-        {
-            get
-            {
-                return gameObjects;
-            }
-        }
-        public FileManager FileMan
-        {
-            get
-            {
-                return fileMan;
-            }
-            protected set
-            {
-                fileMan = value;
-            }
-        }
+        public Form Form { get; set; }
+        public TimeSpan Elapsed { get; private set; }
+        public List<GameObject> GameObjects { get; protected set; }
 
         // Constructors and Methods
-        public void Run(GameManager iManager, GamepadManager iPadMan, FileManager iFileMan, GameState iReturnState)
+        public void Run(Form iForm, GamepadManager iPadMan, GameState iReturnState)
         {
-            Manager = iManager;
-            Manager.CurState = this;
+            Form = iForm;
             padMan = iPadMan;
-            fileMan = iFileMan;
             returnState = iReturnState;
             Init();
         }
@@ -82,7 +61,7 @@ namespace GameAbstracts
         /// </summary>
         public virtual void Init()
         {
-            gameObjects = new List<GameObject>();
+            GameObjects = new List<GameObject>();
             AssignMouseDelegates();
             for (int i = 0; i < padMan.Devices.Count; i++)
             {
@@ -91,7 +70,7 @@ namespace GameAbstracts
                     AssignGamepadDelegates(padMan.Devices[i], i);
                 }
             }
-            Manager.Invalidate();
+            Form.Invalidate();
         }
 
         public override void Restart()
@@ -104,7 +83,7 @@ namespace GameAbstracts
                     AssignGamepadDelegates(padMan.Devices[i], i);
                 }
             }
-            Manager.Invalidate();
+            Form.Invalidate();
         }
 
         public abstract void AssignGamepadDelegates(GamepadStateHandler gamepad, int index);
@@ -128,8 +107,7 @@ namespace GameAbstracts
                     DestroyGamepadDelegates(padMan.Devices[i], i);
                 }
             }
-            Manager.CurState = returnState;
-            gameObjects.Clear();
+            GameObjects.Clear();
             returnState.Restart();
         }
 
@@ -141,7 +119,7 @@ namespace GameAbstracts
         {
             padMan.Update();
             Elapsed = elapsedTime;
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Update(Elapsed.TotalMilliseconds);
             }
@@ -153,7 +131,7 @@ namespace GameAbstracts
         public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
             Graphics = graphics;
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 foreach (Rectangle rect in clipRectangles)
                 {
@@ -170,7 +148,7 @@ namespace GameAbstracts
         /// </summary>
         public override void DrawAll()
         {
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.AutoInvalidate();
             }

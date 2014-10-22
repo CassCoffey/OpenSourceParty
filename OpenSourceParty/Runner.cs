@@ -19,7 +19,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MenuHandler;
-using SpriteHandler;
 
 namespace OpenSourceParty
 {

@@ -53,7 +53,7 @@ namespace GamepadHandler
         public delegate void DPadDelegate(object sender, DPadArgs dArgs);
 
         // Management of states
-        private int gamepadNum;
+        public int GamepadNum { get; private set; }
         private GamePadState state;
         private GamePadState lastState;
 
@@ -96,14 +96,14 @@ namespace GamepadHandler
 
         public bool Connected
         {
-            get { return GamePad.GetState(gamepadNum).IsConnected; }
+            get { return GamePad.GetState(GamepadNum).IsConnected; }
         }
 
 
         // Constructors and Methods
         public GamepadStateHandler(int iGamepadNum)
         {
-            gamepadNum = iGamepadNum;
+            GamepadNum = iGamepadNum;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace GamepadHandler
         /// <param name="rightMotor">Right motor strength.</param>
         public void Vibrate(float leftMotor, float rightMotor)
         {
-            GamePad.SetVibration(gamepadNum, leftMotor, rightMotor);
+            GamePad.SetVibration(GamepadNum, leftMotor, rightMotor);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace GamepadHandler
             if (!Connected) return;
 
             // If same packet, nothing to update
-            state = GamePad.GetState(gamepadNum);
+            state = GamePad.GetState(GamepadNum);
 
             if (state.Equals(lastState))
             {

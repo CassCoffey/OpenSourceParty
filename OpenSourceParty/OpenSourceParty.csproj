@@ -84,6 +84,10 @@
     <Reference Include="GamepadHandler">
       <HintPath>..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>
+    <Reference Include="GameStateClass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
+    </Reference>
     <Reference Include="MenuManager">
       <HintPath>..\MenuManager\MenuManager\bin\Debug\MenuManager.dll</HintPath>
     </Reference>

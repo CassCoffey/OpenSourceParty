@@ -32,12 +32,6 @@ namespace OpenSourceParty
         // Constructors and Methods
         public MainMenu(String name) : base(name)
         {
-            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
-            if (background != null)
-            {
-                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
-                Manager.BackgroundImageLayout = ImageLayout.Stretch;
-            }
             InitButtons();
             Manager.Width = 640;
             Manager.Height = 480;
@@ -46,10 +40,14 @@ namespace OpenSourceParty
             Application.Idle += new EventHandler(Manager.UpdateMenu);
         }
 
-        public MainMenu(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan) : base(name, iManager, iPadMan, iFileMan)
+        public MainMenu(String name, GameManager iManager, GamepadManager iPadMan) : base(name, iManager, iPadMan)
         {
             InitButtons();
-            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
+        }
+
+        public override void InitBackground()
+        {
+            String background = FileManager.RandomFile(FileManager.BackgroundDir, FileManager.ImageExtension);
             if (background != null)
             {
                 Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
@@ -78,17 +76,17 @@ namespace OpenSourceParty
             {
                 case "Random Game":
                     Destroy();
-                    fileMan.RandomGame(Manager, this, padMan);
+                    //(Manager, this, padMan);
                     break;
                 case "List Games":
                     Console.WriteLine("Games:");
-                    fileMan.printFileList(fileMan.MinigameDir, fileMan.GameExtension);
+                    FileManager.printFileList(FileManager.MinigameDir, FileManager.GameExtension);
                     Console.WriteLine("Backgrounds:");
-                    fileMan.printFileList(fileMan.BackgroundDir, fileMan.ImageExtension);
+                    FileManager.printFileList(FileManager.BackgroundDir, FileManager.ImageExtension);
                     break;
                 case "Options":
                     Destroy();
-                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", Manager, padMan, fileMan);
+                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", Manager, padMan);
                     break;
                 case "Exit":
                     Application.Exit();

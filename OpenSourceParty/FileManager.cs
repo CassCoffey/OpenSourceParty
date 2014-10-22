@@ -25,16 +25,13 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using GameAbstracts;
-using MenuHandler;
-using GamepadHandler;
 
 namespace FileHandler
 {
-    public class FileManager
+    public static class FileManager
     {
         // Fields
-        private List<String> filePaths = new List<String>();   // List of files that were found using directorySearch.
+        private static List<String> filePaths = new List<String>();   // List of files that were found using directorySearch.
         private const String GAMEEXTENSION = "*.mng";   // The default minigame extension.
         private const String IMAGEEXTENSION = "*.jpg";   // The default minigame extension.
         private const String MINIGAMEDIR = ".\\MiniGames";   // The default minigame directory.
@@ -44,53 +41,39 @@ namespace FileHandler
 
 
         // Properties
-        public String GameExtension
+        public static String GameExtension
         {
             get
             {
                 return GAMEEXTENSION;
             }
         }
-        public String ImageExtension
+        public static String ImageExtension
         {
             get
             {
                 return IMAGEEXTENSION;
             }
         }
-        public String MinigameDir
+        public static String MinigameDir
         {
             get
             {
                 return MINIGAMEDIR;
             }
         }
-        public String BackgroundDir
+        public static String BackgroundDir
         {
             get
             {
                 return BACKGROUNDDIR;
             }
         }
-        public String ImageDir
+        public static String ImageDir
         {
             get
             {
                 return IMAGEDIR;
-            }
-        }
-        public String this[int index]
-        {
-            get
-            {
-                if (index >= 0 && index <= filePaths.Count)
-                {
-                    return filePaths[index];
-                }
-                else
-                {
-                    return null;
-                }
             }
         }
 
@@ -100,7 +83,7 @@ namespace FileHandler
         /// Finds and runs a random game in the specified directory.
         /// </summary>
         /// <param name="dir">The directory to search.</param>
-        public String RandomFile(String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
+        public static String RandomFile(String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
         {
             filePaths.Clear();
             directorySearch(dir, ext);
@@ -118,7 +101,7 @@ namespace FileHandler
         /// <param name="dir">The directory to search in.</param>
         /// <param name="ext">The extension of the file.</param>
         /// <returns>The path of the file, if found.</returns>
-        public String NamedFile(String name, String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
+        public static String NamedFile(String name, String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
         {
             filePaths.Clear();
             directorySearch(dir, ext);
@@ -137,37 +120,11 @@ namespace FileHandler
         }
 
         /// <summary>
-        /// Finds a random game file and runs it.
-        /// </summary>
-        /// <param name="dir">The directory to search for the game in.</param>
-        /// <param name="ext">The extension to search for.</param>
-        public void RandomGame(GameManager manager, GameState state, GamepadManager padMan, String dir = MINIGAMEDIR, String ext = GAMEEXTENSION)
-        {
-            String randomGame = RandomFile(dir, ext);
-
-            if (filePaths.Count == 0)
-            {
-                return;
-            }
-
-            var DLL = Assembly.LoadFile(Path.GetFullPath(randomGame));   // Load that file.
-
-            foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
-            {
-                if (type.IsClass)
-                {
-                    dynamic c = Activator.CreateInstance(type);   // Create an instance of that type...
-                    (c as GameAbstract).Run(manager, padMan, this, state);
-                }
-            }
-        }
-
-        /// <summary>
         /// Recursively search directories for the specified file type.
         /// </summary>
         /// <param name="dir">The directory to search.</param>
         /// <param name="ext">The extension to search for.</param>
-        private void directorySearch(String dir, String ext = "*")
+        private static void directorySearch(String dir, String ext = "*")
         {
             try
             {
@@ -192,7 +149,7 @@ namespace FileHandler
         /// <param name="name">The name to search for.</param>
         /// <param name="dir">The directory to begin searching in.</param>
         /// <param name="ext">The extension of the file.</param>
-        private void directorySearch(String name, String dir, String ext = "*")
+        private static void directorySearch(String name, String dir, String ext = "*")
         {
             try
             {
@@ -219,7 +176,7 @@ namespace FileHandler
         /// </summary>
         /// <param name="dir">The directory to search.</param>
         /// <param name="ext">The extension to search for.</param>
-        public void printFileList(String dir, String ext = "*")
+        public static void printFileList(String dir, String ext = "*")
         {
             filePaths.Clear();
             directorySearch(dir, ext);

@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using System.Timers;
 using SpriteHandler;
 using GamepadHandler;
+using GameStateClass;
 using FileHandler;
 using System.Diagnostics;
 using System.IO;
@@ -36,7 +37,6 @@ namespace MenuHandler
     {
         // Fields
         protected List<MenuObject> menuObjects;
-        protected FileManager fileMan;
         public GameManager Manager { get; set; }
         public TimeSpan Elapsed { get; private set; }
 
@@ -84,17 +84,6 @@ namespace MenuHandler
                 return joystick;
             }
         }
-        public FileManager FileMan
-        {
-            get
-            {
-                return fileMan;
-            }
-            protected set
-            {
-                fileMan = value;
-            }
-        }
         
 
         // Constructors and Methods
@@ -102,10 +91,10 @@ namespace MenuHandler
         {
             Manager = new GameManager(this);
             Manager.Text = name;
+            Manager.padMan = padMan;
             menuObjects = new List<MenuObject>();
             padMan = new GamepadManager();
             padMan.Init();
-            fileMan = new FileManager();   // Instantiate a new file manager.
             Init();
         }
 
@@ -115,16 +104,13 @@ namespace MenuHandler
         /// <param name="name">The name of this menu.</param>
         /// <param name="iManager">The Game Manager to use.</param>
         /// <param name="iPadMan">The gamepad manager to use.</param>
-        /// <param name="iFileMan">The file manager to use.</param>
-        /// <param name="iGraphics">The Graphics to use.</param>
-        public MenuAbstract(String name, GameManager iManager, GamepadManager iPadMan, FileManager iFileMan)
+        public MenuAbstract(String name, GameManager iManager, GamepadManager iPadMan)
         {
             Manager = iManager;
             Manager.CurState = this;
             Manager.Text = name;
             menuObjects = new List<MenuObject>();
             padMan = iPadMan;
-            fileMan = iFileMan;
             Init();
         }
 
@@ -144,6 +130,7 @@ namespace MenuHandler
             }
             Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
             Manager.MouseUp += new MouseEventHandler(CheckClick);
+            InitBackground();
             Manager.Invalidate();
         }
 
@@ -163,6 +150,7 @@ namespace MenuHandler
             }
             Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
             Manager.MouseUp += new MouseEventHandler(CheckClick);
+            InitBackground();
             Manager.Invalidate();
             DrawAll();
         }
@@ -310,8 +298,8 @@ namespace MenuHandler
         /// <param name="name">The button's name.</param>
         public void MakeButton(int x, int y, String file, String name)
         {
-            Image image = Image.FromFile(fileMan.NamedFile(file, fileMan.ImageDir + "\\Buttons", fileMan.ImageExtension));
-            MenuButton button = new MenuButton(x, y, image, name, this, Path.GetFullPath(fileMan.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(fileMan.NamedFile("button_release", ".\\Sounds", "*.wav")));
+            Image image = Image.FromFile(FileManager.NamedFile(file, FileManager.ImageDir + "\\Buttons", FileManager.ImageExtension));
+            MenuButton button = new MenuButton(x, y, image, name, this, Path.GetFullPath(FileManager.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")));
             menuObjects.Add(button);
         }
 
@@ -324,8 +312,8 @@ namespace MenuHandler
         /// <param name="name">The slider's name.</param>
         public void MakeSlider(int x, int y, int length, String file, String name)
         {
-            Image image = Image.FromFile(fileMan.NamedFile(file, fileMan.ImageDir + "\\Buttons", fileMan.ImageExtension));
-            MenuSlider slider = new MenuSlider(x, y, length, image, name, this, Path.GetFullPath(fileMan.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(fileMan.NamedFile("button_release", ".\\Sounds", "*.wav")));
+            Image image = Image.FromFile(FileManager.NamedFile(file, FileManager.ImageDir + "\\Buttons", FileManager.ImageExtension));
+            MenuSlider slider = new MenuSlider(x, y, length, image, name, this, Path.GetFullPath(FileManager.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")));
             menuObjects.Add(slider);
         }
 
@@ -361,5 +349,7 @@ namespace MenuHandler
         /// </summary>
         /// <param name="button">The button that was pressed.</param>
         public abstract void ButtonClicked(MenuObject button);
+
+        public abstract void InitBackground();
     }
 }

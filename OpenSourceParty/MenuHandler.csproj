@@ -69,8 +69,15 @@
     <Reference Include="FileHandler">
       <HintPath>..\..\FileHandler\bin\Debug\FileHandler.dll</HintPath>
     </Reference>
+    <Reference Include="GameAbstracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\GameAbstracts.dll</HintPath>
+    </Reference>
     <Reference Include="GamepadHandler">
       <HintPath>..\..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="GameStateClass">
+      <HintPath>..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
@@ -95,7 +102,6 @@
     <Compile Include="GameManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameState.cs" />
     <Compile Include="MenuButton.cs" />
     <Compile Include="MenuAbstract.cs" />
     <Compile Include="MenuObject.cs" />

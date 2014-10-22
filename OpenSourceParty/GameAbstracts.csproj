@@ -36,6 +36,9 @@
     <Reference Include="GamepadHandler">
       <HintPath>..\..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>
+    <Reference Include="GameStateClass">
+      <HintPath>..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
+    </Reference>
     <Reference Include="MenuManager">
       <HintPath>..\..\MenuManager\MenuManager\bin\Debug\MenuManager.dll</HintPath>
     </Reference>

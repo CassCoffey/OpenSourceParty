@@ -26,14 +26,25 @@ namespace TestGame1
 {
     public class TestGame : GameAbstract
     {
+        PongPaddle paddleOne;
+        PongPaddle paddleTwo;
+        PongPaddle paddleThree;
+        PongPaddle paddleFour;
+
         public override void Init()
         {
             base.Init();
-            String background = fileMan.RandomFile(fileMan.BackgroundDir, fileMan.ImageExtension);
-            if (background != null)
-            {
-                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
-            }
+            Form.BackgroundImage = null;
+            Form.BackColor = Color.Black;
+            paddleOne = new PongPaddle(Form.Width / 2, 10, 1, this);
+            paddleTwo = new PongPaddle(Form.Width / 2, 10, 1, this);
+            paddleThree = new PongPaddle(Form.Width / 2, 10, 1, this);
+            paddleFour = new PongPaddle(Form.Width / 2, 10, 1, this);
+            GameObjects.Add(paddleOne);
+            GameObjects.Add(paddleTwo);
+            GameObjects.Add(paddleThree);
+            GameObjects.Add(paddleFour);
+            Form.Invalidate();
         }
 
         public override void AssignGamepadDelegates(GamepadHandler.GamepadStateHandler gamepad, int index)
@@ -48,12 +59,12 @@ namespace TestGame1
 
         public override void AssignMouseDelegates()
         {
-            Manager.MouseUp += new MouseEventHandler(MouseUp);
+            Form.MouseUp += new MouseEventHandler(MouseUp);
         }
 
         public override void DestroyMouseDelegates()
         {
-            Manager.MouseUp -= MouseUp;
+            Form.MouseUp -= MouseUp;
         }
 
         public void MouseUp(Object sender, EventArgs e)

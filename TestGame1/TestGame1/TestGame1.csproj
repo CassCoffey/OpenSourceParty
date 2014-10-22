@@ -42,6 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\OpenSourceParty\bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>
+    <Reference Include="GameStateClass">
+      <HintPath>..\..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
+    </Reference>
     <Reference Include="MenuManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\OpenSourceParty\bin\Debug\MenuManager.dll</HintPath>
@@ -64,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PongPaddle.cs" />
     <Compile Include="TestGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
