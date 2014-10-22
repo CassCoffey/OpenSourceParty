@@ -36,7 +36,7 @@ namespace MenuHandler
     /// <summary>
     /// A class for managing the various menus and gamestates.
     /// </summary>
-    public class GameManager : Form
+    public class GameWindow : Form
     {
         // Handles checking if the application is still idle.
         [StructLayout(LayoutKind.Sequential)]
@@ -71,9 +71,9 @@ namespace MenuHandler
         int fpsLoops = 0;
 
         // Constructors and Methods
-        public GameManager(MenuAbstract iMenu)
+        public GameWindow(GameState iState)
         {
-            CurState = iMenu;
+            CurState = iState;
             InvalidateRectangles = new List<System.Drawing.Rectangle>(2);
             SetStyle(System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer | System.Windows.Forms.ControlStyles.UserPaint | System.Windows.Forms.ControlStyles.AllPaintingInWmPaint, true);
             GameTime = new Stopwatch();

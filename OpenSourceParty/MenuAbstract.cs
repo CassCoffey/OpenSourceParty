@@ -37,7 +37,7 @@ namespace MenuHandler
     {
         // Fields
         protected List<MenuObject> menuObjects;
-        public GameManager Manager { get; set; }
+        public GameWindow Manager { get; set; }
         public TimeSpan Elapsed { get; private set; }
 
         // Joystick related fields
@@ -89,7 +89,7 @@ namespace MenuHandler
         // Constructors and Methods
         public MenuAbstract(String name)
         {
-            Manager = new GameManager(this);
+            Manager = new GameWindow(this);
             Manager.Text = name;
             Manager.padMan = padMan;
             menuObjects = new List<MenuObject>();
@@ -104,7 +104,7 @@ namespace MenuHandler
         /// <param name="name">The name of this menu.</param>
         /// <param name="iManager">The Game Manager to use.</param>
         /// <param name="iPadMan">The gamepad manager to use.</param>
-        public MenuAbstract(String name, GameManager iManager, GamepadManager iPadMan)
+        public MenuAbstract(String name, GameWindow iManager, GamepadManager iPadMan)
         {
             Manager = iManager;
             Manager.CurState = this;

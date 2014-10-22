@@ -30,7 +30,7 @@ namespace OpenSourceParty
     class OptionsMenu : MenuAbstract
     {
         // Constructors and Methods
-        public OptionsMenu(String name, GameManager iManager, GamepadManager iPadMan) : base(name, iManager, iPadMan)
+        public OptionsMenu(String name, GameWindow iManager, GamepadManager iPadMan) : base(name, iManager, iPadMan)
         {
             InitButtons();
         }

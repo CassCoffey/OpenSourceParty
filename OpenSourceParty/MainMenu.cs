@@ -40,7 +40,7 @@ namespace OpenSourceParty
             Application.Idle += new EventHandler(Manager.UpdateMenu);
         }
 
-        public MainMenu(String name, GameManager iManager, GamepadManager iPadMan) : base(name, iManager, iPadMan)
+        public MainMenu(String name, GameWindow iManager, GamepadManager iPadMan) : base(name, iManager, iPadMan)
         {
             InitButtons();
         }

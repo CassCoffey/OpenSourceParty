@@ -91,7 +91,7 @@ namespace MenuHandler
         public String ReleaseSound { get; set; }
 
         // The parent form and menu.
-        protected GameManager manager;
+        protected GameWindow manager;
         protected MenuAbstract menu;
 
 
