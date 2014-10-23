@@ -20,7 +20,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
-using GameAbstracts;
+using MinigameLibrary;
+using GamepadHandler;
 
 namespace TestGame1
 {
@@ -47,12 +48,12 @@ namespace TestGame1
             Window.Invalidate();
         }
 
-        public override void AssignGamepadDelegates(GamepadHandler.GamepadStateHandler gamepad, int index)
+        public override void AssignGamepadDelegates(GamepadStateHandler gamepad, int index)
         {
             gamepad.aDelagate += EndGame;
         }
 
-        public override void DestroyGamepadDelegates(GamepadHandler.GamepadStateHandler gamepad, int index)
+        public override void DestroyGamepadDelegates(GamepadStateHandler gamepad, int index)
         {
             gamepad.aDelagate -= EndGame;
         }

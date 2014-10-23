@@ -58,7 +58,7 @@ namespace MinigameLibrary
     {
         public static void LoadRandomGame(GameWindow window)
         {
-            var DLL = Assembly.LoadFile(Path.GetFullPath(FileManager.RandomFile()));   // Load that file.
+            var DLL = Assembly.LoadFile(Path.GetFullPath(FileManager.RandomFile(FileManager.MinigameDir, "*.dll")));   // Load that file.
 
             foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
             {

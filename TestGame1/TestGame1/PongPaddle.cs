@@ -20,7 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
-using GameAbstracts;
+using MinigameLibrary;
 using FileHandler;
 
 namespace TestGame1

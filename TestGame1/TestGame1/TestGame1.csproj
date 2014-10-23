@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\OpenSourceParty\bin\Debug\MiniGames\TestGame1\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,28 +33,25 @@
     <Reference Include="FileHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\OpenSourceParty\bin\Debug\FileHandler.dll</HintPath>
-    </Reference>
-    <Reference Include="GameAbstracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\OpenSourceParty\bin\Debug\GameAbstracts.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="GamepadHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\OpenSourceParty\bin\Debug\GamepadHandler.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="GameStateClass">
-      <HintPath>..\..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
-    </Reference>
-    <Reference Include="MenuManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\OpenSourceParty\bin\Debug\MenuManager.dll</HintPath>
+    <Reference Include="MinigameLibrary">
+      <HintPath>..\..\OpenSourceParty\bin\Debug\MinigameLibrary.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SpriteHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\OpenSourceParty\bin\Debug\SpriteHandler.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
