@@ -73,22 +73,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FileHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\FileHandler.dll</HintPath>
-    </Reference>
-    <Reference Include="GamepadHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\GamepadHandler.dll</HintPath>
-    </Reference>
-    <Reference Include="GameStateClass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
-    </Reference>
-    <Reference Include="MenuManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MenuManager.dll</HintPath>
-    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
     </Reference>
@@ -115,6 +99,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MinigameLibrary\MinigameLibrary.csproj">
+      <Project>{4e64f80f-c032-402d-81f9-e7cbb1af7611}</Project>
+      <Name>MinigameLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="FileHandler.csproj">
+      <Project>{b8a1929e-a3e7-408a-a84a-b423e3483e38}</Project>
+      <Name>FileHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="GamepadHandler.csproj">
+      <Project>{5cd5e281-bdeb-413d-9cbc-48434da41c2c}</Project>
+      <Name>GamepadHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

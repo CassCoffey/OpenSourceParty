@@ -23,13 +23,12 @@ using System.Windows.Forms;
 using System.Timers;
 using SpriteHandler;
 using GamepadHandler;
-using GameStateClass;
 using FileHandler;
 using System.Diagnostics;
 using System.IO;
 using OpenTK;
 
-namespace MenuHandler
+namespace MinigameLibrary
 {
     /// <summary>
     /// A class that contains all of the essential methods for a menu class to be built off of.

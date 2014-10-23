@@ -22,7 +22,7 @@ using SpriteHandler;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace GameAbstracts
+namespace MinigameLibrary
 {
     public abstract class GameObject : Sprite
     {

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4B0CB0EB-E24B-4357-B379-31ABBB777670}</ProjectGuid>
+    <ProjectGuid>{4E64F80F-C032-402D-81F9-E7CBB1AF7611}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GameAbstracts</RootNamespace>
-    <AssemblyName>GameAbstracts</AssemblyName>
+    <RootNamespace>MinigameLibrary</RootNamespace>
+    <AssemblyName>MinigameLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,25 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FileHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\FileHandler.dll</HintPath>
-    </Reference>
-    <Reference Include="GamepadHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\GamepadHandler.dll</HintPath>
-    </Reference>
-    <Reference Include="GameStateClass">
-      <HintPath>..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
-    </Reference>
-    <Reference Include="MenuManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MenuManager.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
-    <Reference Include="SpriteHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\SpriteHandler.dll</HintPath>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,7 +46,29 @@
   <ItemGroup>
     <Compile Include="GameAbstract.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="GameWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuAbstract.cs" />
+    <Compile Include="MenuButton.cs" />
+    <Compile Include="MenuObject.cs" />
+    <Compile Include="MenuSlider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenSourceParty\FileHandler.csproj">
+      <Project>{b8a1929e-a3e7-408a-a84a-b423e3483e38}</Project>
+      <Name>FileHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenSourceParty\GamepadHandler.csproj">
+      <Project>{5cd5e281-bdeb-413d-9cbc-48434da41c2c}</Project>
+      <Name>GamepadHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenSourceParty\SpriteHandler.csproj">
+      <Project>{fa52368a-e4ef-4fbf-bfb9-7104165bedcb}</Project>
+      <Name>SpriteHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

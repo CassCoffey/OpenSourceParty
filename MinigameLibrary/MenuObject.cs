@@ -23,7 +23,7 @@ using System.Drawing;
 using SpriteHandler;
 using GamepadHandler;
 
-namespace MenuHandler
+namespace MinigameLibrary
 {
     /// <summary>
     /// Describes an object that can be displayed on a menu.

@@ -27,11 +27,9 @@ using OpenTK;
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using FileHandler;
-using GameAbstracts;
 using GamepadHandler;
-using GameStateClass;
 
-namespace MenuHandler
+namespace MinigameLibrary
 {
     /// <summary>
     /// A class for managing the various menus and gamestates.

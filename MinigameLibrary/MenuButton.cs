@@ -22,7 +22,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using OpenTK;
 
-namespace MenuHandler
+namespace MinigameLibrary
 {
     /// <summary>
     /// A special StateSprite made specifically to act as a button.

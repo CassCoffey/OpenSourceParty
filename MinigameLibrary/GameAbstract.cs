@@ -22,13 +22,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Timers;
 using GamepadHandler;
-using MenuHandler;
 using FileHandler;
-using GameStateClass;
 using System.Diagnostics;
 using System.IO;
 
-namespace GameAbstracts
+namespace MinigameLibrary
 {
     /// <summary>
     /// A class that contains all of the essential methods for a menu class to be built off of.
