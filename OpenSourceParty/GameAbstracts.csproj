@@ -30,21 +30,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FileHandler">
-      <HintPath>..\..\FileHandler\bin\Debug\FileHandler.dll</HintPath>
+    <Reference Include="FileHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\FileHandler.dll</HintPath>
     </Reference>
-    <Reference Include="GamepadHandler">
-      <HintPath>..\..\GamepadHandler\bin\Debug\GamepadHandler.dll</HintPath>
+    <Reference Include="GamepadHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\GamepadHandler.dll</HintPath>
     </Reference>
     <Reference Include="GameStateClass">
       <HintPath>..\GameStateClass\bin\Debug\GameStateClass.dll</HintPath>
     </Reference>
-    <Reference Include="MenuManager">
-      <HintPath>..\..\MenuManager\MenuManager\bin\Debug\MenuManager.dll</HintPath>
+    <Reference Include="MenuManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\MenuManager.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
-    <Reference Include="SpriteHandler">
-      <HintPath>..\..\SpriteHandler\SpriteHandler\bin\Debug\SpriteHandler.dll</HintPath>
+    <Reference Include="SpriteHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SpriteHandler.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

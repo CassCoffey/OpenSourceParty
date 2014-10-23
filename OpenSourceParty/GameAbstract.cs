@@ -21,7 +21,6 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Timers;
-using SpriteHandler;
 using GamepadHandler;
 using MenuHandler;
 using FileHandler;

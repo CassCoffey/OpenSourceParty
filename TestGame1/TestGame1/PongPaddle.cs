@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Forms;
 using GameAbstracts;
 using FileHandler;
 
@@ -28,7 +29,7 @@ namespace TestGame1
     {
         public int PlayerNum { get; private set; }
 
-        public PongPaddle(int x, int y, int iPlayer, GameAbstract game) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", ".\\MiniGames\\TestGame1\\Images", "*.jpg")), "Pong Paddle " + iPlayer, game)
+        public PongPaddle(int x, int y, int iPlayer, Form form) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", ".\\MiniGames\\TestGame1\\Images", "*.jpg")), "Pong Paddle " + iPlayer, form)
         {
             PlayerNum = iPlayer;
         }

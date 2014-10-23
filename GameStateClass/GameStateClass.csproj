@@ -30,13 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FileHandler">
+    <Reference Include="FileHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OpenSourceParty\bin\Debug\FileHandler.dll</HintPath>
     </Reference>
-    <Reference Include="GameAbstracts">
+    <Reference Include="GameAbstracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OpenSourceParty\bin\Debug\GameAbstracts.dll</HintPath>
     </Reference>
-    <Reference Include="MenuManager">
+    <Reference Include="MenuManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OpenSourceParty\bin\Debug\MenuManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />

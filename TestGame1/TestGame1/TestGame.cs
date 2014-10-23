@@ -36,10 +36,10 @@ namespace TestGame1
             base.Init();
             Window.BackgroundImage = null;
             Window.BackColor = Color.Black;
-            paddleOne = new PongPaddle(Window.Width / 2, 10, 1, this);
-            paddleTwo = new PongPaddle(Window.Width / 2, 10, 1, this);
-            paddleThree = new PongPaddle(Window.Width / 2, 10, 1, this);
-            paddleFour = new PongPaddle(Window.Width / 2, 10, 1, this);
+            paddleOne = new PongPaddle(Window.Width / 2, 10, 1, Window);
+            paddleTwo = new PongPaddle(Window.Width / 2, 10, 1, Window);
+            paddleThree = new PongPaddle(Window.Width / 2, 10, 1, Window);
+            paddleFour = new PongPaddle(Window.Width / 2, 10, 1, Window);
             GameObjects.Add(paddleOne);
             GameObjects.Add(paddleTwo);
             GameObjects.Add(paddleThree);
