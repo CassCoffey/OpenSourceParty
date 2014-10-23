@@ -29,8 +29,9 @@ namespace MenuHandler
     /// </summary>
     public class MenuButton : MenuObject
     {
-        Vector2 origin;
-        Vector2 offset;
+        Vector2 Origin { get; set; }
+        Vector2 Offset { get; set; }
+        Action action;
         // Constructors and Methods
         /// <summary>
         /// The basic constructor for a button.
@@ -42,51 +43,14 @@ namespace MenuHandler
         /// <param name="parentMenu">The button's parent menu.</param>
         /// <param name="pressSoundLocation">The file path for this button's press sound.</param>
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
-        public MenuButton(int x, int y, Image startImage, String startName, MenuAbstract parentMenu, String pressSoundLocation, String releaseSoundLocation) : base( x, y, startImage, startName, parentMenu, pressSoundLocation, releaseSoundLocation) {        }
-
-        /// <summary>
-        /// Handles gamepad input.
-        /// </summary>
-        /// <param name="j"></param>
-        public override void GamepadInput(GamepadHandler.JoystickArgs j)
+        public MenuButton(int x, int y, Image startImage, String startName, GameWindow window, String pressSoundLocation, String releaseSoundLocation, Action iAction) : base( x, y, startImage, startName, window, pressSoundLocation, releaseSoundLocation) 
         {
-            // Check if the joystick is moved.
-            if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !menu.JoystickMoved)
-            {
-                origin = new Vector2((float)x + width, (float)y + height);
-                offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
-                offset += origin;
+            action = iAction;
+        }
 
-                MenuObject tempButton = null;
-                int tempInt = menu.JoystickIndex;
-
-                for (int i = 0; i < menu.MenuObjects.Count; i++)
-                {
-                    if (menu.MenuObjects[i].Intersects(origin, offset) && i != menu.JoystickIndex)
-                    {
-                        if (tempButton != null && menu.MenuObjects[menu.JoystickIndex].Distance(tempButton.position) > menu.MenuObjects[menu.JoystickIndex].Distance(menu.MenuObjects[i].position))
-                        {
-                            tempButton = menu.MenuObjects[i];
-                            tempInt = i;
-                        }
-                        else if (tempButton == null)
-                        {
-                            tempButton = menu.MenuObjects[i];
-                            tempInt = i;
-                        }
-                    }
-                }
-
-                menu.MenuObjects[menu.JoystickIndex].Focus = false;
-                menu.MenuObjects[menu.JoystickIndex].PadClicked = false;
-                menu.JoystickIndex = tempInt;
-                menu.MenuObjects[menu.JoystickIndex].Focus = true;
-                menu.JoystickMoved = true;
-            }
-            else if (j.thumbstick.y <= 0.1 && j.thumbstick.y >= -0.1 && j.thumbstick.x <= 0.1 && j.thumbstick.x >= -0.1)
-            {
-                menu.JoystickMoved = false;
-            }
+        public void ClickButton()
+        {
+            action.Invoke();
         }
 
         /// <summary>
@@ -100,14 +64,14 @@ namespace MenuHandler
             if (Intersects() || Focus)
             {
                 // Check if the gamepad or mouse are clicked.
-                if (MouseClicked || PadClicked && menu.padMan[0].A)
+                if (MouseClicked || PadClicked && window.PadMan[0].A)
                 {
                     Hover = true;
                     releaseSoundBool = false;
                     ZVel -= 0.2 * time;
                     if (!pressSoundBool)   // Prevent Sound Spam
                     {
-                        manager.PlaySound(PressSound);
+                        window.PlaySound(PressSound);
                         pressSoundBool = true;
                     }
                 }
@@ -130,7 +94,7 @@ namespace MenuHandler
                     }
                     if (!releaseSoundBool)   // Prevent Sound Spam
                     {
-                        manager.PlaySound(ReleaseSound);
+                        window.PlaySound(ReleaseSound);
                         releaseSoundBool = true;
                     }
                 }

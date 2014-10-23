@@ -26,8 +26,9 @@ namespace OpenSourceParty
     {
         public static void Main()
         {
-            MainMenu mainMenu = new MainMenu("Open Source Party");
-            mainMenu.Manager.ShowDialog();
+            GameWindow window = new GameWindow();
+            window.AddState(new MainMenu("Open Source Party", window));
+            window.ShowDialog();
         }
     }
 }

@@ -37,7 +37,6 @@ namespace GameAbstracts
 
         // The parent form and menu.
         protected Form form;
-        protected GameAbstract game;
 
 
         //Constructors and Methods
@@ -52,11 +51,10 @@ namespace GameAbstracts
         /// <param name="parentGame">The button's parent menu.</param>
         /// <param name="pressSoundLocation">The file path for this button's press sound.</param>
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
-        public GameObject(int x, int y, Image startImage, String startName, GameAbstract parentGame) : base( x, y, startImage)
+        public GameObject(int x, int y, Image startImage, String startName, Form iForm) : base( x, y, startImage)
         {
             Name = startName;
-            game = parentGame;
-            form = game.Form;
+            form = iForm;
         }
 
         /// <summary>

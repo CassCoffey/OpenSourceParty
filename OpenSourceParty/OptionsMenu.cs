@@ -30,7 +30,7 @@ namespace OpenSourceParty
     class OptionsMenu : MenuAbstract
     {
         // Constructors and Methods
-        public OptionsMenu(String name, GameWindow iManager, GamepadManager iPadMan) : base(name, iManager, iPadMan)
+        public OptionsMenu(String name, GameWindow window) : base(name, window)
         {
             InitButtons();
         }
@@ -40,8 +40,8 @@ namespace OpenSourceParty
             String background = FileManager.RandomFile(FileManager.BackgroundDir, FileManager.ImageExtension);
             if (background != null)
             {
-                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
-                Manager.BackgroundImageLayout = ImageLayout.Stretch;
+                Window.BackgroundImage = Image.FromFile(background);   // Set the background image.
+                Window.BackgroundImageLayout = ImageLayout.Stretch;
             }
         }
 
@@ -50,39 +50,25 @@ namespace OpenSourceParty
         /// </summary>
         public override void InitButtons()
         {
-            MakeButton(10, 10, "button6", "Cool Option");
-            MakeButton(10, 300, "button5", "Main Menu");
+            MakeButton(10, 10, "button6", "Cool Option", new Action(() =>
+            {
+                if (Window.Width == 640)
+                {
+                    Window.Width = 1024;
+                    Window.Height = 768;
+                }
+                else if (Window.Width == 1024)
+                {
+                    Window.Width = 640;
+                    Window.Height = 480;
+                }
+            }));
+            MakeButton(10, 300, "button5", "Main Menu", new Action(() =>
+            {
+                Window.BackState();
+            }));
             MakeSlider(10, 150, 170, "slider1", "Slider");
             MakeSlider(10, 225, 170, "slider1", "Slider");
-        }
-
-        /// <summary>
-        /// Code to run when buttons are clicked.
-        /// </summary>
-        /// <param name="button">The button that was clicked.</param>
-        public override void ButtonClicked(MenuObject button)
-        {
-            switch (button.Name)
-            {
-                case "Cool Option":
-                    if (Manager.Width == 640)
-                    {
-                        Manager.Width = 1024;
-                        Manager.Height = 768;
-                    }
-                    else if (Manager.Width == 1024)
-                    {
-                        Manager.Width = 640;
-                        Manager.Height = 480;
-                    }
-                    break;
-                case "Main Menu":
-                    Destroy();
-                    MainMenu mainMenu = new MainMenu("Open Source Party", Manager, padMan);
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }

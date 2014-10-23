@@ -65,20 +65,46 @@ namespace MenuHandler
         TimeSpan LastUpdate { get; set; }
         public List<System.Drawing.Rectangle> InvalidateRectangles { get; set; }
 
-        public GamepadManager padMan;
+        public GamepadManager PadMan { get; set; }
+
+        public Stack<GameState> stateStack;
 
         double fpsSeconds = 0;
         int fpsLoops = 0;
 
         // Constructors and Methods
-        public GameWindow(GameState iState)
+        public GameWindow()
         {
-            CurState = iState;
+            stateStack = new Stack<GameState>(4);
+            PadMan = new GamepadManager();
+            PadMan.Init();
             InvalidateRectangles = new List<System.Drawing.Rectangle>(2);
             SetStyle(System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer | System.Windows.Forms.ControlStyles.UserPaint | System.Windows.Forms.ControlStyles.AllPaintingInWmPaint, true);
             GameTime = new Stopwatch();
             GameTime.Start();
             LastUpdate = new TimeSpan(0);
+        }
+
+        public void AddState(GameState state)
+        {
+            if (stateStack.Count == 0)
+            {
+                stateStack.Push(state);
+                CurState = stateStack.Peek();
+            }
+            else
+            {
+                CurState.Destroy();
+                stateStack.Push(state);
+                CurState = stateStack.Peek();
+            }
+        }
+
+        public void BackState()
+        {
+            stateStack.Pop().Destroy();
+            CurState = stateStack.Peek();
+            CurState.Restart();
         }
 
         /// <summary>
@@ -91,7 +117,10 @@ namespace MenuHandler
             {
                 TimeSpan total = GameTime.Elapsed;
                 TimeSpan elapsed = total - LastUpdate;
-                CurState.Update(elapsed);
+                if (CurState != null)
+                {
+                    CurState.Update(elapsed);
+                }
                 LastUpdate = total;
                 fpsSeconds += elapsed.TotalSeconds;
                 fpsLoops++;
@@ -104,20 +133,7 @@ namespace MenuHandler
             }
         }
 
-        public void LoadGame()
-        {
-            var DLL = Assembly.LoadFile(Path.GetFullPath(FileManager.RandomFile()));   // Load that file.
-
-            foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
-            {
-                if (type.IsClass)
-                {
-                    dynamic c = Activator.CreateInstance(type);   // Create an instance of that type...
-                    (c as GameAbstract).Run(this, padMan, CurState);
-                    this.CurState = (c as GameAbstract);
-                }
-            }
-        }
+        
 
         /// <summary>
         /// Plays a sound. MediaPlayer sucks and I am currently looking for an alternative.
@@ -152,7 +168,10 @@ namespace MenuHandler
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
             base.OnPaint(e);
-            CurState.Draw(e.Graphics, InvalidateRectangles);
+            if (CurState != null)
+            {
+                CurState.Draw(e.Graphics, InvalidateRectangles);
+            }
             InvalidateRectangles.Clear();
         }
     }

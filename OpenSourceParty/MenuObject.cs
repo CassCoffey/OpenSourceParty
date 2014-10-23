@@ -91,8 +91,7 @@ namespace MenuHandler
         public String ReleaseSound { get; set; }
 
         // The parent form and menu.
-        protected GameWindow manager;
-        protected MenuAbstract menu;
+        protected GameWindow window;
 
 
         //Constructors and Methods
@@ -107,13 +106,12 @@ namespace MenuHandler
         /// <param name="parentMenu">The button's parent menu.</param>
         /// <param name="pressSoundLocation">The file path for this button's press sound.</param>
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
-        public MenuObject(int x, int y, Image startImage, String startName, MenuAbstract parentMenu, String pressSoundLocation, String releaseSoundLocation) : base( x, y, startImage)
+        public MenuObject(int x, int y, Image startImage, String startName, GameWindow iWindow, String pressSoundLocation, String releaseSoundLocation) : base( x, y, startImage)
         {
             Name = startName;
-            menu = parentMenu;
-            manager = menu.Manager;
-            manager.MouseDown += MouseDown;
-            manager.MouseUp += MouseUp;
+            window = iWindow;
+            window.MouseDown += MouseDown;
+            window.MouseUp += MouseUp;
             Z = 1000.00;
             ZVel = 0.00;
             PressSound = pressSoundLocation;
@@ -122,8 +120,8 @@ namespace MenuHandler
 
         public void Dispose()
         {
-            manager.MouseDown -= MouseDown;
-            manager.MouseUp -= MouseUp;
+            window.MouseDown -= MouseDown;
+            window.MouseUp -= MouseUp;
             Z = 1000.00;
             ZVel = 0.00;
         }
@@ -135,18 +133,11 @@ namespace MenuHandler
         /// <returns>Returns true if the mouse is over the button.</returns>
         public virtual bool Intersects()
         {
-            if (!menu.Joystick)
+            if (Intersects(window.PointToClient(Cursor.Position)))
             {
-                if (Intersects(manager.PointToClient(Cursor.Position)))
-                {
-                    return true;
-                }
-                return false;
+                return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>
@@ -158,8 +149,8 @@ namespace MenuHandler
             if (needsUpdate)
             {
                 InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
-                manager.InvalidateRectangles.Add(InvalidateRect);
-                menu.Manager.Invalidate(InvalidateRect);
+                window.InvalidateRectangles.Add(InvalidateRect);
+                window.Invalidate(InvalidateRect);
             }
         }
 
@@ -169,9 +160,9 @@ namespace MenuHandler
         public virtual void AutoInvalidate()
         {
             // Tell the GameManager to update graphics.
-                InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
-                manager.InvalidateRectangles.Add(InvalidateRect);
-                menu.Manager.Invalidate(InvalidateRect);
+            InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
+            window.InvalidateRectangles.Add(InvalidateRect);
+            window.Invalidate(InvalidateRect);
         }
 
         /// <summary>
@@ -181,17 +172,8 @@ namespace MenuHandler
         /// <param name="m"></param>
         public virtual void MouseDown(object sender, MouseEventArgs m)
         {
-            if (!menu.Joystick)
-            {
-                MouseClicked = true;
-            }
+            MouseClicked = true;
         }
-
-        /// <summary>
-        /// Code that determines how the object handles Gamepad Input
-        /// </summary>
-        /// <param name="j"></param>
-        public abstract void GamepadInput(JoystickArgs j);
 
         /// <summary>
         /// Called when the left mouse button is released.
@@ -200,10 +182,7 @@ namespace MenuHandler
         /// <param name="m"></param>
         public virtual void MouseUp(object sender, MouseEventArgs m)
         {
-            if (!menu.Joystick)
-            {
-                MouseClicked = false;
-            }
+            MouseClicked = false;
         }
 
         /// <summary>

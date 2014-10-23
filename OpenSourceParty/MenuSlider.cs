@@ -49,7 +49,7 @@ namespace MenuHandler
 
 
         // Constructors and Methods
-        public MenuSlider(int x, int y, int iLength, Image Slide, String name, MenuAbstract menu, String pressSound, String releaseSound) : base(x, y, Slide, name, menu, pressSound, releaseSound)
+        public MenuSlider(int x, int y, int iLength, Image Slide, String name, GameWindow window, String pressSound, String releaseSound) : base(x, y, Slide, name, window, pressSound, releaseSound)
         {
             basePos = new Point(x + width, y);
             position = new Point(x, y);
@@ -73,55 +73,6 @@ namespace MenuHandler
             else
             {
                 x = offset;
-            }
-        }
-
-        /// <summary>
-        /// Handles gamepad input.
-        /// </summary>
-        /// <param name="j"></param>
-        public override void GamepadInput(GamepadHandler.JoystickArgs j)
-        {
-            if (PadClicked && menu.padMan[0].A)
-            {
-                return;
-            }
-            // Check if the joystick is moved.
-            else if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !menu.JoystickMoved)
-            {
-                Vector2 origin = new Vector2(BasePos.X + width + (length/2), BasePos.Y + height);
-                Vector2 offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
-                offset += origin;
-
-                MenuObject tempButton = null;
-                int tempInt = menu.JoystickIndex;
-
-                for (int i = 0; i < menu.MenuObjects.Count; i++)
-                {
-                    if (menu.MenuObjects[i].Intersects(origin, offset) && i != menu.JoystickIndex)
-                    {
-                        if (tempButton != null && menu.MenuObjects[menu.JoystickIndex].Distance(tempButton.position) > menu.MenuObjects[menu.JoystickIndex].Distance(menu.MenuObjects[i].position))
-                        {
-                            tempButton = menu.MenuObjects[i];
-                            tempInt = i;
-                        }
-                        else if (tempButton == null)
-                        {
-                            tempButton = menu.MenuObjects[i];
-                            tempInt = i;
-                        }
-                    }
-                }
-
-                menu.MenuObjects[menu.JoystickIndex].Focus = false;
-                menu.MenuObjects[menu.JoystickIndex].PadClicked = false;
-                menu.JoystickIndex = tempInt;
-                menu.MenuObjects[menu.JoystickIndex].Focus = true;
-                menu.JoystickMoved = true;
-            }
-            else if (j.thumbstick.y <= 0.1 && j.thumbstick.y >= -0.1 && j.thumbstick.x <= 0.1 && j.thumbstick.x >= -0.1)
-            {
-                menu.JoystickMoved = false;
             }
         }
 
@@ -156,13 +107,13 @@ namespace MenuHandler
             // Check if it is being slid.
             if (MouseClicked && mouseLock)
             {
-                Slide(menu.Manager.PointToClient(Cursor.Position).X - width);
+                Slide(window.PointToClient(Cursor.Position).X - width);
                 Hover = true;
                 releaseSoundBool = false;
                 ZVel -= 1 * time;
                 if (!pressSoundBool)   // Prevent Sound Spam
                 {
-                    manager.PlaySound(PressSound);
+                    window.PlaySound(PressSound);
                     pressSoundBool = true;
                 }
             }
@@ -170,7 +121,7 @@ namespace MenuHandler
             else if (Intersects() || Focus)
             {
                 // Check if the gamepad or mouse are clicked.
-                if (MouseClicked || PadClicked && menu.padMan[0].A)
+                if (MouseClicked || PadClicked && window.PadMan[0].A)
                 {
                     mouseLock = true;
                     Hover = true;
@@ -178,18 +129,18 @@ namespace MenuHandler
                     ZVel -= (0.2 * time);
                     if (!pressSoundBool)   // Prevent Sound Spam
                     {
-                        manager.PlaySound(PressSound);
+                        window.PlaySound(PressSound);
                         pressSoundBool = true;
                     }
                     if (slideCool >= 0.50 && !MouseClicked)
                     {
-                        if (menu.padMan[0].LeftStick.x >= 0.1 && menu.padMan[0].LeftStick.x > menu.padMan[0].LeftStick.y && menu.padMan[0].LeftStick.x > -menu.padMan[0].LeftStick.y)
+                        if (window.PadMan[0].LeftStick.x >= 0.1 && window.PadMan[0].LeftStick.x > window.PadMan[0].LeftStick.y && window.PadMan[0].LeftStick.x > -window.PadMan[0].LeftStick.y)
                         {
-                            Slide(x + ((menu.padMan[0].LeftStick.x/2) * time));
+                            Slide(x + ((window.PadMan[0].LeftStick.x / 2) * time));
                         }
-                        else if (menu.padMan[0].LeftStick.x <= -0.1 && menu.padMan[0].LeftStick.x < menu.padMan[0].LeftStick.y && menu.padMan[0].LeftStick.x < -menu.padMan[0].LeftStick.y)
+                        else if (window.PadMan[0].LeftStick.x <= -0.1 && window.PadMan[0].LeftStick.x < window.PadMan[0].LeftStick.y && window.PadMan[0].LeftStick.x < -window.PadMan[0].LeftStick.y)
                         {
-                            Slide(x + ((menu.padMan[0].LeftStick.x/2) * time));
+                            Slide(x + ((window.PadMan[0].LeftStick.x / 2) * time));
                         }
                         slideCool = 0;
                     }
@@ -214,7 +165,7 @@ namespace MenuHandler
                     }
                     if (!releaseSoundBool)   // Prevent Sound Spam
                     {
-                        manager.PlaySound(ReleaseSound);
+                        window.PlaySound(ReleaseSound);
                         releaseSoundBool = true;
                     }
                 }

@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using System.Timers;
 using MenuHandler;
 using GamepadHandler;
+using GameStateClass;
 using FileHandler;
 
 namespace OpenSourceParty
@@ -30,19 +31,14 @@ namespace OpenSourceParty
     class MainMenu : MenuAbstract
     {
         // Constructors and Methods
-        public MainMenu(String name) : base(name)
+        public MainMenu(String name, GameWindow window) : base(name, window)
         {
             InitButtons();
-            Manager.Width = 640;
-            Manager.Height = 480;
-            Manager.FormBorderStyle = FormBorderStyle.FixedSingle;
-            Manager.MaximizeBox = false;
-            Application.Idle += new EventHandler(Manager.UpdateMenu);
-        }
-
-        public MainMenu(String name, GameWindow iManager, GamepadManager iPadMan) : base(name, iManager, iPadMan)
-        {
-            InitButtons();
+            Window.Width = 640;
+            Window.Height = 480;
+            Window.FormBorderStyle = FormBorderStyle.FixedSingle;
+            Window.MaximizeBox = false;
+            Application.Idle += new EventHandler(Window.UpdateMenu);
         }
 
         public override void InitBackground()
@@ -50,8 +46,8 @@ namespace OpenSourceParty
             String background = FileManager.RandomFile(FileManager.BackgroundDir, FileManager.ImageExtension);
             if (background != null)
             {
-                Manager.BackgroundImage = Image.FromFile(background);   // Set the background image.
-                Manager.BackgroundImageLayout = ImageLayout.Stretch;
+                Window.BackgroundImage = Image.FromFile(background);   // Set the background image.
+                Window.BackgroundImageLayout = ImageLayout.Stretch;
             }
         }
 
@@ -60,40 +56,25 @@ namespace OpenSourceParty
         /// </summary>
         public override void InitButtons()
         {
-            MakeButton(10, 10, "button1", "Random Game");
-            MakeButton(10, 150, "button2", "List Games");
-            MakeButton(10, 300, "button3", "Exit");
-            MakeButton(300, 10, "button4", "Options");
-        }
-
-        /// <summary>
-        /// Code to run when buttons are clicked.
-        /// </summary>
-        /// <param name="button">The button that was clicked.</param>
-        public override void ButtonClicked(MenuObject button)
-        {
-            switch (button.Name)
+            MakeButton(10, 10, "button1", "Random Game", new Action(() =>
             {
-                case "Random Game":
-                    Destroy();
-                    //(Manager, this, padMan);
-                    break;
-                case "List Games":
-                    Console.WriteLine("Games:");
-                    FileManager.printFileList(FileManager.MinigameDir, FileManager.GameExtension);
-                    Console.WriteLine("Backgrounds:");
-                    FileManager.printFileList(FileManager.BackgroundDir, FileManager.ImageExtension);
-                    break;
-                case "Options":
-                    Destroy();
-                    OptionsMenu optionsMenu = new OptionsMenu("Open Source Party Options", Manager, padMan);
-                    break;
-                case "Exit":
-                    Application.Exit();
-                    break;
-                default:
-                    break;
-            }
+                GameLoadHelper.LoadRandomGame(Window);
+            }));
+            MakeButton(10, 150, "button2", "List Games", new Action(() =>
+            {
+                Console.WriteLine("Games:");
+                FileManager.printFileList(FileManager.MinigameDir, FileManager.GameExtension);
+                Console.WriteLine("Backgrounds:");
+                FileManager.printFileList(FileManager.BackgroundDir, FileManager.ImageExtension);
+            }));
+            MakeButton(10, 300, "button3", "Exit", new Action(() =>
+            {
+                Application.Exit();
+            }));
+            MakeButton(300, 10, "button4", "Options", new Action(() =>
+            {
+                Window.AddState(new OptionsMenu("Open Source Party Options", Window));
+            }));
         }
     }
 }

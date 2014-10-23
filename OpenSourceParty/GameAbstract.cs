@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using System.Timers;
 using SpriteHandler;
 using GamepadHandler;
+using MenuHandler;
 using FileHandler;
 using GameStateClass;
 using System.Diagnostics;
@@ -36,21 +37,19 @@ namespace GameAbstracts
     public abstract class GameAbstract : GameState
     {
         // Fields
-        protected GameState returnState;
         public GamepadManager padMan;
 
 
         // Properties
-        public Form Form { get; set; }
+        public GameWindow Window { get; set; }
         public TimeSpan Elapsed { get; private set; }
         public List<GameObject> GameObjects { get; protected set; }
 
         // Constructors and Methods
-        public void Run(Form iForm, GamepadManager iPadMan, GameState iReturnState)
+        public void Run(GameWindow iWindow)
         {
-            Form = iForm;
-            padMan = iPadMan;
-            returnState = iReturnState;
+            Window = iWindow;
+            padMan = Window.PadMan;
             Init();
         }
 
@@ -70,7 +69,7 @@ namespace GameAbstracts
                     AssignGamepadDelegates(padMan.Devices[i], i);
                 }
             }
-            Form.Invalidate();
+            Window.Invalidate();
         }
 
         public override void Restart()
@@ -83,7 +82,7 @@ namespace GameAbstracts
                     AssignGamepadDelegates(padMan.Devices[i], i);
                 }
             }
-            Form.Invalidate();
+            Window.Invalidate();
         }
 
         public abstract void AssignGamepadDelegates(GamepadStateHandler gamepad, int index);
@@ -97,7 +96,7 @@ namespace GameAbstracts
         /// <summary>
         /// Remove any outstanding menu pieces. Used when switching menus.
         /// </summary>
-        public virtual void Destroy()
+        public override void Destroy()
         {
             DestroyMouseDelegates();
             for (int i = 0; i < padMan.Devices.Count; i++)
@@ -108,7 +107,6 @@ namespace GameAbstracts
                 }
             }
             GameObjects.Clear();
-            returnState.Restart();
         }
 
         /// <summary>
@@ -130,14 +128,13 @@ namespace GameAbstracts
         /// </summary>
         public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
-            Graphics = graphics;
             foreach (GameObject gameObject in GameObjects)
             {
                 foreach (Rectangle rect in clipRectangles)
                 {
                     if (rect.IntersectsWith(gameObject.BoundingRect))
                     {
-                        gameObject.Draw(Graphics);
+                        gameObject.Draw(graphics);
                     }
                 }
             }

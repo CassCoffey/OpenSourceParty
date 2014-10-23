@@ -27,6 +27,7 @@ using GameStateClass;
 using FileHandler;
 using System.Diagnostics;
 using System.IO;
+using OpenTK;
 
 namespace MenuHandler
 {
@@ -37,7 +38,7 @@ namespace MenuHandler
     {
         // Fields
         protected List<MenuObject> menuObjects;
-        public GameWindow Manager { get; set; }
+        public GameWindow Window { get; set; }
         public TimeSpan Elapsed { get; private set; }
 
         // Joystick related fields
@@ -87,30 +88,12 @@ namespace MenuHandler
         
 
         // Constructors and Methods
-        public MenuAbstract(String name)
+        public MenuAbstract(String name, GameWindow iWindow)
         {
-            Manager = new GameWindow(this);
-            Manager.Text = name;
-            Manager.padMan = padMan;
+            Window = iWindow;
+            Window.Text = name;
             menuObjects = new List<MenuObject>();
-            padMan = new GamepadManager();
-            padMan.Init();
-            Init();
-        }
-
-        /// <summary>
-        /// Used when switching to this menu from another pre-existing menu.
-        /// </summary>
-        /// <param name="name">The name of this menu.</param>
-        /// <param name="iManager">The Game Manager to use.</param>
-        /// <param name="iPadMan">The gamepad manager to use.</param>
-        public MenuAbstract(String name, GameWindow iManager, GamepadManager iPadMan)
-        {
-            Manager = iManager;
-            Manager.CurState = this;
-            Manager.Text = name;
-            menuObjects = new List<MenuObject>();
-            padMan = iPadMan;
+            padMan = Window.PadMan;
             Init();
         }
 
@@ -123,15 +106,15 @@ namespace MenuHandler
             joystickIndex = 0;
             InitButtons();
             menuObjects = new List<MenuObject>();
-            if (padMan[0] != null)
+            if (padMan != null && padMan[0] != null)
             {
                 padMan[0].lJoystickDelegate += new GamepadStateHandler.JoystickDelegate(ThumbstickManage);
                 padMan[0].aDelagate += new GamepadStateHandler.GamepadDelegate(GamepadClick);
             }
-            Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
-            Manager.MouseUp += new MouseEventHandler(CheckClick);
+            Window.MouseMove += new MouseEventHandler(JoystickModeOff);
+            Window.MouseUp += new MouseEventHandler(CheckClick);
             InitBackground();
-            Manager.Invalidate();
+            Window.Invalidate();
         }
 
         /// <summary>
@@ -148,17 +131,17 @@ namespace MenuHandler
                 padMan[0].lJoystickDelegate += new GamepadStateHandler.JoystickDelegate(ThumbstickManage);
                 padMan[0].aDelagate += new GamepadStateHandler.GamepadDelegate(GamepadClick);
             }
-            Manager.MouseMove += new MouseEventHandler(JoystickModeOff);
-            Manager.MouseUp += new MouseEventHandler(CheckClick);
+            Window.MouseMove += new MouseEventHandler(JoystickModeOff);
+            Window.MouseUp += new MouseEventHandler(CheckClick);
             InitBackground();
-            Manager.Invalidate();
+            Window.Invalidate();
             DrawAll();
         }
 
         /// <summary>
         /// Remove any outstanding menu pieces. Used when switching menus.
         /// </summary>
-        public void Destroy()
+        public override void Destroy()
         {
             JoystickModeOff(this, EventArgs.Empty);
             menuObjects.Clear();
@@ -168,8 +151,8 @@ namespace MenuHandler
                 padMan[0].lJoystickDelegate -= new GamepadStateHandler.JoystickDelegate(ThumbstickManage);
                 padMan[0].aDelagate -= new GamepadStateHandler.GamepadDelegate(GamepadClick);
             }
-            Manager.MouseMove -= JoystickModeOff;
-            Manager.MouseUp -= CheckClick;
+            Window.MouseMove -= JoystickModeOff;
+            Window.MouseUp -= CheckClick;
             foreach (MenuObject menuObject in menuObjects)
             {
                 menuObject.Dispose();
@@ -186,7 +169,46 @@ namespace MenuHandler
             if (joystick)
             {
                 MenuObject focusObject = menuObjects[JoystickIndex];
-                focusObject.GamepadInput(j);
+                if (focusObject.PadClicked && padMan[0].A)
+                {
+                    return;
+                }
+                if ((j.thumbstick.y >= 0.2 || j.thumbstick.y <= -0.2 || j.thumbstick.x >= 0.2 || j.thumbstick.x <= -0.2) && !JoystickMoved)
+                {
+                    Vector2 origin = new Vector2((float)focusObject.x + focusObject.width, (float)focusObject.y + focusObject.height);
+                    Vector2 offset = new Vector2(j.thumbstick.x * 10000, -j.thumbstick.y * 10000);
+                    offset += origin;
+
+                    MenuObject tempButton = null;
+                    int tempInt = JoystickIndex;
+
+                    for (int i = 0; i < MenuObjects.Count; i++)
+                    {
+                        if (MenuObjects[i].Intersects(origin, offset) && i != JoystickIndex)
+                        {
+                            if (tempButton != null && MenuObjects[JoystickIndex].Distance(tempButton.position) > MenuObjects[JoystickIndex].Distance(MenuObjects[i].position))
+                            {
+                                tempButton = MenuObjects[i];
+                                tempInt = i;
+                            }
+                            else if (tempButton == null)
+                            {
+                                tempButton = MenuObjects[i];
+                                tempInt = i;
+                            }
+                        }
+                    }
+
+                    MenuObjects[JoystickIndex].Focus = false;
+                    MenuObjects[JoystickIndex].PadClicked = false;
+                    JoystickIndex = tempInt;
+                    MenuObjects[JoystickIndex].Focus = true;
+                    JoystickMoved = true;
+                }
+                else if (j.thumbstick.y <= 0.1 && j.thumbstick.y >= -0.1 && j.thumbstick.x <= 0.1 && j.thumbstick.x >= -0.1)
+                {
+                    JoystickMoved = false;
+                }
             }
             JoystickMode();
         }
@@ -201,9 +223,9 @@ namespace MenuHandler
             if (joystick)
             {
                 menuObjects[joystickIndex].PadClicked = true;
-                if (menuObjects[joystickIndex].PadClicked == true && !padMan[0].A)
+                if (menuObjects[joystickIndex].PadClicked == true && !padMan[0].A && menuObjects[joystickIndex] is MenuButton)
                 {
-                    ButtonClicked(menuObjects[joystickIndex]);
+                    (menuObjects[joystickIndex] as MenuButton).ClickButton();
                 }
             }
             JoystickMode();
@@ -253,7 +275,6 @@ namespace MenuHandler
         /// </summary>
         public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
-            Graphics = graphics;
             List<MenuObject> drawObjects = new List<MenuObject>();
             foreach (MenuObject menuObject in menuObjects)
             {
@@ -273,7 +294,7 @@ namespace MenuHandler
             {
                 foreach (MenuObject drawObject in drawObjects)
                 {
-                    drawObject.Draw(Graphics);
+                    drawObject.Draw(graphics);
                 }
             }
         }
@@ -296,10 +317,10 @@ namespace MenuHandler
         /// <param name="y">The button's y coordinate.</param>
         /// <param name="file">The button's file name.</param>
         /// <param name="name">The button's name.</param>
-        public void MakeButton(int x, int y, String file, String name)
+        public void MakeButton(int x, int y, String file, String name, Action action)
         {
             Image image = Image.FromFile(FileManager.NamedFile(file, FileManager.ImageDir + "\\Buttons", FileManager.ImageExtension));
-            MenuButton button = new MenuButton(x, y, image, name, this, Path.GetFullPath(FileManager.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")));
+            MenuButton button = new MenuButton(x, y, image, name, Window, Path.GetFullPath(FileManager.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")), action);
             menuObjects.Add(button);
         }
 
@@ -313,7 +334,7 @@ namespace MenuHandler
         public void MakeSlider(int x, int y, int length, String file, String name)
         {
             Image image = Image.FromFile(FileManager.NamedFile(file, FileManager.ImageDir + "\\Buttons", FileManager.ImageExtension));
-            MenuSlider slider = new MenuSlider(x, y, length, image, name, this, Path.GetFullPath(FileManager.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")));
+            MenuSlider slider = new MenuSlider(x, y, length, image, name, Window, Path.GetFullPath(FileManager.NamedFile("button_press", ".\\Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")));
             menuObjects.Add(slider);
         }
 
@@ -330,9 +351,9 @@ namespace MenuHandler
                 {
                     for (int i = 0; i < menuObjects.Count; i++ )
                     {
-                        if (menuObjects[i].Intersects())
+                        if (menuObjects[i].Intersects() && (menuObjects[i] is MenuButton))
                         {
-                            ButtonClicked(menuObjects[i]);
+                            (menuObjects[i] as MenuButton).ClickButton();
                         }
                     }
                 }
@@ -343,12 +364,6 @@ namespace MenuHandler
         /// Creates all of the buttons for the menu.
         /// </summary>
         public abstract void InitButtons();
-
-        /// <summary>
-        /// This should be overrided with a switch statement that runs off of the button's name.
-        /// </summary>
-        /// <param name="button">The button that was pressed.</param>
-        public abstract void ButtonClicked(MenuObject button);
 
         public abstract void InitBackground();
     }

@@ -19,7 +19,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Reflection;
 using System.Drawing;
+using FileHandler;
+using MenuHandler;
+using GameAbstracts;
 
 namespace GameStateClass
 {
@@ -28,24 +33,6 @@ namespace GameStateClass
     /// </summary>
     public abstract class GameState
     {
-        // Fields
-        protected Graphics graphics;   // All gamestates must store a local Graphics variable.
-
-
-        // Properties
-        public Graphics Graphics
-        {
-            get
-            {
-                return graphics;
-            }
-            set
-            {
-                graphics = value;
-            }
-        }
-
-        
         // Constructors and Methods
         /// <summary>
         /// Called when restarting the state.
@@ -56,6 +43,7 @@ namespace GameStateClass
         /// </summary>
         /// <param name="elapsedTime">Milliseconds since last update.</param>
         public abstract void Update(TimeSpan elapsedTime);
+        public abstract void Destroy();
         /// <summary>
         /// Called when the GameManager draws.
         /// </summary>
@@ -66,5 +54,23 @@ namespace GameStateClass
         /// Draws all the controls.
         /// </summary>
         public abstract void DrawAll();
+    }
+
+    public class GameLoadHelper
+    {
+        public static void LoadRandomGame(GameWindow window)
+        {
+            var DLL = Assembly.LoadFile(Path.GetFullPath(FileManager.RandomFile()));   // Load that file.
+
+            foreach (Type type in DLL.GetExportedTypes())   // For every 'type' found in the .dll...
+            {
+                if (type.IsClass)
+                {
+                    dynamic c = Activator.CreateInstance(type);   // Create an instance of that type...
+                    (c as GameAbstract).Run(window);
+                    window.AddState(c as GameAbstract);
+                }
+            }
+        }
     }
 }

@@ -34,17 +34,17 @@ namespace TestGame1
         public override void Init()
         {
             base.Init();
-            Form.BackgroundImage = null;
-            Form.BackColor = Color.Black;
-            paddleOne = new PongPaddle(Form.Width / 2, 10, 1, this);
-            paddleTwo = new PongPaddle(Form.Width / 2, 10, 1, this);
-            paddleThree = new PongPaddle(Form.Width / 2, 10, 1, this);
-            paddleFour = new PongPaddle(Form.Width / 2, 10, 1, this);
+            Window.BackgroundImage = null;
+            Window.BackColor = Color.Black;
+            paddleOne = new PongPaddle(Window.Width / 2, 10, 1, this);
+            paddleTwo = new PongPaddle(Window.Width / 2, 10, 1, this);
+            paddleThree = new PongPaddle(Window.Width / 2, 10, 1, this);
+            paddleFour = new PongPaddle(Window.Width / 2, 10, 1, this);
             GameObjects.Add(paddleOne);
             GameObjects.Add(paddleTwo);
             GameObjects.Add(paddleThree);
             GameObjects.Add(paddleFour);
-            Form.Invalidate();
+            Window.Invalidate();
         }
 
         public override void AssignGamepadDelegates(GamepadHandler.GamepadStateHandler gamepad, int index)
@@ -59,12 +59,12 @@ namespace TestGame1
 
         public override void AssignMouseDelegates()
         {
-            Form.MouseUp += new MouseEventHandler(MouseUp);
+            Window.MouseUp += new MouseEventHandler(MouseUp);
         }
 
         public override void DestroyMouseDelegates()
         {
-            Form.MouseUp -= MouseUp;
+            Window.MouseUp -= MouseUp;
         }
 
         public void MouseUp(Object sender, EventArgs e)
@@ -74,7 +74,7 @@ namespace TestGame1
 
         private void EndGame(Object sender, EventArgs e)
         {
-            Destroy();
+            Window.BackState();
         }
 
         public override void Update(TimeSpan elapsedTime)

@@ -30,6 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FileHandler">
+      <HintPath>..\OpenSourceParty\bin\Debug\FileHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="GameAbstracts">
+      <HintPath>..\OpenSourceParty\bin\Debug\GameAbstracts.dll</HintPath>
+    </Reference>
+    <Reference Include="MenuManager">
+      <HintPath>..\OpenSourceParty\bin\Debug\MenuManager.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
