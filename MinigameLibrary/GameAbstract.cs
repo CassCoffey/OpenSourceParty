@@ -22,7 +22,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Timers;
 using GamepadHandler;
-using FileHandler;
 using System.Diagnostics;
 using System.IO;
 

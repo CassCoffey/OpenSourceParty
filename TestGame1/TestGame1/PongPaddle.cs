@@ -29,7 +29,7 @@ namespace TestGame1
     {
         public int PlayerNum { get; private set; }
 
-        public PongPaddle(int x, int y, int iPlayer, Form form) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", ".\\MiniGames\\TestGame1\\Images", "*.jpg")), "Pong Paddle " + iPlayer, form)
+        public PongPaddle(int x, int y, int iPlayer, GameWindow window) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", ".\\MiniGames\\TestGame1\\Images", "*.jpg")), "Pong Paddle " + iPlayer, window)
         {
             PlayerNum = iPlayer;
         }

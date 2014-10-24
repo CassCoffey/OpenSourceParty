@@ -36,7 +36,7 @@ namespace MinigameLibrary
         public String Name { get; protected set; }
 
         // The parent form and menu.
-        protected Form form;
+        protected GameWindow window;
 
 
         //Constructors and Methods
@@ -51,10 +51,10 @@ namespace MinigameLibrary
         /// <param name="parentGame">The button's parent menu.</param>
         /// <param name="pressSoundLocation">The file path for this button's press sound.</param>
         /// <param name="releaseSoundLocation">The file path for this button's release sound.</param>
-        public GameObject(int x, int y, Image startImage, String startName, Form iForm) : base( x, y, startImage)
+        public GameObject(int x, int y, Image startImage, String startName, GameWindow iWindow) : base( x, y, startImage)
         {
             Name = startName;
-            form = iForm;
+            window = iWindow;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace MinigameLibrary
             {
                 InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
                 //form.InvalidateRectangles.Add(InvalidateRect);
-                form.Invalidate(InvalidateRect);
+                window.Invalidate(InvalidateRect);
             }
         }
 
@@ -79,7 +79,7 @@ namespace MinigameLibrary
             // Tell the GameManager to update graphics.
                 InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
                 //form.InvalidateRectangles.Add(InvalidateRect);
-                form.Invalidate(InvalidateRect);
+                window.Invalidate(InvalidateRect);
         }
 
         /// <summary>
