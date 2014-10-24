@@ -19,6 +19,9 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 using GamepadHandler;
 
 namespace MinigameLibrary
@@ -29,6 +32,7 @@ namespace MinigameLibrary
     public class GameWindow : Form
     {
         // Handles checking if the application is still idle.
+        /**
         [StructLayout(LayoutKind.Sequential)]
         public struct NativeMessage
         {
@@ -45,13 +49,15 @@ namespace MinigameLibrary
 
         bool IsApplicationIdle()
         {
-            NativeMessage result;
-            return PeekMessage(out result, IntPtr.Zero, (uint)0, (uint)0, (uint)0) == 0;
+            GLControl control = new GLControl();
+            return control.f;
         }
+         */
 
         // Properties
         public GameState CurState { get; set; }   // Keeps track of the current game state.
         Stopwatch GameTime { get; set; }
+        Timer Timer { get; set; }
         TimeSpan LastUpdate { get; set; }
         public List<System.Drawing.Rectangle> InvalidateRectangles { get; set; }
 
@@ -73,6 +79,10 @@ namespace MinigameLibrary
             GameTime = new Stopwatch();
             GameTime.Start();
             LastUpdate = new TimeSpan(0);
+            Timer = new Timer();
+            Timer.Interval = 16;
+            Timer.Tick += UpdateState;
+            Timer.Start();
         }
 
         public void AddState(GameState state)
@@ -101,10 +111,10 @@ namespace MinigameLibrary
         /// Handles any updates necessary. Will run constantly.
         /// This should be hooked on to Application.Idle.
         /// </summary>
-        public void UpdateMenu(object sender, EventArgs e)
+        public void UpdateState(object sender, EventArgs e)
         {
-            while (IsApplicationIdle())
-            {
+            //while (IsApplicationIdle())
+            //{
                 TimeSpan total = GameTime.Elapsed;
                 TimeSpan elapsed = total - LastUpdate;
                 if (CurState != null)
@@ -120,10 +130,13 @@ namespace MinigameLibrary
                     fpsLoops = 0;
                     fpsSeconds = 0;
                 }
-            }
+            //}
         }
 
-        
+        public void Start()
+        {
+
+        }
 
         /// <summary>
         /// Plays a sound. MediaPlayer sucks and I am currently looking for an alternative.

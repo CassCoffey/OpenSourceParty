@@ -31,7 +31,8 @@ namespace OpenSourceParty
             Window.Height = 480;
             Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             Window.MaximizeBox = false;
-            Application.Idle += new EventHandler(Window.UpdateMenu);
+            Window.Start();
+            //Application.Idle += Window.UpdateState;
         }
 
         public override void InitBackground()
