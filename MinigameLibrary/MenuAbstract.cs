@@ -15,15 +15,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Timers;
 using GamepadHandler;
 using FileHandler;
-using System.Diagnostics;
 using System.IO;
 using OpenTK;
 
