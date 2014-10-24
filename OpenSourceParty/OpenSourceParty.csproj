@@ -121,6 +121,9 @@
     <Content Include="Backgrounds\duckling.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Backgrounds\kitten.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Backgrounds\Penguin.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

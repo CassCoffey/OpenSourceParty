@@ -109,7 +109,7 @@ namespace MinigameLibrary
                 ZVel -= 1 * time;
                 if (!pressSoundBool)   // Prevent Sound Spam
                 {
-                    window.PlaySound(PressSound);
+                    //window.PlaySound(PressSound);
                     pressSoundBool = true;
                 }
             }
@@ -125,7 +125,7 @@ namespace MinigameLibrary
                     ZVel -= (0.2 * time);
                     if (!pressSoundBool)   // Prevent Sound Spam
                     {
-                        window.PlaySound(PressSound);
+                        //window.PlaySound(PressSound);
                         pressSoundBool = true;
                     }
                     if (slideCool >= 0.50 && !MouseClicked)
@@ -161,7 +161,7 @@ namespace MinigameLibrary
                     }
                     if (!releaseSoundBool)   // Prevent Sound Spam
                     {
-                        window.PlaySound(ReleaseSound);
+                        //window.PlaySound(ReleaseSound);
                         releaseSoundBool = true;
                     }
                 }

@@ -31,29 +31,6 @@ namespace MinigameLibrary
     /// </summary>
     public class GameWindow : Form
     {
-        // Handles checking if the application is still idle.
-        /**
-        [StructLayout(LayoutKind.Sequential)]
-        public struct NativeMessage
-        {
-            public IntPtr Handle;
-            public uint Message;
-            public IntPtr WParameter;
-            public IntPtr LParameter;
-            public uint Time;
-            public Point Location;
-        }
-
-        [DllImport("user32.dll")]
-        public static extern int PeekMessage(out NativeMessage message, IntPtr window, uint filterMin, uint filterMax, uint remove);
-
-        bool IsApplicationIdle()
-        {
-            GLControl control = new GLControl();
-            return control.f;
-        }
-         */
-
         // Properties
         public GameState CurState { get; set; }   // Keeps track of the current game state.
         Stopwatch GameTime { get; set; }
@@ -80,7 +57,7 @@ namespace MinigameLibrary
             GameTime.Start();
             LastUpdate = new TimeSpan(0);
             Timer = new Timer();
-            Timer.Interval = 16;
+            Timer.Interval = 15;
             Timer.Tick += UpdateState;
             Timer.Start();
         }
@@ -113,42 +90,21 @@ namespace MinigameLibrary
         /// </summary>
         public void UpdateState(object sender, EventArgs e)
         {
-            //while (IsApplicationIdle())
-            //{
-                TimeSpan total = GameTime.Elapsed;
-                TimeSpan elapsed = total - LastUpdate;
-                if (CurState != null)
-                {
-                    CurState.Update(elapsed);
-                }
-                LastUpdate = total;
-                fpsSeconds += elapsed.TotalSeconds;
-                fpsLoops++;
-                if (fpsSeconds >= 1.00)
-                {
-                    Text = "FPS - " + fpsLoops;
-                    fpsLoops = 0;
-                    fpsSeconds = 0;
-                }
-            //}
-        }
-
-        public void Start()
-        {
-
-        }
-
-        /// <summary>
-        /// Plays a sound. MediaPlayer sucks and I am currently looking for an alternative.
-        /// </summary>
-        /// <param name="location">The file path to the sound.</param>
-        public void PlaySound(String location)
-        {
-        }
-
-        public void OnSoundEnd(object sender, EventArgs e)
-        {
-
+            TimeSpan total = GameTime.Elapsed;
+            TimeSpan elapsed = total - LastUpdate;
+            if (CurState != null)
+            {
+                CurState.Update(elapsed);
+            }
+            LastUpdate = total;
+            fpsSeconds += elapsed.TotalSeconds;
+            fpsLoops++;
+            if (fpsSeconds >= 1.00)
+            {
+                Text = "FPS - " + fpsLoops;
+                fpsLoops = 0;
+                fpsSeconds = 0;
+            }
         }
 
         /// <summary>

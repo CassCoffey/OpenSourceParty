@@ -63,10 +63,10 @@ namespace MinigameLibrary
                 {
                     Hover = true;
                     releaseSoundBool = false;
-                    ZVel -= 0.2 * time;
+                    ZVel -= 1 * time;
                     if (!pressSoundBool)   // Prevent Sound Spam
                     {
-                        window.PlaySound(PressSound);
+                        //window.PlaySound(PressSound);
                         pressSoundBool = true;
                     }
                 }
@@ -74,22 +74,22 @@ namespace MinigameLibrary
                 {
                     Hover = true;
                     pressSoundBool = false;
-                    if ((Z % 1050 < 2) && (ZVel > -2 && ZVel < 2))
+                    if ((Z % 1050 < 20) && (ZVel > -20 && ZVel < 20))
                     {
                         Z = 1050;
                         ZVel = 0;
                     }
-                    else if (Z < 1050 && ZVel < 3)
+                    else if (Z < 1050 && ZVel < 30)
                     {
-                        ZVel += 0.1 * time;
+                        ZVel += 0.5 * time;
                     }
-                    else if (Z > 1050 && ZVel > -1)
+                    else if (Z > 1050 && ZVel > -10)
                     {
-                        ZVel -= 0.1 * time;
+                        ZVel -= 0.5 * time;
                     }
                     if (!releaseSoundBool)   // Prevent Sound Spam
                     {
-                        window.PlaySound(ReleaseSound);
+                        //window.PlaySound(ReleaseSound);
                         releaseSoundBool = true;
                     }
                 }
@@ -99,18 +99,18 @@ namespace MinigameLibrary
                 Hover = false;
                 pressSoundBool = false;
                 releaseSoundBool = false;
-                if ((Z % 1000 < 2) && (ZVel > -2 && ZVel < 2))
+                if ((Z % 1000 < 20) && (ZVel > -20 && ZVel < 20))
                 {
                     Z = 1000;
                     ZVel = 0;
                 }
-                else if (Z < 1000 && ZVel < 3)
+                else if (Z < 1000 && ZVel < 30)
                 {
-                    ZVel += 0.1 * time;
+                    ZVel += 0.5 * time;
                 }
-                else if (Z > 1000 && ZVel > -1)
+                else if (Z > 1000 && ZVel > -10)
                 {
-                    ZVel -= 0.1 * time;
+                    ZVel -= 0.5 * time;
                 }
             }
             Invalidate();

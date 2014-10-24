@@ -31,7 +31,6 @@ namespace OpenSourceParty
             Window.Height = 480;
             Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             Window.MaximizeBox = false;
-            Window.Start();
             //Application.Idle += Window.UpdateState;
         }
 
