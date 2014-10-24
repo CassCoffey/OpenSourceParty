@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
-using FileHandler;
 using GamepadHandler;
 
 namespace MinigameLibrary
