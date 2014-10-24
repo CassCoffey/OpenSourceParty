@@ -115,9 +115,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Backgrounds\bunny.jpg" />
-    <Content Include="Backgrounds\duckling.jpg" />
-    <Content Include="Backgrounds\Penguin.jpg" />
+    <Content Include="Backgrounds\bunny.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Backgrounds\duckling.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Backgrounds\Penguin.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Buttons\button1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
