@@ -25,9 +25,9 @@ namespace FileHandler
         private static List<String> filePaths = new List<String>();   // List of files that were found using directorySearch.
         private const String GAMEEXTENSION = "*.mng";   // The default minigame extension.
         private const String IMAGEEXTENSION = "*.jpg";   // The default minigame extension.
-        private const String MINIGAMEDIR = ".\\MiniGames";   // The default minigame directory.
-        private const String BACKGROUNDDIR = ".\\Backgrounds";   // The default minigame directory.
-        private const String IMAGEDIR = ".\\Images";   // The default minigame directory.
+        private const String MINIGAMEDIR = "./MiniGames";   // The default minigame directory.
+        private const String BACKGROUNDDIR = "./Backgrounds";   // The default minigame directory.
+        private const String IMAGEDIR = "./Images";   // The default minigame directory.
         private static Random rand = new Random();
 
 
