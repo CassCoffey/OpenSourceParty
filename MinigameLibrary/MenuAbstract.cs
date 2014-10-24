@@ -313,7 +313,8 @@ namespace MinigameLibrary
         public void MakeButton(int x, int y, String file, String name, Action action)
         {
             Image image = Image.FromFile(FileManager.NamedFile(file, FileManager.ImageDir + "/Buttons", FileManager.ImageExtension));
-            MenuButton button = new MenuButton(x, y, image, name, Window, Path.GetFullPath(FileManager.NamedFile("button_press", "./Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")), action);
+            MenuButton button = new MenuButton(x, y, image, name, Window, Path.GetFullPath(FileManager.NamedFile("button_press", "./Sounds", "*.wav")),
+                Path.GetFullPath(FileManager.NamedFile("button_release", "./Sounds", "*.wav")), action);
             menuObjects.Add(button);
         }
 
@@ -327,7 +328,8 @@ namespace MinigameLibrary
         public void MakeSlider(int x, int y, int length, String file, String name)
         {
             Image image = Image.FromFile(FileManager.NamedFile(file, FileManager.ImageDir + "/Buttons", FileManager.ImageExtension));
-            MenuSlider slider = new MenuSlider(x, y, length, image, name, Window, Path.GetFullPath(FileManager.NamedFile("button_press", "./Sounds", "*.wav")), Path.GetFullPath(FileManager.NamedFile("button_release", ".\\Sounds", "*.wav")));
+            MenuSlider slider = new MenuSlider(x, y, length, image, name, Window, Path.GetFullPath(FileManager.NamedFile("button_press", "./Sounds", "*.wav")),
+                Path.GetFullPath(FileManager.NamedFile("button_release", "./Sounds", "*.wav")));
             menuObjects.Add(slider);
         }
 
