@@ -143,9 +143,9 @@ namespace MinigameLibrary
             // Tell the GameManager to update graphics.
             if (needsUpdate)
             {
-                InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
-                window.InvalidateRectangles.Add(InvalidateRect);
-                window.Invalidate(InvalidateRect);
+                Rectangle NewInvalidateRect = new Rectangle(invalidateRectPrev.X - 6, invalidateRectPrev.Y - 6, invalidateRectPrev.Width + 12, invalidateRectPrev.Height + 12);
+                window.InvalidateRectangles.Add(NewInvalidateRect);
+                window.Invalidate(NewInvalidateRect);
             }
         }
 
