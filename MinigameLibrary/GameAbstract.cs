@@ -34,6 +34,7 @@ namespace MinigameLibrary
         public TimeSpan Elapsed { get; private set; }
         public List<GameObject> GameObjects { get; protected set; }
 
+
         // Constructors and Methods
         public void Run(GameWindow iWindow)
         {
@@ -61,6 +62,9 @@ namespace MinigameLibrary
             Window.Invalidate();
         }
 
+        /// <summary>
+        /// Restarts the game.
+        /// </summary>
         public override void Restart()
         {
             AssignMouseDelegates();
@@ -74,12 +78,28 @@ namespace MinigameLibrary
             Window.Invalidate();
         }
 
+        /// <summary>
+        /// Assigns delagates to each of the gamepads.
+        /// </summary>
+        /// <param name="gamepad"></param>
+        /// <param name="index"></param>
         public abstract void AssignGamepadDelegates(GamepadStateHandler gamepad, int index);
 
+        /// <summary>
+        /// Removes delegates from each of the gamepads.
+        /// </summary>
+        /// <param name="gamepad"></param>
+        /// <param name="index"></param>
         public abstract void DestroyGamepadDelegates(GamepadStateHandler gamepad, int index);
 
+        /// <summary>
+        /// Assigns delegates to the mouse.
+        /// </summary>
         public abstract void AssignMouseDelegates();
 
+        /// <summary>
+        /// Removes delegates from the mouse.
+        /// </summary>
         public abstract void DestroyMouseDelegates();
 
         /// <summary>

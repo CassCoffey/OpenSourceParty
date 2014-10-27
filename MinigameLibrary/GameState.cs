@@ -50,8 +50,15 @@ namespace MinigameLibrary
         public abstract void DrawAll();
     }
 
+    /// <summary>
+    /// Handles the loading of game files.
+    /// </summary>
     public class GameLoadHelper
     {
+        /// <summary>
+        /// Loads a random game.
+        /// </summary>
+        /// <param name="window">The window to load the game on.</param>
         public static void LoadRandomGame(GameWindow window)
         {
             var DLL = Assembly.LoadFile(Path.GetFullPath(FileManager.RandomFile(FileManager.MinigameDir, "*.dll")));   // Load that file.

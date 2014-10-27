@@ -77,6 +77,10 @@ namespace SpriteHandler
             base.Update(time);
         }
 
+        /// <summary>
+        /// Draws the sprite.
+        /// </summary>
+        /// <param name="graphics">The graphics object to draw with.</param>
         public override void Draw(Graphics graphics)
         {
             base.Draw(graphics);

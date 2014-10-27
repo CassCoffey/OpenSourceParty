@@ -43,6 +43,9 @@ namespace MinigameLibrary
             action = iAction;
         }
 
+        /// <summary>
+        /// Invokes the action that this button was assigned.
+        /// </summary>
         public void ClickButton()
         {
             action.Invoke();
