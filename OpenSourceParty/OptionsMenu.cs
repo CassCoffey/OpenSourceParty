@@ -29,6 +29,9 @@ namespace OpenSourceParty
             InitButtons();
         }
 
+        /// <summary>
+        /// Sets up the background.
+        /// </summary>
         public override void InitBackground()
         {
             String background = FileManager.RandomFile(FileManager.BackgroundDir, FileManager.ImageExtension);

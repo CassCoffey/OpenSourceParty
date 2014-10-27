@@ -31,9 +31,11 @@ namespace OpenSourceParty
             Window.Height = 480;
             Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             Window.MaximizeBox = false;
-            //Application.Idle += Window.UpdateState;
         }
 
+        /// <summary>
+        /// Loads a random background.
+        /// </summary>
         public override void InitBackground()
         {
             String background = FileManager.RandomFile(FileManager.BackgroundDir, FileManager.ImageExtension);

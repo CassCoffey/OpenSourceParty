@@ -360,6 +360,9 @@ namespace MinigameLibrary
         /// </summary>
         public abstract void InitButtons();
 
+        /// <summary>
+        /// Sets up the background of the menu.
+        /// </summary>
         public abstract void InitBackground();
     }
 }

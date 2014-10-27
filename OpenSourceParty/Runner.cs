@@ -22,6 +22,7 @@ namespace OpenSourceParty
     {
         public static void Main()
         {
+            // Create a window, add a main menu to it, and display the window.
             GameWindow window = new GameWindow();
             window.AddState(new MainMenu("Open Source Party", window));
             window.ShowDialog();

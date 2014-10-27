@@ -20,7 +20,7 @@ namespace GamepadHandler
     public class GamepadManager
     {
         // Fields
-        private List<GamepadStateHandler> devices = new List<GamepadStateHandler>(4);   // List of devices that could be connected.
+        public List<GamepadStateHandler> Devices { get; private set; }   // List of devices that could be connected.
         private List<GamepadStateHandler> activeDevices = new List<GamepadStateHandler>(4);   // List of devices that are connected.
 
         // the four default controllers
@@ -35,26 +35,18 @@ namespace GamepadHandler
         {
             get
             {
-                if (index >= 0 && index < devices.Count)
+                if (index >= 0 && index < Devices.Count)
                 {
-                    return devices[index];
+                    return Devices[index];
                 }
                 return null;
             }
             set
             {
-                if (index >= 0 && index < devices.Count)
+                if (index >= 0 && index < Devices.Count)
                 {
-                    devices[index] = value;
+                    Devices[index] = value;
                 }
-            }
-        }
-
-        public List<GamepadStateHandler> Devices
-        {
-            get
-            {
-                return devices;
             }
         }
 
@@ -65,10 +57,11 @@ namespace GamepadHandler
         /// </summary>
         public void Init()
         {
-            devices.Add(gamepadOne);
-            devices.Add(gamepadTwo);
-            devices.Add(gamepadThree);
-            devices.Add(gamepadFour);
+            Devices = new List<GamepadStateHandler>(4);
+            Devices.Add(gamepadOne);
+            Devices.Add(gamepadTwo);
+            Devices.Add(gamepadThree);
+            Devices.Add(gamepadFour);
             UpdateDevices();
         }
 
@@ -78,7 +71,7 @@ namespace GamepadHandler
         public void Update()
         {
             UpdateDevices();
-            foreach (GamepadStateHandler wrapper in devices)
+            foreach (GamepadStateHandler wrapper in Devices)
             {
                 wrapper.Update();
             }

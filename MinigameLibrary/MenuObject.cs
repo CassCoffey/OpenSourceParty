@@ -28,7 +28,7 @@ namespace MinigameLibrary
         // Fields
         // Management of button Z height.
         private double z;
-        private double zVel;
+        protected double ZVel { get; set; }
         public Rectangle ShadowRect { get; set; }
         public Rectangle ButtonRect { get; set; }
         public Rectangle InvalidateRect { get; set; }
@@ -57,18 +57,6 @@ namespace MinigameLibrary
                 {
                     z = value;
                 }
-            }
-        }
-        public double ZVel
-        {
-            get
-            {
-                return zVel;
-            }
-
-            set
-            {
-                zVel = value;
             }
         }
 

@@ -62,6 +62,10 @@ namespace MinigameLibrary
             Timer.Start();
         }
 
+        /// <summary>
+        /// Adds a state to the stack. If there is already a state there, it disables that one.
+        /// </summary>
+        /// <param name="state">The state to add.</param>
         public void AddState(GameState state)
         {
             if (stateStack.Count == 0)
@@ -77,6 +81,9 @@ namespace MinigameLibrary
             }
         }
 
+        /// <summary>
+        /// Returns to the previous state in the stack.
+        /// </summary>
         public void BackState()
         {
             stateStack.Pop().Destroy();
