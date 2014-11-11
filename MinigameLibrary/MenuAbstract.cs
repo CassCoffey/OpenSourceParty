@@ -107,7 +107,7 @@ namespace MinigameLibrary
             Window.MouseMove += new MouseEventHandler(JoystickModeOff);
             Window.MouseUp += new MouseEventHandler(CheckClick);
             InitBackground();
-            Window.Invalidate();
+            DrawAll();
         }
 
         /// <summary>
