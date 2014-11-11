@@ -116,8 +116,7 @@ namespace MinigameLibrary
         /// <returns>Returns true if the mouse is over the button.</returns>
         public virtual bool Intersects()
         {
-            //if (Intersects(window.PointToClient(Cursor.Position)))
-            if (ButtonRect.Contains(window.PointToClient(Cursor.Position)))
+            if (Intersects(window.PointToClient(Cursor.Position)))
             {
                 return true;
             }
