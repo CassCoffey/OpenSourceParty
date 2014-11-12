@@ -35,7 +35,7 @@ namespace MinigameLibrary
         public TimeSpan Elapsed { get; private set; }
 
         // Joystick related fields
-        protected bool joystick;
+        protected bool joystick = false;
         public GamepadManager padMan;
         private int joystickIndex = 0;
         public bool JoystickMoved { get; set; }
@@ -256,6 +256,7 @@ namespace MinigameLibrary
         public override void Update(TimeSpan elapsedTime)
         {
             padMan.Update();
+            Console.WriteLine("Joystick - " + joystick);
             Elapsed = elapsedTime;
             foreach (MenuObject menuObject in menuObjects)
             {
