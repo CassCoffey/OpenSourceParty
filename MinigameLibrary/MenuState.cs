@@ -256,7 +256,6 @@ namespace MinigameLibrary
         public override void Update(TimeSpan elapsedTime)
         {
             padMan.Update();
-            Console.WriteLine("Joystick - " + joystick);
             Elapsed = elapsedTime;
             foreach (MenuObject menuObject in menuObjects)
             {
@@ -270,7 +269,7 @@ namespace MinigameLibrary
         public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
             List<MenuObject> drawObjects = new List<MenuObject>();
-            if (GameWindow.IsLinux)
+            if (Window.linux)
             {
                 foreach (MenuObject menuObject in menuObjects)
                 {

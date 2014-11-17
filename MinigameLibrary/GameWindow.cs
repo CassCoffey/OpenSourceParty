@@ -33,17 +33,19 @@ namespace MinigameLibrary
     {
         // Properties
         public GameState CurState { get; set; }   // Keeps track of the current game state.
-        Stopwatch GameTime { get; set; }
-        Timer Timer { get; set; }
-        TimeSpan LastUpdate { get; set; }
+        private Stopwatch GameTime { get; set; }
+        private Timer Timer { get; set; }
+        private TimeSpan LastUpdate { get; set; }
         public List<System.Drawing.Rectangle> InvalidateRectangles { get; set; }
 
         public GamepadManager PadMan { get; set; }
 
         public Stack<GameState> stateStack;
 
-        double fpsSeconds = 0;
-        int fpsLoops = 0;
+        private double fpsSeconds = 0;
+        private int fpsLoops = 0;
+
+        public bool linux = false;
 
         /// <summary>
         /// Checks if the OS is linux.
@@ -52,8 +54,11 @@ namespace MinigameLibrary
         {
             get
             {
-                int p = (int)Environment.OSVersion.Platform;
-                return (p == 4) || (p == 6) || (p == 128);
+                //int p = (int)Environment.OSVersion.Platform;
+                //return (p == 4) || (p == 6) || (p == 128);
+                OperatingSystem os = Environment.OSVersion;
+                PlatformID pid = os.Platform;
+                return (pid == PlatformID.Unix) || (pid == PlatformID.MacOSX);
             }
         }
 
@@ -73,6 +78,15 @@ namespace MinigameLibrary
             Timer.Interval = 15;
             Timer.Tick += UpdateState;
             Timer.Start();
+            if (IsLinux)
+            {
+                Console.WriteLine("OS is Linux");
+                linux = true;
+            }
+            else
+            {
+                Console.WriteLine("OS is Windows");
+            }
         }
 
         /// <summary>
