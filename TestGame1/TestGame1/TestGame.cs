@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using MinigameLibrary;
 using GamepadHandler;
+using FileHandler;
 
 namespace TestGame1
 {
@@ -32,12 +33,18 @@ namespace TestGame1
         public override void Init()
         {
             base.Init();
-            Window.BackgroundImage = null;
+            Console.WriteLine("Is Game");
+            String background = FileManager.RandomFile(FileManager.BackgroundDir, FileManager.ImageExtension);
+            if (background != null)
+            {
+                Window.BackgroundImage = Image.FromFile(background);   // Set the background image.
+                Window.BackgroundImageLayout = ImageLayout.Stretch;
+            }
             Window.BackColor = Color.Black;
-            paddleOne = new PongPaddle(Window.Width / 2, 10, 1, Window);
-            paddleTwo = new PongPaddle(Window.Width / 2, 10, 1, Window);
-            paddleThree = new PongPaddle(Window.Width / 2, 10, 1, Window);
-            paddleFour = new PongPaddle(Window.Width / 2, 10, 1, Window);
+            paddleOne = new PongPaddle(Window.Width / 2, Window.Height / 2, 1, Window);
+            paddleTwo = new PongPaddle(Window.Width / 2, 10, 2, Window);
+            paddleThree = new PongPaddle(Window.Width / 2, 10, 3, Window);
+            paddleFour = new PongPaddle(Window.Width / 2, 10, 4, Window);
             GameObjects.Add(paddleOne);
             GameObjects.Add(paddleTwo);
             GameObjects.Add(paddleThree);

@@ -80,12 +80,7 @@ namespace MinigameLibrary
             Timer.Start();
             if (IsLinux)
             {
-                Console.WriteLine("OS is Linux");
                 linux = true;
-            }
-            else
-            {
-                Console.WriteLine("OS is Windows");
             }
         }
 

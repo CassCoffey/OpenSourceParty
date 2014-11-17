@@ -21,21 +21,28 @@ namespace TestGame1
 {
     class PongPaddle : GameObject
     {
+        private Rectangle pongRect;
+
         public int PlayerNum { get; private set; }
 
         public PongPaddle(int x, int y, int iPlayer, GameWindow window) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", FileManager.MinigameDir + "/TestGame1/Images", "*.jpg")), "Pong Paddle " + iPlayer, window)
         {
             PlayerNum = iPlayer;
+            pongRect.Height = image.Height;
+            pongRect.Width = image.Width;
+            pongRect.X = x;
+            pongRect.Y = y;
         }
 
         public override void Draw(System.Drawing.Graphics graphics)
         {
-            graphics.DrawImage(image, position);
+            graphics.DrawImage(image, pongRect);
         }
 
         public override void Update(double time)
         {
             position = new Point((int)x, (int)y);
+            pongRect.Location = position;
         }
     }
 }

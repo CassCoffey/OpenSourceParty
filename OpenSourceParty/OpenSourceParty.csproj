@@ -151,6 +151,15 @@
     <Content Include="Images\Buttons\slider1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="MiniGames\TestGame1\Images\pong.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MiniGames\TestGame1\TestGame1.pdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MiniGames\TestGame1\TestGame1.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sounds\button_press.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

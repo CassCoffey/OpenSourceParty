@@ -137,13 +137,35 @@ namespace MinigameLibrary
         /// </summary>
         public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
-            foreach (GameObject gameObject in GameObjects)
+            List<GameObject> drawObjects = new List<GameObject>();
+            if (Window.linux)
             {
-                foreach (Rectangle rect in clipRectangles)
+                foreach (GameObject gameObject in GameObjects)
                 {
-                    if (rect.IntersectsWith(gameObject.BoundingRect))
+                    gameObject.Draw(graphics);
+                }
+            }
+            else
+            {
+                foreach (GameObject gameObject in GameObjects)
+                {
+                    foreach (Rectangle rect in clipRectangles)
                     {
-                        gameObject.Draw(graphics);
+                        if (rect.IntersectsWith(gameObject.BoundingRect))
+                        {
+                            if (!drawObjects.Contains(gameObject))
+                            {
+                                drawObjects.Add(gameObject);
+                                continue;
+                            }
+                        }
+                    }
+                }
+                if (drawObjects.Count > 0)
+                {
+                    foreach (GameObject drawObject in drawObjects)
+                    {
+                        drawObject.Draw(graphics);
                     }
                 }
             }
