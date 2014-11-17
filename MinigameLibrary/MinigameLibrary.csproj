@@ -53,7 +53,7 @@
     <Compile Include="GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MenuAbstract.cs" />
+    <Compile Include="MenuState.cs" />
     <Compile Include="MenuButton.cs" />
     <Compile Include="MenuObject.cs" />
     <Compile Include="MenuSlider.cs" />

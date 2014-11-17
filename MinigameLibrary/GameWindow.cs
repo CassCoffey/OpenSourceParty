@@ -45,6 +45,19 @@ namespace MinigameLibrary
         double fpsSeconds = 0;
         int fpsLoops = 0;
 
+        /// <summary>
+        /// Checks if the OS is linux.
+        /// </summary>
+        public static bool IsLinux
+        {
+            get
+            {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
+        }
+
+
         // Constructors and Methods
         public GameWindow()
         {

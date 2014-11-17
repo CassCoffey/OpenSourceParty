@@ -27,7 +27,7 @@ namespace MinigameLibrary
     /// <summary>
     /// A class that contains all of the essential methods for a menu class to be built off of.
     /// </summary>
-    public abstract class MenuAbstract : GameState
+    public abstract class MenuState : GameState
     {
         // Fields
         protected List<MenuObject> menuObjects;
@@ -81,7 +81,7 @@ namespace MinigameLibrary
         
 
         // Constructors and Methods
-        public MenuAbstract(String name, GameWindow iWindow)
+        public MenuState(String name, GameWindow iWindow)
         {
             Window = iWindow;
             Window.Text = name;
@@ -270,25 +270,35 @@ namespace MinigameLibrary
         public override void Draw(Graphics graphics, List<Rectangle> clipRectangles)
         {
             List<MenuObject> drawObjects = new List<MenuObject>();
-            foreach (MenuObject menuObject in menuObjects)
+            if (GameWindow.IsLinux)
             {
-                foreach (Rectangle rect in clipRectangles)
+                foreach (MenuObject menuObject in menuObjects)
                 {
-                    if (rect.IntersectsWith(menuObject.ButtonRect) || rect.IntersectsWith(menuObject.ShadowRect))
+                    menuObject.Draw(graphics);
+                }
+            }
+            else
+            {
+                foreach (MenuObject menuObject in menuObjects)
+                {
+                    foreach (Rectangle rect in clipRectangles)
                     {
-                        if (!drawObjects.Contains(menuObject))
+                        if (rect.IntersectsWith(menuObject.ButtonRect) || rect.IntersectsWith(menuObject.ShadowRect))
                         {
-                            drawObjects.Add(menuObject);
-                            continue;
+                            if (!drawObjects.Contains(menuObject))
+                            {
+                                drawObjects.Add(menuObject);
+                                continue;
+                            }
                         }
                     }
                 }
-            }
-            if (drawObjects.Count > 0)
-            {
-                foreach (MenuObject drawObject in drawObjects)
+                if (drawObjects.Count > 0)
                 {
-                    drawObject.Draw(graphics);
+                    foreach (MenuObject drawObject in drawObjects)
+                    {
+                        drawObject.Draw(graphics);
+                    }
                 }
             }
         }

@@ -21,7 +21,7 @@ using MinigameLibrary;
 
 namespace OpenSourceParty
 {
-    class OptionsMenu : MenuAbstract
+    class OptionsMenu : MenuState
     {
         // Constructors and Methods
         public OptionsMenu(String name, GameWindow window) : base(name, window)
