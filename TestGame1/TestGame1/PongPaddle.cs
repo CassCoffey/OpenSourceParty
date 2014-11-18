@@ -13,6 +13,8 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using MinigameLibrary;
 using FileHandler;
@@ -21,28 +23,77 @@ namespace TestGame1
 {
     class PongPaddle : GameObject
     {
-        private Rectangle pongRect;
-
         public int PlayerNum { get; private set; }
+        public bool joyMove = false;
 
-        public PongPaddle(int x, int y, int iPlayer, GameWindow window) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", FileManager.MinigameDir + "/TestGame1/Images", "*.jpg")), "Pong Paddle " + iPlayer, window)
+        public PongPaddle(int x, int y, int iPlayer, GameWindow window, bool turn) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", FileManager.MinigameDir + "/TestGame1/Images", "*.jpg")), "Pong Paddle " + iPlayer, window)
         {
             PlayerNum = iPlayer;
-            pongRect.Height = image.Height;
-            pongRect.Width = image.Width;
-            pongRect.X = x;
-            pongRect.Y = y;
+            if (turn)
+            {
+                image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            }
+            BoundingRect = new Rectangle(x, y, image.Width, image.Height);
         }
 
         public override void Draw(System.Drawing.Graphics graphics)
         {
-            graphics.DrawImage(image, pongRect);
+            graphics.DrawImage(image, BoundingRect);
         }
 
         public override void Update(double time)
         {
+            if (joyMove)
+            {
+                if (PlayerNum == 1 || PlayerNum == 2)
+                {
+                    yVel = -window.PadMan[PlayerNum - 1].LeftStick.y;
+                }
+                else
+                {
+                    xVel = window.PadMan[PlayerNum - 1].LeftStick.x;
+                }
+            }
+            x += xVel * time;
+            y += yVel * time;
+            if (PlayerNum == 1 || PlayerNum == 2)
+            {
+                if (y + image.Height > window.Height - 30)
+                {
+                    y = window.Height - (image.Height + 30);
+                }
+                if (y < 30)
+                {
+                    y = 30;
+                }
+            }
+            else
+            {
+                if (x < 30)
+                {
+                    x = 30;
+                }
+                if (x + image.Width > window.Width - 30)
+                {
+                    x = window.Width - (image.Width + 30);
+                }
+            }
+            
             position = new Point((int)x, (int)y);
-            pongRect.Location = position;
+            BoundingRect = new Rectangle(position, image.Size);
+            InvalidateRect = BoundingRect;
+            if (InvalidateRect == invalidateRectPrev)
+            {
+                needsUpdate = false;
+            }
+            else
+            {
+                needsUpdate = true;
+            }
+            Invalidate();
+            xVel = 0;
+            yVel = 0;
+            invalidateRectPrev = InvalidateRect;
         }
     }
 }

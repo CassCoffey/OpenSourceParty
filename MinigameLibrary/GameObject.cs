@@ -27,6 +27,9 @@ namespace MinigameLibrary
         protected Rectangle invalidateRectPrev;
         protected bool needsUpdate = true;
 
+        public double xVel = 0;
+        public double yVel = 0;
+
         // Basic gameObject fields.
         public String Name { get; protected set; }
 
@@ -60,9 +63,10 @@ namespace MinigameLibrary
             // Tell the GameManager to update graphics.
             if (needsUpdate)
             {
-                InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
-                window.InvalidateRectangles.Add(InvalidateRect);
-                window.Invalidate(InvalidateRect);
+                Rectangle NewInvalidateRect = new Rectangle(invalidateRectPrev.X - 6, invalidateRectPrev.Y - 6, invalidateRectPrev.Width + 12, invalidateRectPrev.Height + 12);
+                window.InvalidateRectangles.Add(NewInvalidateRect);
+                window.InvalidateRectangles.Add(BoundingRect);
+                window.Invalidate(NewInvalidateRect);
             }
         }
 
@@ -72,9 +76,10 @@ namespace MinigameLibrary
         public virtual void AutoInvalidate()
         {
             // Tell the GameManager to update graphics.
-                InvalidateRect = new Rectangle(InvalidateRect.X - 4, InvalidateRect.Y - 4, InvalidateRect.Width + 8, InvalidateRect.Height + 8);
-                window.InvalidateRectangles.Add(InvalidateRect);
-                window.Invalidate(InvalidateRect);
+            Rectangle NewInvalidateRect = new Rectangle(invalidateRectPrev.X - 6, invalidateRectPrev.Y - 6, invalidateRectPrev.Width + 12, invalidateRectPrev.Height + 12);
+            window.InvalidateRectangles.Add(NewInvalidateRect);
+            window.InvalidateRectangles.Add(BoundingRect); 
+            window.Invalidate(NewInvalidateRect);
         }
 
         /// <summary>

@@ -33,33 +33,29 @@ namespace TestGame1
         public override void Init()
         {
             base.Init();
-            Console.WriteLine("Is Game");
-            String background = FileManager.RandomFile(FileManager.BackgroundDir, FileManager.ImageExtension);
-            if (background != null)
-            {
-                Window.BackgroundImage = Image.FromFile(background);   // Set the background image.
-                Window.BackgroundImageLayout = ImageLayout.Stretch;
-            }
+            Window.BackgroundImage = null;
             Window.BackColor = Color.Black;
-            paddleOne = new PongPaddle(Window.Width / 2, Window.Height / 2, 1, Window);
-            paddleTwo = new PongPaddle(Window.Width / 2, 10, 2, Window);
-            paddleThree = new PongPaddle(Window.Width / 2, 10, 3, Window);
-            paddleFour = new PongPaddle(Window.Width / 2, 10, 4, Window);
+            paddleOne = new PongPaddle(10, (Window.Height / 2) - 75, 1, Window, true);
+            paddleTwo = new PongPaddle(Window.Width - 50, (Window.Height / 2) - 75, 2, Window, true);
+            paddleThree = new PongPaddle((Window.Width / 2) - 75, 10, 3, Window, false);
+            paddleFour = new PongPaddle((Window.Width / 2) - 75, Window.Height - 75, 4, Window, false);
             GameObjects.Add(paddleOne);
             GameObjects.Add(paddleTwo);
             GameObjects.Add(paddleThree);
             GameObjects.Add(paddleFour);
-            Window.Invalidate();
+            DrawAll();
         }
 
         public override void AssignGamepadDelegates(GamepadStateHandler gamepad, int index)
         {
             gamepad.aDelagate += EndGame;
+            gamepad.lJoystickDelegate += MovePong;
         }
 
         public override void DestroyGamepadDelegates(GamepadStateHandler gamepad, int index)
         {
             gamepad.aDelagate -= EndGame;
+            gamepad.lJoystickDelegate -= MovePong;
         }
 
         public override void AssignMouseDelegates()
@@ -80,6 +76,54 @@ namespace TestGame1
         private void EndGame(Object sender, EventArgs e)
         {
             Window.BackState();
+        }
+
+        private void MovePong(object sender, JoystickArgs j)
+        {
+            GamepadStateHandler gamepad = sender as GamepadStateHandler;
+            switch (padMan.Devices.IndexOf(gamepad))
+            {
+                case (0):
+                    if (j.thumbstick.y > 0.1 || j.thumbstick.y < -0.1)
+                    {
+                        paddleOne.joyMove = true;
+                    }
+                    else
+                    {
+                        paddleOne.joyMove = false;
+                    }
+                    break;
+                case (1):
+                    if (j.thumbstick.y > 0.1 || j.thumbstick.y < -0.1)
+                    {
+                        paddleTwo.joyMove = true;
+                    }
+                    else
+                    {
+                        paddleTwo.joyMove = false;
+                    }
+                    break;
+                case (2):
+                    if (j.thumbstick.x > 0.1 || j.thumbstick.x < -0.1)
+                    {
+                        paddleThree.joyMove = true;
+                    }
+                    else
+                    {
+                        paddleThree.joyMove = false;
+                    }
+                    break;
+                case (3):
+                    if (j.thumbstick.x > 0.1 || j.thumbstick.x < -0.1)
+                    {
+                        paddleFour.joyMove = true;
+                    }
+                    else
+                    {
+                        paddleFour.joyMove = false;
+                    }
+                    break;
+            }
         }
 
         public override void Update(TimeSpan elapsedTime)
