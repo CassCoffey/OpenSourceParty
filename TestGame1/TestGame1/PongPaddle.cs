@@ -18,6 +18,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using MinigameLibrary;
 using FileHandler;
+using FarseerPhysics;
+using FarseerPhysics.Collision;
+using FarseerPhysics.Collision.Shapes;
+using FarseerPhysics.Common;
+using FarseerPhysics.Controllers;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
 
 namespace TestGame1
 {
@@ -25,13 +32,19 @@ namespace TestGame1
     {
         public int PlayerNum { get; private set; }
         public bool joyMove = false;
+        private World world;
+        private Body body;
 
-        public PongPaddle(int x, int y, int iPlayer, GameWindow window, bool turn) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", FileManager.MinigameDir + "/TestGame1/Images", "*.jpg")), "Pong Paddle " + iPlayer, window)
+        public PongPaddle(int x, int y, int iPlayer, GameWindow window, bool turn, World iWorld) : base(x, y, Image.FromFile(FileManager.NamedFile("pong", FileManager.MinigameDir + "/TestGame1/Images", "*.jpg")), "Pong Paddle " + iPlayer, window)
         {
+            world = iWorld;
+            body = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(x), ConvertUnits.ToSimUnits(y), 1);
+            body.BodyType = BodyType.Static;
             PlayerNum = iPlayer;
             if (turn)
             {
                 image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                body.Rotation = 90;
             }
             BoundingRect = new Rectangle(x, y, image.Width, image.Height);
         }
@@ -54,13 +67,18 @@ namespace TestGame1
                     xVel = window.PadMan[PlayerNum - 1].LeftStick.x;
                 }
             }
+            else
+            {
+                xVel = 0;
+                yVel = 0;
+            }
             x += xVel * time;
             y += yVel * time;
             if (PlayerNum == 1 || PlayerNum == 2)
             {
-                if (y + image.Height > window.Height - 30)
+                if (y + image.Height > window.Height - 70)
                 {
-                    y = window.Height - (image.Height + 30);
+                    y = window.Height - (image.Height + 70);
                 }
                 if (y < 30)
                 {
@@ -73,13 +91,14 @@ namespace TestGame1
                 {
                     x = 30;
                 }
-                if (x + image.Width > window.Width - 30)
+                if (x + image.Width > window.Width - 50)
                 {
-                    x = window.Width - (image.Width + 30);
+                    x = window.Width - (image.Width + 50);
                 }
             }
             
             position = new Point((int)x, (int)y);
+            body.Position = new Microsoft.Xna.Framework.Vector2(ConvertUnits.ToSimUnits(x), ConvertUnits.ToSimUnits(y));
             BoundingRect = new Rectangle(position, image.Size);
             InvalidateRect = BoundingRect;
             if (InvalidateRect == invalidateRectPrev)
@@ -91,8 +110,6 @@ namespace TestGame1
                 needsUpdate = true;
             }
             Invalidate();
-            xVel = 0;
-            yVel = 0;
             invalidateRectPrev = InvalidateRect;
         }
     }

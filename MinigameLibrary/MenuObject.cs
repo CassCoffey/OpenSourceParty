@@ -133,7 +133,7 @@ namespace MinigameLibrary
             {
                 Rectangle NewInvalidateRect = new Rectangle(invalidateRectPrev.X - 6, invalidateRectPrev.Y - 6, invalidateRectPrev.Width + 12, invalidateRectPrev.Height + 12);
                 window.InvalidateRectangles.Add(NewInvalidateRect);
-                window.Invalidate(NewInvalidateRect);
+                window.Invalidate(NewInvalidateRect); 
             }
         }
 

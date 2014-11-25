@@ -54,8 +54,6 @@ namespace MinigameLibrary
         {
             get
             {
-                //int p = (int)Environment.OSVersion.Platform;
-                //return (p == 4) || (p == 6) || (p == 128);
                 OperatingSystem os = Environment.OSVersion;
                 PlatformID pid = os.Platform;
                 return (pid == PlatformID.Unix) || (pid == PlatformID.MacOSX);

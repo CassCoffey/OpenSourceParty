@@ -20,6 +20,14 @@ using System.Drawing;
 using MinigameLibrary;
 using GamepadHandler;
 using FileHandler;
+using FarseerPhysics.Collision;
+using FarseerPhysics.Common;
+using FarseerPhysics.Collision.Shapes;
+using FarseerPhysics.Fluids;
+using FarseerPhysics.Controllers;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
+using FarseerPhysics;
 
 namespace TestGame1
 {
@@ -29,20 +37,28 @@ namespace TestGame1
         PongPaddle paddleTwo;
         PongPaddle paddleThree;
         PongPaddle paddleFour;
+        PongBall ballOne;
+        World world;
 
         public override void Init()
         {
+            Console.WriteLine("Init Game");
             base.Init();
+            Console.WriteLine("Initted");
+            world = new World(new Microsoft.Xna.Framework.Vector2(0f, 0f));
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(128f);
             Window.BackgroundImage = null;
             Window.BackColor = Color.Black;
-            paddleOne = new PongPaddle(10, (Window.Height / 2) - 75, 1, Window, true);
-            paddleTwo = new PongPaddle(Window.Width - 50, (Window.Height / 2) - 75, 2, Window, true);
-            paddleThree = new PongPaddle((Window.Width / 2) - 75, 10, 3, Window, false);
-            paddleFour = new PongPaddle((Window.Width / 2) - 75, Window.Height - 75, 4, Window, false);
+            paddleOne = new PongPaddle(10, (Window.Height / 2) - 75, 1, Window, true, world);
+            paddleTwo = new PongPaddle(Window.Width - 50, (Window.Height / 2) - 75, 2, Window, true, world);
+            paddleThree = new PongPaddle((Window.Width / 2) - 75, 10, 3, Window, false, world);
+            paddleFour = new PongPaddle((Window.Width / 2) - 75, Window.Height - 75, 4, Window, false, world);
+            ballOne = new PongBall(Window.Width / 2 - 20, Window.Height / 2, Window, world);
             GameObjects.Add(paddleOne);
             GameObjects.Add(paddleTwo);
             GameObjects.Add(paddleThree);
             GameObjects.Add(paddleFour);
+            GameObjects.Add(ballOne);
             DrawAll();
         }
 
@@ -129,6 +145,12 @@ namespace TestGame1
         public override void Update(TimeSpan elapsedTime)
         {
             base.Update(elapsedTime);
+            Console.WriteLine("Updating");
+            if (world != null)
+            {
+                Console.WriteLine("Updating world");
+                world.Step((float)elapsedTime.TotalSeconds);
+            }
         }
 
         public override void Draw(System.Drawing.Graphics graphics, List<System.Drawing.Rectangle> clipRectangles)

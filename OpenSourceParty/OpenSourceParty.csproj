@@ -151,6 +151,15 @@
     <Content Include="Images\Buttons\slider1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="MiniGames\TestGame1\FarseerPhysics.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MiniGames\TestGame1\Images\ball.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MiniGames\TestGame1\Images\ball.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="MiniGames\TestGame1\Images\pong.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

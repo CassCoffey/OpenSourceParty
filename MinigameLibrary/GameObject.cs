@@ -67,6 +67,7 @@ namespace MinigameLibrary
                 window.InvalidateRectangles.Add(NewInvalidateRect);
                 window.InvalidateRectangles.Add(BoundingRect);
                 window.Invalidate(NewInvalidateRect);
+                window.Invalidate(BoundingRect);
             }
         }
 
@@ -80,6 +81,7 @@ namespace MinigameLibrary
             window.InvalidateRectangles.Add(NewInvalidateRect);
             window.InvalidateRectangles.Add(BoundingRect); 
             window.Invalidate(NewInvalidateRect);
+            window.Invalidate(BoundingRect);
         }
 
         /// <summary>
